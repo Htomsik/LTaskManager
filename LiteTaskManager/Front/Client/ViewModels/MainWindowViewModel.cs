@@ -27,7 +27,7 @@ public class MainWindowViewModel : ViewModelBase
                 CurrentViewModel = (Locator.Current.GetService(type) as ViewModelBase)!;
             });
 
-        Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing Navigate command:{x.Message}"));
+        Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(Navigate)} command:{x.Message}"));
         
         MenuList = new ObservableCollection<MenuParamCommandItem>
         { 
