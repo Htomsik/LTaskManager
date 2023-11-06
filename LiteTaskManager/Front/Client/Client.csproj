@@ -40,4 +40,8 @@
     <ItemGroup>
       <UpToDateCheckInput Remove="Infrastructure\DataTemplates\MenuParamCommandItemDataTemplate.axaml" />
     </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="obj\Debug\net7.0\Avalonia\" />
+    </ItemGroup>
 </Project>
