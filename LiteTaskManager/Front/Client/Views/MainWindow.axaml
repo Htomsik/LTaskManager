@@ -1,0 +1,19 @@
+<Window
+    Height="400"
+    Icon="/Assets/AppIcon.ico"
+    Title="LiteTaskManager"
+    Width="400"
+    mc:Ignorable="d"
+    x:Class="Client.Views.MainWindow"
+    x:DataType="vm:MainWindowViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid ColumnDefinitions="50,*">
+        <ListBox Grid.Column="0" Items="{Binding MenuList}" />
+    </Grid>
+
+</Window>
