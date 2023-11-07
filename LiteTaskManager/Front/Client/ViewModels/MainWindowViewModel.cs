@@ -19,8 +19,6 @@ public class MainWindowViewModel : ViewModelBase
     
     public MainWindowViewModel()
     {
-        CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
-        
         Navigate = ReactiveCommand.Create<Type>(
             type =>
             {
@@ -33,6 +31,8 @@ public class MainWindowViewModel : ViewModelBase
         { 
             new MenuParamCommandItem("Processes", Navigate, typeof(ProcessesViewModel), MaterialIconKind.Memory)
         };
+        
+        CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
     }
     
     public IReactiveCommand Navigate { get; init; }

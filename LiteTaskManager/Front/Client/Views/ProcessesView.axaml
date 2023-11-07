@@ -9,14 +9,14 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid>
-        <DataGrid Items="{Binding Processes}" Name="DataGrid">
+        <DataGrid
+            Items="{Binding ProcessService.Processes}"
+            Name="DataGrid"
+            SelectedItem="{Binding ProcessService.CurrentProcess}">
 
             <DataGrid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem
-                        Command="{Binding KillProcess}"
-                        CommandParameter="{Binding #DataGrid.SelectedItem}"
-                        Header="Kill" />
+                    <MenuItem Command="{Binding KillProcess}" Header="Kill" />
                 </ContextMenu>
             </DataGrid.ContextMenu>
 
@@ -27,6 +27,8 @@
                     Width="*" />
             </DataGrid.Columns>
         </DataGrid>
+
+
     </Grid>
 
 </UserControl>

@@ -1,30 +1,24 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Client.Services;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Client.ViewModels;
 
 public class ProcessesViewModel : ViewModelBase
 {
-   [Reactive]
-   public ObservableCollection<Process> Processes { get; set; }
-   
-   public ProcessesViewModel()
+   public IProcessService<Process> ProcessService { get; }
+
+   public ProcessesViewModel(IProcessService<Process> processService)
    {
-      Processes = new ObservableCollection<Process>(Process.GetProcesses());
+      ProcessService = processService;
       
-      KillProcess = ReactiveCommand.Create<Process>(
-         p =>
-         {
-            p.Kill();
-            this.Log().Warn($"Process {p.ProcessName} was killed");
-         });
+      KillProcess = ReactiveCommand.Create(processService.StopCurrentProcess);
 
       KillProcess.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(KillProcess)} command:{x.Message}"));
    }
+   
    
    public IReactiveCommand KillProcess { get; init; }
 }
