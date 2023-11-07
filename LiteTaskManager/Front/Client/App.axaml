@@ -7,17 +7,38 @@
 
     <Application.Styles>
         <FluentTheme Mode="Light" />
+        <StyleInclude Source="avares://Material.Icons.Avalonia/App.xaml" />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     </Application.Styles>
 
-
     <Application.DataTemplates>
-        <infrastructure:ViewLocator />
 
         <DataTemplate DataType="models:MenuParamCommandItem">
             <Grid>
-                <TextBlock Text="{Binding Name}" />
+                <Button
+                    Background="Transparent"
+                    Command="{Binding Command}"
+                    CommandParameter="{Binding CommandParam}"
+                    HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Stretch">
+                    <Button.Content>
+                        <TextBlock
+                            Classes="Headline6"
+                            Foreground="{DynamicResource MaterialDesignBody}"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            Text="{Binding Name}"
+                            VerticalAlignment="Center" />
+                    </Button.Content>
+                </Button>
             </Grid>
+
         </DataTemplate>
+
+
+        <infrastructure:ViewLocator />
 
     </Application.DataTemplates>
 

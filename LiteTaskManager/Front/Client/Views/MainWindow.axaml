@@ -12,8 +12,16 @@
     xmlns:vm="using:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid ColumnDefinitions="50,*">
+    <Grid ColumnDefinitions="Auto,*">
         <ListBox Grid.Column="0" Items="{Binding MenuList}" />
+        <ContentControl
+            Content="{Binding CurrentViewModel}"
+            Grid.Column="1"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Stretch" />
+
     </Grid>
 
 </Window>

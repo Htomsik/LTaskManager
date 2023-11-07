@@ -1,11 +1,29 @@
 ﻿<UserControl
-    d:DesignHeight="450"
-    d:DesignWidth="800"
     mc:Ignorable="d"
     x:Class="Client.Views.NoDataView"
     xmlns="https://github.com/avaloniaui"
+    xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    Welcome to Avalonia!
+
+    <Grid
+        HorizontalAlignment="Center"
+        RowDefinitions="Auto, Auto"
+        VerticalAlignment="Center">
+
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+            <avalonia:MaterialIconExt Kind="No" Size="50" />
+        </Grid>
+
+        <TextBlock
+            Classes="Body1"
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            Text="Not Found"
+            VerticalAlignment="Top" />
+
+    </Grid>
+
+
 </UserControl>

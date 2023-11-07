@@ -8,5 +8,7 @@ internal static partial class SplatContainerRegistration
     public static void VmdRegistration()
     {
         SplatRegistrations.RegisterLazySingleton<MainWindowViewModel>();
+        
+        SplatRegistrations.Register<ProcessesViewModel>();
     }
 } 

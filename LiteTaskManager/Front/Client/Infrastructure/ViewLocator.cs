@@ -13,9 +13,9 @@ public class ViewLocator : IDataTemplate, IEnableLogger
 {
     private readonly Dictionary<Type, Type> _vmdToViewTypes = new()
     {
-        {typeof(MainWindow),typeof(MainWindowViewModel)},
+        {typeof(ProcessesViewModel),typeof(ProcessesView)}
     };
-
+    
     
     public IControl Build(object vmd)
     {

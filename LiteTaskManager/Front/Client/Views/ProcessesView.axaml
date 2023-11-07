@@ -1,0 +1,52 @@
+﻿<UserControl
+    d:DesignHeight="400"
+    d:DesignWidth="400"
+    mc:Ignorable="d"
+    x:Class="Client.Views.ProcessesView"
+    x:DataType="viewModels:ProcessesViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Design.DataContext>
+        <!--
+            This only sets the DataContext for the previewer in an IDE,
+            to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs)
+        -->
+        <viewModels:ProcessesViewModel />
+    </Design.DataContext>
+
+    <Grid>
+        <DataGrid
+            Items="{Binding ProcessService.Processes}"
+            Name="DataGrid"
+            SelectedItem="{Binding ProcessService.CurrentProcess}">
+
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding KillProcess}" Header="Kill" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
+
+            <DataGrid.Columns>
+                <DataGridTextColumn
+                    Binding="{Binding MainModule.FileVersionInfo.ProductName}"
+                    Header="Product Name"
+                    Width="*" />
+                <DataGridTextColumn
+                    Binding="{Binding MainModule.ModuleName}"
+                    Header="Module Name"
+                    Width="*" />
+                <DataGridTextColumn
+                    Binding="{Binding ProcessName}"
+                    Header="Process Name"
+                    Width="*" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+
+    </Grid>
+
+</UserControl>
