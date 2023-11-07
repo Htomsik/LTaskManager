@@ -4,7 +4,7 @@ using ReactiveUI;
 
 namespace Client.Models;
 
-public class MenuParamCommandItem
+internal sealed class MenuParamCommandItem
 {
     private readonly Lazy<IReactiveCommand> _lazyCommand;
     public IReactiveCommand Command => _lazyCommand.Value;

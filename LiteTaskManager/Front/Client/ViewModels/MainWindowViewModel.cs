@@ -9,7 +9,7 @@ using Splat;
 
 namespace Client.ViewModels;
 
-public class MainWindowViewModel : ViewModelBase
+internal sealed class MainWindowViewModel : ViewModelBase
 {
     public IEnumerable<MenuParamCommandItem> MenuList { get; set; }
 
