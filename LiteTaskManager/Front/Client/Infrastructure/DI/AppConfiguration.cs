@@ -9,6 +9,7 @@ internal static class AppConfiguration
 {
     public static void Configure()
     {
+        SplatContainerRegistration.StoresRegistration();
         SplatContainerRegistration.ServiceRegistration();
         SplatContainerRegistration.VmdRegistration();
         SplatContainerRegistration.WindowRegistration();

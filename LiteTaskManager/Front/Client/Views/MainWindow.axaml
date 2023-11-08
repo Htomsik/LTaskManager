@@ -1,19 +1,34 @@
 <Window
     Height="400"
     Icon="/Assets/AppIcon.ico"
+    Name="ThisWindow"
     Title="LiteTaskManager"
     Width="400"
     mc:Ignorable="d"
     x:Class="Client.Views.MainWindow"
-    x:DataType="vm:MainWindowViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vm="using:Client.ViewModels"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Design.DataContext>
+        <viewModels:MainWindowViewModel />
+    </Design.DataContext>
+
     <Grid ColumnDefinitions="Auto,*">
-        <ListBox Grid.Column="0" Items="{Binding MenuList}" />
+        <Grid RowDefinitions="*, 40">
+            <ListBox Grid.Column="0" Items="{Binding MenuList}" />
+            <Button Command="{Binding OpenAppSettings}" Grid.Row="1">
+                <avalonia:MaterialIcon
+                    Height="24"
+                    HorizontalAlignment="Center"
+                    Kind="Settings"
+                    VerticalAlignment="Center"
+                    Width="24" />
+            </Button>
+        </Grid>
         <ContentControl
             Content="{Binding CurrentViewModel}"
             Grid.Column="1"
@@ -23,5 +38,15 @@
             VerticalContentAlignment="Stretch" />
 
     </Grid>
+
+    <Interaction.Behaviors>
+        <EventTriggerBehavior EventName="Closing" SourceObject="{Binding #ThisWindow}">
+            <InvokeCommandAction Command="{Binding SaveAppSettings}" />
+        </EventTriggerBehavior>
+
+        <EventTriggerBehavior EventName="Opened" SourceObject="{Binding #ThisWindow}">
+            <InvokeCommandAction Command="{Binding GetAppSettings}" />
+        </EventTriggerBehavior>
+    </Interaction.Behaviors>
 
 </Window>
