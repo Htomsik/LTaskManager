@@ -6,7 +6,7 @@ using Splat;
 
 namespace Client.ViewModels;
 
-public class ProcessesViewModel : ViewModelBase
+internal sealed class ProcessesViewModel : ViewModelBase
 {
    public IProcessService<Process> ProcessService { get; }
 

@@ -8,7 +8,7 @@ using Splat;
 
 namespace Client.Services;
 
-internal class ProcessService : ReactiveObject, IProcessService<Process>
+internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
 {
     [Reactive]
     public ObservableCollection<Process> Processes { get; set; }

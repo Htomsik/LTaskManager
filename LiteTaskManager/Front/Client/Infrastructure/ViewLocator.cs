@@ -9,11 +9,12 @@ using Splat;
 
 namespace Client.Infrastructure;
 
-public class ViewLocator : IDataTemplate, IEnableLogger
+internal sealed class ViewLocator : IDataTemplate, IEnableLogger
 {
     private readonly Dictionary<Type, Type> _vmdToViewTypes = new()
     {
-        {typeof(ProcessesViewModel),typeof(ProcessesView)}
+        {typeof(ProcessesViewModel),typeof(ProcessesView)},
+        {typeof(AppSettingsViewModel), typeof(AppSettingsView)}
     };
     
     
