@@ -43,6 +43,18 @@
                     Binding="{Binding ProcessName}"
                     Header="Process Name"
                     Width="*" />
+                <DataGridTextColumn
+                    Binding="{Binding StartTime}"
+                    Header="Start Time"
+                    Width="*" />
+                <DataGridTextColumn
+                    Binding="{Binding TotalProcessorTime}"
+                    Header="Total Using Time"
+                    Width="*" />
+                <DataGridTextColumn 
+                    Binding="{Binding PriorityClassCore}"
+                    Header="Priority"
+                    Width="*" />
             </DataGrid.Columns>
         </DataGrid>
 
