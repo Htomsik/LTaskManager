@@ -3,7 +3,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:infrastructure="clr-namespace:Client.Infrastructure"
     xmlns:models="clr-namespace:Client.Models"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process">
 
     <Application.Styles>
         <FluentTheme Mode="Light" />
@@ -36,7 +37,14 @@
             </Grid>
 
         </DataTemplate>
-
+        
+        <DataTemplate DataType="diagnostics:ProcessModule">
+            <Grid>
+                <TextBlock Text="{Binding ModuleName}" />
+            </Grid>
+            
+        </DataTemplate>
+        
 
         <infrastructure:ViewLocator />
 
