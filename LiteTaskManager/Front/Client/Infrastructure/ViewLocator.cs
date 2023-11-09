@@ -14,7 +14,8 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
     private readonly Dictionary<Type, Type> _vmdToViewTypes = new()
     {
         {typeof(ProcessesViewModel),typeof(ProcessesView)},
-        {typeof(AppSettingsViewModel), typeof(AppSettingsView)}
+        {typeof(AppSettingsViewModel), typeof(AppSettingsView)},
+        {typeof(StatusBarViewModel), typeof(StatusbarView)}
     };
     
     

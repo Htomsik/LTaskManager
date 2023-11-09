@@ -19,10 +19,14 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
     [Reactive] public ViewModelBase? CurrentViewModel { get; set; } 
     
-    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService)
+    [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
+    
+    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService, StatusBarViewModel statusBarViewModel)
     {
         _appSettingsFileService = appSettingsFileService;
         
+        #region Commands Initialzie
+
         Navigate = ReactiveCommand.Create<Type>(
             type =>  CurrentViewModel = (Locator.Current.GetService(type) as ViewModelBase)!);
         
@@ -35,9 +39,11 @@ internal sealed class MainWindowViewModel : ViewModelBase
         GetAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
 
         OpenAppSettings = ReactiveCommand.Create(() =>
-            {
-                CurrentViewModel = Locator.Current.GetService<AppSettingsViewModel>();
-            });
+        {
+            CurrentViewModel = Locator.Current.GetService<AppSettingsViewModel>();
+        });
+
+        #endregion
         
         MenuList = new ObservableCollection<MenuParamCommandItem>
         { 
@@ -45,6 +51,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
         };
         
         CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
+
+        StatusBarViewModel = statusBarViewModel;
     }
     
     public ReactiveCommand<Type,Unit> Navigate { get; init; }

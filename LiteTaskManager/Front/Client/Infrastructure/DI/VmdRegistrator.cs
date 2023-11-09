@@ -10,5 +10,6 @@ internal static partial class SplatContainerRegistration
         SplatRegistrations.RegisterLazySingleton<MainWindowViewModel>();
         SplatRegistrations.Register<ProcessesViewModel>();
         SplatRegistrations.Register<AppSettingsViewModel>();
+        SplatRegistrations.RegisterLazySingleton<StatusBarViewModel>();
     }
 } 

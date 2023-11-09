@@ -16,8 +16,10 @@
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid ColumnDefinitions="Auto,*">
-        <Grid RowDefinitions="*, 40">
+    <Grid ColumnDefinitions="Auto,*" RowDefinitions="*, 40">
+
+        <!--  Навигационное меню  -->
+        <Grid RowDefinitions="*, 40" RowSpan="2">
             <ListBox Grid.Column="0" Items="{Binding MenuList}" />
             <Button Command="{Binding OpenAppSettings}" Grid.Row="1">
                 <avalonia:MaterialIcon
@@ -28,13 +30,22 @@
                     Width="24" />
             </Button>
         </Grid>
+
+        <!--  Основные панели  -->
         <ContentControl
             Content="{Binding CurrentViewModel}"
             Grid.Column="1"
+            Grid.Row="0"
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
             VerticalContentAlignment="Stretch" />
+
+        <!--  Statusbar  -->
+        <ContentControl
+            Content="{Binding StatusBarViewModel}"
+            Grid.Column="1"
+            Grid.Row="1" />
 
     </Grid>
 
