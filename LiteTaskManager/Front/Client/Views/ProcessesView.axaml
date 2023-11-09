@@ -18,8 +18,8 @@
         <viewModels:ProcessesViewModel />
     </Design.DataContext>
 
-    <Grid>
-        <DataGrid
+    <Grid ColumnDefinitions="*, Auto">
+        <DataGrid 
             Items="{Binding ProcessService.Processes}"
             Name="DataGrid"
             SelectedItem="{Binding ProcessService.CurrentProcess}">
@@ -37,7 +37,7 @@
                     Width="*" />
                 <DataGridTextColumn
                     Binding="{Binding MainModule.ModuleName}"
-                    Header="Module Name"
+                    Header="File Name"
                     Width="*" />
                 <DataGridTextColumn
                     Binding="{Binding ProcessName}"
@@ -49,7 +49,7 @@
                     Width="*" />
                 <DataGridTextColumn
                     Binding="{Binding TotalProcessorTime}"
-                    Header="Total Using Time"
+                    Header="Total CPU Usage Time"
                     Width="*" />
                 <DataGridTextColumn 
                     Binding="{Binding PriorityClassCore}"
@@ -57,8 +57,49 @@
                     Width="*" />
             </DataGrid.Columns>
         </DataGrid>
-
-
+        
+        <Grid Grid.Column="1" IsVisible="{Binding Path= ProcessService.CurrentProcess, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
+            <StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Product Name: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.MainModule.FileVersionInfo.ProductName}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="File Name: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.MainModule.ModuleName}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Process Name: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.ProcessName}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Start Time: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.StartTime}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Total CPU Usage Time: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.TotalProcessorTime}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Priority: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.PriorityClassCore}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Company: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.MainModule.FileVersionInfo.CompanyName}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Path: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.MainModule.FileName}"/>
+                </StackPanel>
+                <StackPanel Height="20" Orientation="Horizontal">
+                    <TextBlock Text="Version: " />
+                    <TextBlock Text="{Binding Path= ProcessService.CurrentProcess.MainModule.FileVersionInfo.ProductVersion}"/>
+                </StackPanel>
+                <ListBox Items="{Binding ProcessService.CurrentProcess.Modules}" />
+            </StackPanel>
+        </Grid>
     </Grid>
-
+    
+    
 </UserControl>
