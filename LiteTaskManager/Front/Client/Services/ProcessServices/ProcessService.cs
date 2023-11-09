@@ -38,12 +38,17 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
     {
         try
         {
-            CurrentProcess.Kill();
+            CurrentProcess?.Kill();
         }
         catch (Exception e)
         {
             this.Log().Error($"Can't {nameof(StopCurrentProcess)} {nameof(CurrentProcess)}. {e.Message}");
             return;
+        }
+        
+        if (CurrentProcess is not null)
+        {
+            Processes.Remove(CurrentProcess);
         }
         
         this.Log().Warn($"Process {CurrentProcess.ProcessName} was killed");
