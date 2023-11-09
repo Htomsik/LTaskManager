@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reactive;
 using Client.Services;
 using ReactiveUI;
 using Splat;
@@ -20,5 +21,5 @@ internal sealed class ProcessesViewModel : ViewModelBase
    }
    
    
-   public IReactiveCommand KillProcess { get; init; }
+   public ReactiveCommand<Unit, Unit> KillProcess { get; init; }
 }

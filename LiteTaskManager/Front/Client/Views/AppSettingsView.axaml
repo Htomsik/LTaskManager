@@ -1,17 +1,15 @@
 ﻿<UserControl
+    d:DataContext="viewModels:AppSettingsViewModel"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d"
     x:Class="Client.Views.AppSettingsView"
+    x:DataType="viewModels:AppSettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <Design.DataContext>
-        <viewModels:AppSettingsViewModel />
-    </Design.DataContext>
 
     <Grid VerticalAlignment="Top">
         <StackPanel Height="40" Orientation="Horizontal">

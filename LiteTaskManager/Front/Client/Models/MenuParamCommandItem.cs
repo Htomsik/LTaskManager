@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Input;
 using Material.Icons;
 using ReactiveUI;
 
@@ -6,8 +7,8 @@ namespace Client.Models;
 
 internal sealed class MenuParamCommandItem
 {
-    private readonly Lazy<IReactiveCommand> _lazyCommand;
-    public IReactiveCommand Command => _lazyCommand.Value;
+    private readonly Lazy<ICommand> _lazyCommand;
+    public ICommand Command => _lazyCommand.Value;
     
     public object CommandParam => _lazyCommandParam.Value;
     private readonly Lazy<object> _lazyCommandParam;
@@ -23,7 +24,7 @@ internal sealed class MenuParamCommandItem
         Name = name;
         Kind = kind;
         UseKind = true;
-        _lazyCommand = new Lazy<IReactiveCommand>(() => command);
+        _lazyCommand = new Lazy<ICommand>(() => (ICommand)command);
         _lazyCommandParam = new Lazy<object>(()=> commandParam);
     }
     
@@ -31,7 +32,7 @@ internal sealed class MenuParamCommandItem
     {
         Name = name;
         UseKind = false;
-        _lazyCommand = new Lazy<IReactiveCommand>(() => command);
+        _lazyCommand = new Lazy<ICommand>(() => (ICommand)command);
         _lazyCommandParam = new Lazy<object>(()=> commandParam);
     }
 }
