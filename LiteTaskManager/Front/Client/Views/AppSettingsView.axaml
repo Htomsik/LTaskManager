@@ -14,7 +14,7 @@
     <Grid VerticalAlignment="Top">
         <StackPanel Height="40" Orientation="Horizontal">
             <TextBlock Text="Задержка обновления процессов:" />
-            <TextBox Text="{Binding Settings.ProcessUpdateTimeOut}" />
+            <TextBox Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}" />
         </StackPanel>
     </Grid>
 </UserControl>

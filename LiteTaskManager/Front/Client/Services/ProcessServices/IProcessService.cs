@@ -13,7 +13,7 @@ public interface IProcessService<TProcess>
     /// <summary>
     ///         Делей между обновлениями списка процессов
     /// </summary>
-    public double UpdateTimerSeconds { get; set; }
+    public double UpdateTimerSeconds { get;}
     
     public ObservableCollection<TProcess> Processes { get; }
     

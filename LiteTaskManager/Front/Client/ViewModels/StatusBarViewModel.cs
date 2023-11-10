@@ -23,11 +23,7 @@ internal sealed class StatusBarViewModel : ViewModelBase
         processService.UpdateTimerChangeNotifier += sec =>
         {
             ProcessesCurrentUpdateTime = processService.UpdateTimerSeconds - sec;
-            
-            if (sec == 0)
-            {
-                ProcessesMaxUpdateTime = processService.UpdateTimerSeconds;
-            }
+            ProcessesMaxUpdateTime = processService.UpdateTimerSeconds;
         };
         
         ProcessesMaxUpdateTime = processService.UpdateTimerSeconds;
