@@ -2,7 +2,8 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
-using Client.ViewModels;
+using AppInfrastructure.Stores.DefaultStore;
+using Client.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -18,9 +19,8 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
     
     [Reactive]
     public Process? CurrentProcess { get; set; }
-    
-    [Reactive]
-    public double UpdateTimerSeconds { get; set; } = 10;
+
+    public double UpdateTimerSeconds => _appSettingStore.CurrentValue.ProcessUpdateTimeOut;
 
     #endregion
 
@@ -30,14 +30,25 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
     
     private IDisposable? _timer;
     
+    private readonly IStore<AppSettings> _appSettingStore;
+    
     public event Action<double>? UpdateTimerChangeNotifier;
     
     #endregion
 
     #region Constructions
 
-    public ProcessService()
+    public ProcessService(IStore<AppSettings> appSettingStore)
     {
+        _appSettingStore = appSettingStore;
+
+        appSettingStore.CurrentValueChangedNotifier += () =>
+        {
+            this.WhenAnyValue(x => x._appSettingStore.CurrentValue.ProcessUpdateTimeOut)
+                .Throttle(TimeSpan.FromSeconds(1))
+                .Subscribe(x => SetSubscribes());
+        };
+        
         UpdateProcesses();
     }
 
@@ -127,6 +138,6 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
         
         this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess");
     }
-
+    
     #endregion
 }
