@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
@@ -10,15 +11,15 @@ using Splat;
 
 namespace Client.Services;
 
-internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
+internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProcess>
 {
     #region Properties
 
     [Reactive]
-    public ObservableCollection<Process> Processes { get; set; }
+    public ObservableCollection<TaskProcess> Processes { get; set; }
     
     [Reactive]
-    public Process? CurrentProcess { get; set; }
+    public TaskProcess? CurrentProcess { get; set; }
 
     public double UpdateTimerSeconds => _appSettingStore.CurrentValue.ProcessUpdateTimeOut;
 
@@ -128,7 +129,17 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
     {
         try
         {
-            Processes = new ObservableCollection<Process>(Process.GetProcesses());
+            List<TaskProcess> ProcessList = new List<TaskProcess>() { };
+            
+            //ToDo Подумать над оптимизацией
+            
+            foreach (var Process in Process.GetProcesses())
+            {
+                TaskProcess taskProcessCopy = new TaskProcess(Process);
+                ProcessList.Add(taskProcessCopy); 
+            }
+            
+            Processes = new ObservableCollection<TaskProcess>(ProcessList);
             
             SetSubscribes();
 

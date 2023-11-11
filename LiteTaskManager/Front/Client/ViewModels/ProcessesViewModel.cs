@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reactive;
+using Client.Models;
 using Client.Services;
 using ReactiveUI;
 using Splat;
 
 namespace Client.ViewModels;
 
-internal sealed class ProcessesViewModel : BaseCollectionViewModel<Process>
+internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
 {
-   public  IProcessService<Process> ProcessService { get; init; }
+   public  IProcessService<TaskProcess> ProcessService { get; init; }
    
-   public ProcessesViewModel(IProcessService<Process> processService) : base()
+   public ProcessesViewModel(IProcessService<TaskProcess> processService) : base()
    {
       ProcessService = processService;
       

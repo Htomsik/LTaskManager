@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using Client.Models;
 using Client.Services;
 using Client.Services.AppInfoService;
 using ReactiveUI.Fody.Helpers;
@@ -16,7 +17,7 @@ internal sealed class StatusBarViewModel : ViewModelBase
     [Reactive]
     public double ProcessesCurrentUpdateTime{ get; set; }
     
-    public StatusBarViewModel(IProcessService<Process> processService, IAppInfoService appInfoService)
+    public StatusBarViewModel(IProcessService<TaskProcess> processService, IAppInfoService appInfoService)
     {
         AppInfoService = appInfoService;
         

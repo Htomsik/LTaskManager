@@ -93,7 +93,7 @@ internal abstract class BaseCollectionViewModel<T> : ViewModelBase where T : not
     {
         // Предварительная утилизация старой подписки
         ItemsSubscriptions?.Dispose();
-
+        
         ItemsSubscriptions =
             inputData
                 .ToObservableChangeSet()
