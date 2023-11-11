@@ -19,7 +19,7 @@ internal static partial class SplatContainerRegistration
     public static void ServiceRegistration()
     {
         SplatRegistrations.RegisterLazySingleton<IObserver<Exception>, GlobalExceptionHandler>();
-        SplatRegistrations.RegisterLazySingleton<IProcessService<Process>, ProcessService>();
+        SplatRegistrations.RegisterLazySingleton<IProcessService<TaskProcess>, ProcessService>();
         Locator.CurrentMutable.RegisterLazySingleton(() => new ViewLocator(), typeof(IViewLocator));
         SplatRegistrations.Register<IParserService, FastJsonParserService>();
         SplatRegistrations.Register<IStoreFileService<IStore<AppSettings>, AppSettings>,AppSettingsStoreFileService>();

@@ -11,7 +11,8 @@
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="clr-namespace:Client.Models">
 
     <Grid ColumnDefinitions="*, Auto">
 
@@ -46,35 +47,35 @@
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                        Binding="{Binding MainModule.FileVersionInfo.ProductName}"
+                        Binding="{Binding ProductName}"
                         Header="Product Name"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
-                        Binding="{Binding MainModule.ModuleName}"
+                        Binding="{Binding ModuleName}"
                         Header="File Name"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding ProcessName}"
                         Header="Process Name"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding StartTime}"
                         Header="Start Time"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding TotalProcessorTime}"
                         Header="Total CPU Usage Time"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding PriorityClassCore}"
                         Header="Priority"
                         Width="*"
-                        x:DataType="diagnostics:Process" />
+                        x:DataType="models:TaskProcess" />
                 </DataGrid.Columns>
 
             </DataGrid>
@@ -86,11 +87,11 @@
             <StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="Product Name: " />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.MainModule.FileVersionInfo.ProductName}" />
+                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="File Name: " />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.MainModule.ModuleName}" />
+                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ModuleName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="Process Name: " />
@@ -110,15 +111,15 @@
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="Company: " />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.MainModule.FileVersionInfo.CompanyName}" />
+                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.CompanyName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="Path: " />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.MainModule.FileName}" />
+                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.FileName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
                     <TextBlock Text="Version: " />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.MainModule.FileVersionInfo.ProductVersion}" />
+                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductVersion}" />
                 </StackPanel>
                 <ListBox Items="{Binding ProcessService.CurrentProcess.Modules}" />
             </StackPanel>
