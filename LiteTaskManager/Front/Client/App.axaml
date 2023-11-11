@@ -1,10 +1,11 @@
 <Application
     x:Class="Client.App"
     xmlns="https://github.com/avaloniaui"
+    xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
+    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:infrastructure="clr-namespace:Client.Infrastructure"
     xmlns:models="clr-namespace:Client.Models"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Application.Styles>
         <FluentTheme Mode="Light" />
@@ -12,8 +13,11 @@
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
     </Application.Styles>
 
-    <Application.DataTemplates>
+    <Application.Resources>
+        <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
+    </Application.Resources>
 
+    <Application.DataTemplates>
         <DataTemplate DataType="models:MenuParamCommandItem">
             <Grid>
                 <Button
@@ -37,14 +41,12 @@
             </Grid>
 
         </DataTemplate>
-        
+
         <DataTemplate DataType="diagnostics:ProcessModule">
             <Grid>
                 <TextBlock Text="{Binding ModuleName}" />
             </Grid>
-            
         </DataTemplate>
-        
 
         <infrastructure:ViewLocator />
 

@@ -1,11 +1,12 @@
 ﻿<UserControl
     d:DataContext="viewModels:ProcessesViewModel"
-    d:DesignHeight="400"
-    d:DesignWidth="400"
+    d:DesignHeight="800"
+    d:DesignWidth="800"
     mc:Ignorable="d"
     x:Class="Client.Views.ProcessesView"
     x:DataType="viewModels:ProcessesViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -14,48 +15,73 @@
 
     <Grid ColumnDefinitions="*, Auto">
 
-        <DataGrid Items="{Binding ProcessService.Processes}" SelectedItem="{Binding ProcessService.CurrentProcess}">
+        <!--  Информация о процессах  -->
+        <Grid RowDefinitions="40, *">
 
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Command="{Binding KillProcess}" Header="Kill" />
-                </ContextMenu>
-            </DataGrid.ContextMenu>
+            <TextBox
+                Name="SearchTextBox"
+                Text="{Binding SearchText, Mode=TwoWay}"
+                Watermark="Search">
 
-            <DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding MainModule.FileVersionInfo.ProductName}"
-                    Header="Product Name"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-                <DataGridTextColumn
-                    Binding="{Binding MainModule.ModuleName}"
-                    Header="File Name"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-                <DataGridTextColumn
-                    Binding="{Binding ProcessName}"
-                    Header="Process Name"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-                <DataGridTextColumn
-                    Binding="{Binding StartTime}"
-                    Header="Start Time"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-                <DataGridTextColumn
-                    Binding="{Binding TotalProcessorTime}"
-                    Header="Total CPU Usage Time"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-                <DataGridTextColumn
-                    Binding="{Binding PriorityClassCore}"
-                    Header="Priority"
-                    Width="*"
-                    x:DataType="diagnostics:Process" />
-            </DataGrid.Columns>
-        </DataGrid>
+                <TextBox.InnerRightContent>
+                    <Button Command="{Binding ClearSearchText}" ToolTip.Tip="Clear search text">
+                        <avalonia:MaterialIcon
+                            HorizontalAlignment="Left"
+                            Kind="Close"
+                            VerticalAlignment="Center" />
+                    </Button>
+                </TextBox.InnerRightContent>
 
+            </TextBox>
+
+            <DataGrid
+                Grid.Row="1"
+                Items="{Binding Items}"
+                SelectedItem="{Binding ProcessService.CurrentProcess}">
+                <DataGrid.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Command="{Binding KillProcess}" Header="Kill" />
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Binding="{Binding MainModule.FileVersionInfo.ProductName}"
+                        Header="Product Name"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                    <DataGridTextColumn
+                        Binding="{Binding MainModule.ModuleName}"
+                        Header="File Name"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                    <DataGridTextColumn
+                        Binding="{Binding ProcessName}"
+                        Header="Process Name"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                    <DataGridTextColumn
+                        Binding="{Binding StartTime}"
+                        Header="Start Time"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                    <DataGridTextColumn
+                        Binding="{Binding TotalProcessorTime}"
+                        Header="Total CPU Usage Time"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                    <DataGridTextColumn
+                        Binding="{Binding PriorityClassCore}"
+                        Header="Priority"
+                        Width="*"
+                        x:DataType="diagnostics:Process" />
+                </DataGrid.Columns>
+
+            </DataGrid>
+
+        </Grid>
+
+        <!--  Подробная информация о процессах  -->
         <Grid Grid.Column="1" IsVisible="{Binding Path=ProcessService.CurrentProcess, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
             <StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">

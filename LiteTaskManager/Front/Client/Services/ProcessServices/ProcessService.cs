@@ -33,6 +33,8 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
     private readonly IStore<AppSettings> _appSettingStore;
     
     public event Action<double>? UpdateTimerChangeNotifier;
+
+    public event Action? ProcessSubscriptionsChanged;
     
     #endregion
 
@@ -127,8 +129,10 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
         try
         {
             Processes = new ObservableCollection<Process>(Process.GetProcesses());
-
+            
             SetSubscribes();
+
+            InvokeProcessSubscriptions();
         }
         catch (Exception e)
         {
@@ -137,6 +141,16 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<Process>
         }
         
         this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess");
+    }
+
+    private void InvokeProcessSubscriptions()
+    {
+        ProcessSubscriptionsChanged?.Invoke();
+
+        if (ProcessSubscriptionsChanged is not null)
+        {
+            this.Log().Info($"{nameof(ProcessSubscriptionsChanged)} invoked");
+        }
     }
     
     #endregion
