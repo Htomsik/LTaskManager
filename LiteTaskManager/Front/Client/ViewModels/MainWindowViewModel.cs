@@ -42,6 +42,11 @@ internal sealed class MainWindowViewModel : ViewModelBase
         {
             CurrentViewModel = Locator.Current.GetService<AppSettingsViewModel>();
         });
+        
+        OpenAboutInfo = ReactiveCommand.Create(() =>
+        {
+            CurrentViewModel = Locator.Current.GetService<AppInfoViewModel>();
+        });
 
         #endregion
         
@@ -58,6 +63,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
     public ReactiveCommand<Type,Unit> Navigate { get; init; }
     
     public ReactiveCommand<Unit, Unit> OpenAppSettings { get; set; }
+    
+    public ReactiveCommand<Unit, Unit> OpenAboutInfo { get; set; }
     
     public ReactiveCommand<Unit, bool> SaveAppSettings { get; set; }
     
