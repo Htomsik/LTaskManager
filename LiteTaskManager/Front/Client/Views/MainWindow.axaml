@@ -15,20 +15,34 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
     <Grid ColumnDefinitions="Auto,*" RowDefinitions="*, 40">
 
         <!--  Навигационное меню  -->
         <Grid RowDefinitions="*, 40" RowSpan="2">
             <ListBox Grid.Column="0" Items="{Binding MenuList}" />
-            <Button Command="{Binding OpenAppSettings}" Grid.Row="1">
-                <avalonia:MaterialIcon
-                    Height="24"
-                    HorizontalAlignment="Center"
-                    Kind="Settings"
-                    VerticalAlignment="Center"
-                    Width="24" />
-            </Button>
+            <Grid ColumnDefinitions="*,*" Grid.Row="1">
+                <!--  Переход в настройки  -->
+                <Button Command="{Binding OpenAppSettings}">
+                    <avalonia:MaterialIcon
+                        Height="24"
+                        HorizontalAlignment="Center"
+                        Kind="Settings"
+                        VerticalAlignment="Center"
+                        Width="24" />
+                </Button>
+
+                <!--  Переход в информации о приложении  -->
+                <Button
+                    Command="{Binding OpenAboutInfo}"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom">
+                    <avalonia:MaterialIcon
+                        Height="16"
+                        Kind="Information"
+                        Width="16" />
+                </Button>
+            </Grid>
         </Grid>
 
         <!--  Основные панели  -->
