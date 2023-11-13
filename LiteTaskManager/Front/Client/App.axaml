@@ -15,6 +15,7 @@
 
     <Application.Resources>
         <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
+        <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
     </Application.Resources>
 
     <Application.DataTemplates>
