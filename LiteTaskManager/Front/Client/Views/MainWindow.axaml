@@ -36,11 +36,12 @@
                     Command="{Binding OpenAboutInfo}"
                     Grid.Column="1"
                     HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom">
+                    VerticalAlignment="Center">
                     <avalonia:MaterialIcon
-                        Height="16"
+                        Height="24"
                         Kind="Information"
-                        Width="16" />
+                        VerticalAlignment="Center"
+                        Width="24" />
                 </Button>
             </Grid>
         </Grid>

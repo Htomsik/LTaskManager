@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Client.Models;
+﻿using Client.Models;
 using Client.Services;
 using Client.Services.AppInfoService;
 using ReactiveUI.Fody.Helpers;

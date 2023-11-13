@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Reactive;
 using Client.Models;
 using Client.Services;
