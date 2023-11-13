@@ -1,4 +1,7 @@
-﻿using Client.Services.AppInfoService;
+﻿using System.Diagnostics;
+using System.Reactive;
+using Client.Services.AppInfoService;
+using ReactiveUI;
 
 namespace Client.ViewModels;
 
@@ -15,5 +18,11 @@ internal sealed class AppInfoViewModel : ViewModelBase
     public AppInfoViewModel(IAppInfoService appInfoService)
     {
         AppInfoService = appInfoService;
+        
+        OpenGitHubUrl = ReactiveCommand.Create(() =>
+        {
+            Process.Start(new ProcessStartInfo{FileName = AppInfoService.AppGitHub, UseShellExecute = true});
+        });
     }
+    public ReactiveCommand<Unit, Unit> OpenGitHubUrl { get; set; }
 }

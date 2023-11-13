@@ -1,16 +1,20 @@
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace Client.Models;
 
 public class TaskProcess
 {
     public string ProductName { get; set; }
+    
     public string ModuleName { get; set; }
+    
     public string ProcessName { get; set; }
+    
     public DateTime StartTime{ get; set; }
+    
     public TimeSpan TotalProcessorTime { get; set; }
+    
     public ProcessPriorityClass PriorityClassCore { get; set; }
     
     public string? CompanyName { get; set; }
@@ -18,6 +22,7 @@ public class TaskProcess
     public string FileName { get; set; }
     
     public string? ProductVersion { get; set; } 
+    
     public ProcessModuleCollection Modules { get; set; } 
 
     private readonly Process _windowsProcess;
