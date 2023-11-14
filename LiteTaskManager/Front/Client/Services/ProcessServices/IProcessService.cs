@@ -3,6 +3,10 @@ using System.Collections.ObjectModel;
 
 namespace Client.Services;
 
+/// <summary>
+///     Сервис обработки windows процессов
+/// </summary>
+/// <typeparam name="TProcess"></typeparam>
 public interface IProcessService<TProcess>
 {
     /// <summary>
@@ -21,11 +25,23 @@ public interface IProcessService<TProcess>
     /// </summary>
     public double UpdateTimerSeconds { get;}
     
+    /// <summary>
+    ///      Загруженные процессы
+    /// </summary>
     public ObservableCollection<TProcess> Processes { get; }
     
+    /// <summary>
+    ///     Текущий выбранный процесс
+    /// </summary>
     public TProcess CurrentProcess { get; set; }
-
+    
+    /// <summary>
+    ///     Остановка текущего процесса
+    /// </summary>
     public void StopCurrentProcess();
     
+    /// <summary>
+    ///     Обновление загруженных процессов
+    /// </summary>
     public void UpdateProcesses();
 }

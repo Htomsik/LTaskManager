@@ -2,6 +2,9 @@
 
 namespace Client.Models;
 
+/// <summary>
+///     Модель конфигцрации приложения
+/// </summary>
 public sealed class AppSettings : ReactiveObject
 {
     /// <summary>

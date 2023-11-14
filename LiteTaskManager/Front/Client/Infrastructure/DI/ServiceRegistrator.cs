@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using AppInfrastructure.Services.FileService;
 using AppInfrastructure.Services.ParserService;
 using AppInfrastructure.Stores.DefaultStore;
@@ -14,6 +13,9 @@ using Splat;
 
 namespace Client.Infrastructure.DI;
 
+/// <summary>
+///     Класс содержащий в себе методы регистррирующие реализации классов в DI контейнере
+/// </summary>
 internal static partial class SplatContainerRegistration
 {
     public static void ServiceRegistration()

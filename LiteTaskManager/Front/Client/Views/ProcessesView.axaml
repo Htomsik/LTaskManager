@@ -8,7 +8,6 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
