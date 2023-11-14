@@ -9,6 +9,10 @@ using Splat;
 
 namespace Client.Infrastructure;
 
+/// <summary>
+///      Выборка нужной view по типу viewModel
+/// <remarks> С помошью него Avalonia понимает какую вьюшку нужно вывести в ContentControl к которой прибинджена viewmodel</remarks>
+/// </summary>
 internal sealed class ViewLocator : IDataTemplate, IEnableLogger
 {
     private readonly Dictionary<Type, Type> _vmdToViewTypes = new()
@@ -32,9 +36,9 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
             
             view = (Control)Activator.CreateInstance(viewType)!;
         }
-        catch(Exception error)
+        catch(Exception e)
         {
-            this.Log().Error($"Could not find the view  for view model {vmd.GetType().FullName}.");
+            this.Log().Error($"Could not find the view  for view model {vmd.GetType().FullName}. {e.Message}");
         }
         
         return view;

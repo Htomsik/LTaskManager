@@ -12,19 +12,34 @@ using Splat;
 
 namespace Client.ViewModels;
 
+/// <summary>
+///     Главное окно
+/// </summary>
 internal sealed class MainWindowViewModel : ViewModelBase
 {
-    private readonly IStoreFileService<IStore<AppSettings>, AppSettings> _appSettingsFileService;
-    public IEnumerable<MenuParamCommandItem> MenuList { get; set; }
+    #region Properties
 
+    /// <summary>
+    ///     Текущая выбранная страница
+    /// </summary>
     [Reactive] public ViewModelBase? CurrentViewModel { get; set; } 
     
+    /// <summary>
+    ///     Статус - бар. Нижняя часть программы в которую выводится интерактивная информация пользователию
+    /// </summary>
     [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
     
+    /// <summary>
+    ///     Коллекцию кнопок для перехода на другую страницу
+    /// </summary>
+    public IEnumerable<MenuParamCommandItem> MenuList { get; set; }
+
+    #endregion
+
+    #region Constructors
+
     public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService, StatusBarViewModel statusBarViewModel)
     {
-        _appSettingsFileService = appSettingsFileService;
-        
         #region Commands Initialzie
 
         Navigate = ReactiveCommand.Create<Type>(
@@ -32,10 +47,10 @@ internal sealed class MainWindowViewModel : ViewModelBase
         
         Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(Navigate)} command:{x.Message}"));
         
-        SaveAppSettings = ReactiveCommand.CreateFromTask(_appSettingsFileService.SetAsync);
+        SaveAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.SetAsync);
         SaveAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
 
-        GetAppSettings = ReactiveCommand.CreateFromTask(_appSettingsFileService.GetAsync);
+        GetAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.GetAsync);
         GetAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
 
         OpenAppSettings = ReactiveCommand.Create(() =>
@@ -59,14 +74,37 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
         StatusBarViewModel = statusBarViewModel;
     }
-    
+
+    #endregion
+
+    #region Commands
+
+    /// <summary>
+    ///     Навгация между страницами
+    /// </summary>
     public ReactiveCommand<Type,Unit> Navigate { get; init; }
     
+    /// <summary>
+    ///     Открытие страницы настроек
+    /// <remarks> Переключение текущей вьюмодели страницы на вьюмодель настроек</remarks>
+    /// </summary>
     public ReactiveCommand<Unit, Unit> OpenAppSettings { get; set; }
     
+    /// <summary>
+    ///     Открытие страницы информации о приложении
+    /// <remarks> Переключение Текущей вьюмодели страницы на вьюмодель информации о приложении</remarks>
+    /// </summary>
     public ReactiveCommand<Unit, Unit> OpenAboutInfo { get; set; }
     
+    /// <summary>
+    ///     Сохранение настроек приложения в файл
+    /// </summary>
     public ReactiveCommand<Unit, bool> SaveAppSettings { get; set; }
     
+    /// <summary>
+    ///     Получение настроек приложения в файл
+    /// </summary>
     public ReactiveCommand<Unit, bool> GetAppSettings { get; set; }
+
+    #endregion
 }

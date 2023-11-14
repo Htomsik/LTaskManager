@@ -15,6 +15,7 @@ internal sealed class AppInfoViewModel : ViewModelBase
     /// </summary>
     public IAppInfoService AppInfoService { get; }
     
+    /// <param name="appInfoService"> Сервис предоставляющий информацию о приложении</param>
     public AppInfoViewModel(IAppInfoService appInfoService)
     {
         AppInfoService = appInfoService;

@@ -5,6 +5,9 @@ using Splat.Serilog;
 
 namespace Client.Infrastructure.DI;
 
+/// <summary>
+///     Настройки конфигураации приложения
+/// </summary>
 internal static class AppConfiguration
 {
     public static void Configure()

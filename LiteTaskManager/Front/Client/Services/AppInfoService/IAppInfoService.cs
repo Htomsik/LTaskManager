@@ -1,5 +1,8 @@
 ﻿namespace Client.Services.AppInfoService;
 
+/// <summary>
+///     Предоставляет информацию о текущем запущенном приложении
+/// </summary>
 public interface IAppInfoService
 {
     /// <summary>

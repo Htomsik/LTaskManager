@@ -4,6 +4,10 @@ using Splat;
 
 namespace Client.Infrastructure.Logging;
 
+/// <summary>
+///     Глобальная отловка ошибок в логгер
+/// <remarks> Нужен на случаи необработанных ошибок чтобы приложение не вылетало по пустякам</remarks>
+/// </summary>
 internal sealed class GlobalExceptionHandler : IObserver<Exception>, IEnableLogger 
 {
     

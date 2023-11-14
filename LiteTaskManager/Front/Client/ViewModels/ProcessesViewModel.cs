@@ -7,10 +7,17 @@ using Splat;
 
 namespace Client.ViewModels;
 
+/// <summary>
+///   Вьюмодель процессов
+/// </summary>
 internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
 {
+   /// <summary>
+   ///   Сервис обрабатывающий процессы
+   /// </summary>
    public  IProcessService<TaskProcess> ProcessService { get; init; }
    
+   /// <param name="processService">Сервис обрабатывающий процессы</param>
    public ProcessesViewModel(IProcessService<TaskProcess> processService) : base()
    {
       ProcessService = processService;
@@ -27,5 +34,8 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
       SetItemsSubscriptions(processService.Processes);
    }
    
+   /// <summary>
+   ///   Завершение процесса
+   /// </summary>
    public ReactiveCommand<Unit, Unit> KillProcess { get; init; }
 }

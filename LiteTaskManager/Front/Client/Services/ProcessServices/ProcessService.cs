@@ -154,6 +154,9 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess");
     }
 
+    /// <summary>
+    ///     Метод уведомления о необходимости перепривязки подписок
+    /// </summary>
     private void InvokeProcessSubscriptions()
     {
         ProcessSubscriptionsChanged?.Invoke();
