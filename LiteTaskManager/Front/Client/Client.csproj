@@ -6,6 +6,9 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+        <AssemblyVersion>0.0.0.1</AssemblyVersion>
+        <Company>BIBA &amp; BOBA CORP</Company>
+        <Product>Lite Task Manager</Product>
     </PropertyGroup>
 
     <ItemGroup>
