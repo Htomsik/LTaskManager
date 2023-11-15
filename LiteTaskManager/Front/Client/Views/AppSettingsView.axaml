@@ -9,12 +9,19 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:assets="clr-namespace:Client.Assets">
 
-    <Grid VerticalAlignment="Top">
+    <StackPanel VerticalAlignment="Top">
+         <StackPanel Height="40" Orientation="Horizontal"> 
+            <TextBlock Text="{x:Static assets:Resources.AppSettingsProcessDelay}" /> 
+             <TextBox Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}" /> 
+         </StackPanel> 
+        
         <StackPanel Height="40" Orientation="Horizontal">
-            <TextBlock Text="Задержка обновления процессов:" />
-            <TextBox Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}" />
+            <TextBlock Text="{x:Static assets:Resources.AppSettingsLanguage}" />
+            <ComboBox Items="{Binding Settings.Culture, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding Settings.Culture}" />
         </StackPanel>
-    </Grid>
+    </StackPanel>
+    
 </UserControl>

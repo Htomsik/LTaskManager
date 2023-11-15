@@ -1,11 +1,12 @@
 ﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Client.Models;
 
 /// <summary>
 ///     Модель конфигцрации приложения
 /// </summary>
-public sealed class AppSettings : ReactiveObject
+internal sealed class AppSettings : ReactiveObject
 {
     /// <summary>
     ///     Делей между обновлениями процессов
@@ -25,4 +26,10 @@ public sealed class AppSettings : ReactiveObject
     }
     
     private double _processUpdateTimeOut = 5;
+    
+    /// <summary>
+    ///     Текущая выбранная локализация
+    /// </summary>
+    [Reactive]
+    public AppCulture Culture { get; set; }
 }
