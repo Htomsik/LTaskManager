@@ -1,6 +1,6 @@
 <Window
     Height="800"
-    Icon="/Assets/AppIcon.ico"
+    Icon="/Assets/Pictures/AppIcon.ico"
     Name="ThisWindow"
     Title="LiteTaskManager"
     Width="800"
