@@ -102,6 +102,8 @@ internal abstract class BaseCollectionViewModel<T> : ViewModelBase where T : not
                 .Bind(out SelectedItems)
                 .DisposeMany()
                 .Subscribe();
+        
+        this.RaisePropertyChanged(nameof(Items));
     }
 
     /// <summary>
