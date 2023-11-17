@@ -24,7 +24,7 @@
                 Watermark="Search">
 
                 <TextBox.InnerRightContent>
-                    <Button Command="{Binding ClearSearchText}" ToolTip.Tip="Clear search text">
+                    <Button Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Command="{Binding ClearSearchText}" ToolTip.Tip="Clear search text">
                         <avalonia:MaterialIcon
                             HorizontalAlignment="Left"
                             Kind="Close"
@@ -70,15 +70,20 @@
                         Header="Total CPU Usage Time"
                         Width="*"
                         x:DataType="models:TaskProcess" />
-                    <DataGridTextColumn
-                        Binding="{Binding PriorityClassCore}"
-                        Header="Priority"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
+                    <DataGridTemplateColumn Header="Priority">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox
+                                    IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                    SelectedItem="{Binding  PriorityClassCore}"
+                                    Items="{Binding PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
+                                    x:DataType="models:TaskProcess" >
+                                </ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                 </DataGrid.Columns>
-
             </DataGrid>
-
         </Grid>
 
         <!--  Подробная информация о процессах  -->
