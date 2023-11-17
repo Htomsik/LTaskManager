@@ -150,7 +150,6 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             this.Log().Error($"Can't {nameof(UpdateProcesses)} {nameof(Processes)} . {e.Message}");
             return;
         }
-        
         this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess");
     }
 
