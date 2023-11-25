@@ -123,4 +123,9 @@ public class TaskProcess : ReactiveObject
     {
         _windowsProcess.Kill();
     }
+
+    public override string ToString()
+    {
+        return ProcessName;
+    }
 }
