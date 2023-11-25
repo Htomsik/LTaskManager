@@ -6,6 +6,7 @@
     x:Class="Client.Views.ProcessesView"
     x:DataType="viewModels:ProcessesViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
