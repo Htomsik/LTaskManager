@@ -20,7 +20,10 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     
     [Reactive]
     public TaskProcess? CurrentProcess { get; set; }
-
+    
+    [Reactive]
+    public bool ShowOnlySystemProcess { get; set; }
+    
     public double UpdateTimerSeconds => _appSettingStore.CurrentValue.ProcessUpdateTimeOut;
 
     #endregion

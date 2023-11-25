@@ -16,28 +16,36 @@
     <Grid ColumnDefinitions="*, Auto">
 
         <!--  Информация о процессах  -->
-        <Grid RowDefinitions="40, *">
+        <Grid RowDefinitions="80, *">
 
-            <TextBox
-                Name="SearchTextBox"
-                Text="{Binding SearchText, Mode=TwoWay}"
-                Watermark="Search">
+            <!--  Панель поиска  -->
+            <Grid Grid.Row="0" RowDefinitions="40,*">
+                <!--  Поиск по имени процесса  -->
+                <TextBox
+                    Name="SearchTextBox"
+                    Text="{Binding SearchText, Mode=TwoWay}"
+                    Watermark="Search">
+                    <TextBox.InnerRightContent>
+                        <Button
+                            Background="Transparent"
+                            Command="{Binding ClearSearchText}"
+                            HorizontalAlignment="Stretch"
+                            ToolTip.Tip="Clear search text"
+                            VerticalAlignment="Stretch">
+                            <avalonia:MaterialIcon
+                                HorizontalAlignment="Left"
+                                Kind="Close"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </TextBox.InnerRightContent>
+                </TextBox>
 
-                <TextBox.InnerRightContent>
-                    <Button
-                        Background="Transparent"
-                        Command="{Binding ClearSearchText}"
-                        HorizontalAlignment="Stretch"
-                        ToolTip.Tip="Clear search text"
-                        VerticalAlignment="Stretch">
-                        <avalonia:MaterialIcon
-                            HorizontalAlignment="Left"
-                            Kind="Close"
-                            VerticalAlignment="Center" />
-                    </Button>
-                </TextBox.InnerRightContent>
-
-            </TextBox>
+                <!--  Выбор категории процессов  -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="Category" />
+                    <ComboBox Items="{Binding ShowedProcessCategory, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding ShowedProcessCategory}" />
+                </StackPanel>
+            </Grid>
 
             <DataGrid
                 Grid.Row="1"
