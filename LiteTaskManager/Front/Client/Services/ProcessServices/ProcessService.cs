@@ -84,7 +84,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         
         _timer = Observable
             .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1))
-            .Select(currentSeconds => UpdateTimerSeconds > 4 ? UpdateTimerSeconds : 4 - currentSeconds)
+            .Select(currentSeconds => UpdateTimerSeconds  - currentSeconds)
             .TakeWhile(currentSeconds => currentSeconds >= 0)
             .Subscribe(OnTimerChange);
     }
