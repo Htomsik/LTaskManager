@@ -20,7 +20,10 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     
     [Reactive]
     public TaskProcess? CurrentProcess { get; set; }
-
+    
+    [Reactive]
+    public bool ShowOnlySystemProcess { get; set; }
+    
     public double UpdateTimerSeconds => _appSettingStore.CurrentValue.ProcessUpdateTimeOut;
 
     #endregion
@@ -81,7 +84,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         
         _timer = Observable
             .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1))
-            .Select(currentSeconds => UpdateTimerSeconds > 4 ? UpdateTimerSeconds : 4 - currentSeconds)
+            .Select(currentSeconds => UpdateTimerSeconds  - currentSeconds)
             .TakeWhile(currentSeconds => currentSeconds >= 0)
             .Subscribe(OnTimerChange);
     }

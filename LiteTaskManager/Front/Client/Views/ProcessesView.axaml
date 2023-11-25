@@ -11,35 +11,42 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:models="clr-namespace:Client.Models"
-    xmlns:assets="clr-namespace:Client.Assets">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
 
     <Grid ColumnDefinitions="*, Auto">
 
         <!--  Информация о процессах  -->
-        <Grid RowDefinitions="40, *">
+        <Grid RowDefinitions="80, *">
 
-            <TextBox
-                Name="SearchTextBox"
-                Text="{Binding SearchText, Mode=TwoWay}"
-                Watermark="{x:Static assets:Resources.ProcessViewSearch}">
+            <!--  Панель поиска  -->
+            <Grid Grid.Row="0" RowDefinitions="40,*">
+                <!--  Поиск по имени процесса  -->
+                <TextBox
+                    Name="SearchTextBox"
+                    Text="{Binding SearchText, Mode=TwoWay}"
+                    Watermark="Search">
+                    <TextBox.InnerRightContent>
+                        <Button
+                            Background="Transparent"
+                            Command="{Binding ClearSearchText}"
+                            HorizontalAlignment="Stretch"
+                            ToolTip.Tip="Clear search text"
+                            VerticalAlignment="Stretch">
+                            <avalonia:MaterialIcon
+                                HorizontalAlignment="Left"
+                                Kind="Close"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </TextBox.InnerRightContent>
+                </TextBox>
 
-                <TextBox.InnerRightContent>
-                    <Button
-                        Background="Transparent"
-                        Command="{Binding ClearSearchText}"
-                        HorizontalAlignment="Stretch"
-                        ToolTip.Tip="Clear search text"
-                        VerticalAlignment="Stretch">
-                        <avalonia:MaterialIcon
-                            HorizontalAlignment="Left"
-                            Kind="Close"
-                            VerticalAlignment="Center" />
-                    </Button>
-                </TextBox.InnerRightContent>
-
-            </TextBox>
+                <!--  Выбор категории процессов  -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="Category" />
+                    <ComboBox Items="{Binding ShowedProcessCategory, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding ShowedProcessCategory}" />
+                </StackPanel>
+            </Grid>
 
             <DataGrid
                 Grid.Row="1"
@@ -112,6 +119,7 @@
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.StartTime}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
+
                     <TextBlock Text="{x:Static assets:Resources.ProcessViewTotalProcessorTimeDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}" />
                 </StackPanel>

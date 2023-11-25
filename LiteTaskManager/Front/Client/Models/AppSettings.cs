@@ -24,6 +24,12 @@ internal sealed class AppSettings : ReactiveValidationObject
             }
             
             this.RaiseAndSetIfChanged(ref _processUpdateTimeOut, value);
+           
+            if (value < 5)
+            {
+                _processUpdateTimeOut = 5;
+            }
+
         }
     }
 
@@ -48,7 +54,8 @@ internal sealed class AppSettings : ReactiveValidationObject
     {
        this.ValidationRule(
             appSettings => appSettings.ProcessUpdateTimeOut, 
-            value => value >= 4,
-            "TimeOut must be more than 3 seconds");
+            value => value >= 5,
+            "TimeOut must be more than 4 seconds");
+
     }
 }
