@@ -29,6 +29,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
     /// </summary>
     [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
     
+    [Reactive] public ViewModelBase? DisclaimerLiabilityAgreementViewModel { get; set; }
+    
     /// <summary>
     ///     Коллекцию кнопок для перехода на другую страницу
     /// </summary>
@@ -59,7 +61,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
         });
         
         OpenAboutInfo = ReactiveCommand.Create(() =>
-        {
+        { 
             CurrentViewModel = Locator.Current.GetService<AppInfoViewModel>();
         });
 

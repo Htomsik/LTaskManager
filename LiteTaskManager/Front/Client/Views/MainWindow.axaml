@@ -16,7 +16,14 @@
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Grid ColumnDefinitions="Auto,*" RowDefinitions="*, 40">
-
+        <ContentControl Grid.Row="0" Grid.Column="0"
+                        Content="{Binding DisclaimerLiabilityAgreementViewModel}"
+                        HorizontalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" 
+                        ZIndex="2"
+        />
         <!--  Навигационное меню  -->
         <Grid RowDefinitions="*, 40" RowSpan="2">
             <ListBox Grid.Column="0" Items="{Binding MenuList}" />
@@ -54,13 +61,15 @@
             HorizontalAlignment="Stretch"
             HorizontalContentAlignment="Stretch"
             VerticalAlignment="Stretch"
-            VerticalContentAlignment="Stretch" />
+            VerticalContentAlignment="Stretch" 
+            ZIndex="0" />
 
         <!--  Statusbar  -->
         <ContentControl
             Content="{Binding StatusBarViewModel}"
             Grid.Column="1"
-            Grid.Row="1" />
+            Grid.Row="1" 
+            ZIndex="1" />
 
     </Grid>
 

@@ -10,6 +10,10 @@ namespace Client.Models;
 /// </summary>
 internal sealed class AppSettings : ReactiveValidationObject
 {
+    [Reactive]
+    
+    public bool Agreement { get; set; }
+    
     /// <summary>
     ///     Делей между обновлениями процессов
     /// </summary>
