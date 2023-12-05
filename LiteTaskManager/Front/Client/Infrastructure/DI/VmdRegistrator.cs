@@ -15,6 +15,6 @@ internal static partial class SplatContainerRegistration
         SplatRegistrations.Register<AppSettingsViewModel>();
         SplatRegistrations.Register<AppInfoViewModel>();
         SplatRegistrations.RegisterLazySingleton<StatusBarViewModel>();
-        SplatRegistrations.Register<DisclaimerLiabilityAgreementViewModel>();
+        SplatRegistrations.Register<AgreementViewModel>();
     }
 } 

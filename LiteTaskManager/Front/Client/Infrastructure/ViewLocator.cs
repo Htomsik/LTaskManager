@@ -6,7 +6,6 @@ using Client.ViewModels;
 using Client.Views;
 using ReactiveUI;
 using Splat;
-using DisclaimerLiabilityAgreement = Client.ViewModels.DisclaimerLiabilityAgreementViewModel;
 
 namespace Client.Infrastructure;
 
@@ -22,7 +21,7 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
         {typeof(AppSettingsViewModel), typeof(AppSettingsView)},
         {typeof(StatusBarViewModel), typeof(StatusbarView)},
         {typeof(AppInfoViewModel), typeof(AppInfoView)},
-        {typeof(DisclaimerLiabilityAgreementViewModel), typeof(DisclaimerLiabilityAgreementViewModel)}
+        {typeof(AgreementViewModel), typeof(AgreementView)}
     };
     
     

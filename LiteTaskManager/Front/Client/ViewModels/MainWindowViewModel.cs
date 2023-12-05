@@ -29,7 +29,15 @@ internal sealed class MainWindowViewModel : ViewModelBase
     /// </summary>
     [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
     
-    [Reactive] public ViewModelBase? DisclaimerLiabilityAgreementViewModel { get; set; }
+    /// <summary>
+    /// Соглашение, которое не пускает в приложение, если его не принять
+    /// </summary>
+    [Reactive] public ViewModelBase? AgreementViewModel { get; set; }
+    
+    /// <summary>
+    /// Настройки приложения
+    /// </summary>
+    [Reactive] public AppSettings AppSettings { get; set; }
     
     /// <summary>
     ///     Коллекцию кнопок для перехода на другую страницу
@@ -40,7 +48,10 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
     #region Constructors
 
-    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService, StatusBarViewModel statusBarViewModel)
+    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService,
+        StatusBarViewModel statusBarViewModel, 
+        AgreementViewModel agreementViewModel, 
+        IStore<AppSettings> appSettingsStore)
     {
         #region Commands Initialzie
 
@@ -75,6 +86,16 @@ internal sealed class MainWindowViewModel : ViewModelBase
         CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
 
         StatusBarViewModel = statusBarViewModel;
+
+        AgreementViewModel = agreementViewModel;
+
+        AppSettings = appSettingsStore.CurrentValue;
+        
+        appSettingsStore.CurrentValueChangedNotifier += ()=>
+        {
+            AppSettings = appSettingsStore.CurrentValue;
+        };
+
     }
 
     #endregion
