@@ -6,6 +6,7 @@
     x:Class="Client.Views.ProcessesView"
     x:DataType="viewModels:ProcessesViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -13,31 +14,40 @@
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+
     <Grid ColumnDefinitions="*, Auto">
 
         <!--  Информация о процессах  -->
-        <Grid RowDefinitions="40, *">
+        <Grid RowDefinitions="80, *">
 
-            <TextBox
-                Name="SearchTextBox"
-                Text="{Binding SearchText, Mode=TwoWay}"
-                Watermark="Search">
+            <!--  Панель поиска  -->
+            <Grid Grid.Row="0" RowDefinitions="40,*">
+                <!--  Поиск по имени процесса  -->
+                <TextBox
+                    Name="SearchTextBox"
+                    Text="{Binding SearchText, Mode=TwoWay}"
+                    Watermark="Search">
+                    <TextBox.InnerRightContent>
+                        <Button
+                            Background="Transparent"
+                            Command="{Binding ClearSearchText}"
+                            HorizontalAlignment="Stretch"
+                            ToolTip.Tip="Clear search text"
+                            VerticalAlignment="Stretch">
+                            <avalonia:MaterialIcon
+                                HorizontalAlignment="Left"
+                                Kind="Close"
+                                VerticalAlignment="Center" />
+                        </Button>
+                    </TextBox.InnerRightContent>
+                </TextBox>
 
-                <TextBox.InnerRightContent>
-                    <Button
-                        Background="Transparent"
-                        Command="{Binding ClearSearchText}"
-                        HorizontalAlignment="Stretch"
-                        ToolTip.Tip="Clear search text"
-                        VerticalAlignment="Stretch">
-                        <avalonia:MaterialIcon
-                            HorizontalAlignment="Left"
-                            Kind="Close"
-                            VerticalAlignment="Center" />
-                    </Button>
-                </TextBox.InnerRightContent>
-
-            </TextBox>
+                <!--  Выбор категории процессов  -->
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock Text="Category" />
+                    <ComboBox Items="{Binding ShowedProcessCategory, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding ShowedProcessCategory}" />
+                </StackPanel>
+            </Grid>
 
             <DataGrid
                 Grid.Row="1"
@@ -45,37 +55,37 @@
                 SelectedItem="{Binding ProcessService.CurrentProcess}">
                 <DataGrid.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Command="{Binding KillProcess}" Header="Kill" />
+                        <MenuItem Command="{Binding KillProcess}" Header="{x:Static assets:Resources.ProcessViewKill}" />
                     </ContextMenu>
                 </DataGrid.ContextMenu>
 
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Binding="{Binding ProductName}"
-                        Header="Product Name"
+                        Header="{x:Static assets:Resources.ProcessViewProductName}"
                         Width="*"
                         x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding ModuleName}"
-                        Header="File Name"
+                        Header="{x:Static assets:Resources.ProcessViewModuleName}"
                         Width="*"
                         x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding ProcessName}"
-                        Header="Process Name"
+                        Header="{x:Static assets:Resources.ProcessViewProcessName}"
                         Width="*"
                         x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding StartTime}"
-                        Header="Start Time"
+                        Header="{x:Static assets:Resources.ProcessViewStartTime}"
                         Width="*"
                         x:DataType="models:TaskProcess" />
                     <DataGridTextColumn
                         Binding="{Binding TotalProcessorTime}"
-                        Header="Total CPU Usage Time"
+                        Header="{x:Static assets:Resources.ProcessViewTotalProcessorTime}"
                         Width="*"
                         x:DataType="models:TaskProcess" />
-                    <DataGridTemplateColumn Header="Priority">
+                    <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessViewPriority}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ComboBox
@@ -94,39 +104,40 @@
         <Grid Grid.Column="1" IsVisible="{Binding Path=ProcessService.CurrentProcess, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
             <StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Product Name: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProductNameDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="File Name: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewModuleNameDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ModuleName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Process Name: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProcessNameDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProcessName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Start Time: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewStartTimeDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.StartTime}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Total CPU Usage Time " />
+
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewTotalProcessorTimeDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Priority: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewPriorityDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.PriorityClassCore}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Company: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewCompanyNameDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.CompanyName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Path: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewFileNameDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.FileName}" />
                 </StackPanel>
                 <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="Version: " />
+                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProductVersionDetailed}" />
                     <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductVersion}" />
                 </StackPanel>
                 <ListBox Items="{Binding ProcessService.CurrentProcess.Modules}" />

@@ -30,6 +30,16 @@ internal sealed class MainWindowViewModel : ViewModelBase
     [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
     
     /// <summary>
+    /// Соглашение, которое не пускает в приложение, если его не принять
+    /// </summary>
+    [Reactive] public ViewModelBase? AgreementViewModel { get; set; }
+    
+    /// <summary>
+    /// Настройки приложения
+    /// </summary>
+    [Reactive] public AppSettings AppSettings { get; set; }
+    
+    /// <summary>
     ///     Коллекцию кнопок для перехода на другую страницу
     /// </summary>
     public IEnumerable<MenuParamCommandItem> MenuList { get; set; }
@@ -38,7 +48,10 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
     #region Constructors
 
-    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService, StatusBarViewModel statusBarViewModel)
+    public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService,
+        StatusBarViewModel statusBarViewModel, 
+        AgreementViewModel agreementViewModel, 
+        IStore<AppSettings> appSettingsStore)
     {
         #region Commands Initialzie
 
@@ -59,7 +72,7 @@ internal sealed class MainWindowViewModel : ViewModelBase
         });
         
         OpenAboutInfo = ReactiveCommand.Create(() =>
-        {
+        { 
             CurrentViewModel = Locator.Current.GetService<AppInfoViewModel>();
         });
 
@@ -73,6 +86,16 @@ internal sealed class MainWindowViewModel : ViewModelBase
         CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
 
         StatusBarViewModel = statusBarViewModel;
+
+        AgreementViewModel = agreementViewModel;
+
+        AppSettings = appSettingsStore.CurrentValue;
+        
+        appSettingsStore.CurrentValueChangedNotifier += ()=>
+        {
+            AppSettings = appSettingsStore.CurrentValue;
+        };
+
     }
 
     #endregion

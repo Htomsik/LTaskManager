@@ -123,4 +123,55 @@
   <data name="AppSettingsProcessDelay" xml:space="preserve">
     <value>Process update delay:</value>
   </data>
+  <data name="ProcessViewSearch" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="ProcessViewKill" xml:space="preserve">
+    <value>Kill</value>
+  </data>
+  <data name="ProcessViewProductName" xml:space="preserve">
+    <value>Product Name</value>
+  </data>
+  <data name="ProcessViewModuleName" xml:space="preserve">
+    <value>File Name</value>
+  </data>
+  <data name="ProcessViewProcessName" xml:space="preserve">
+    <value>Process Name</value>
+  </data>
+  <data name="ProcessViewStartTime" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
+  <data name="ProcessViewTotalProcessorTime" xml:space="preserve">
+    <value>Total CPU Usage Time</value>
+  </data>
+  <data name="ProcessViewPriority" xml:space="preserve">
+    <value>Priority</value>
+  </data>
+  <data name="ProcessViewProductNameDetailed" xml:space="preserve">
+    <value>Product Name: </value>
+  </data>
+  <data name="ProcessViewModuleNameDetailed" xml:space="preserve">
+    <value>File Name: </value>
+  </data>
+  <data name="ProcessViewProcessNameDetailed" xml:space="preserve">
+    <value>Process Name: </value>
+  </data>
+  <data name="ProcessViewStartTimeDetailed" xml:space="preserve">
+    <value>Start Time: </value>
+  </data>
+  <data name="ProcessViewTotalProcessorTimeDetailed" xml:space="preserve">
+    <value>Total CPU Usage Time: </value>
+  </data>
+  <data name="ProcessViewPriorityDetailed" xml:space="preserve">
+    <value>Priority: </value>
+  </data>
+  <data name="ProcessViewCompanyNameDetailed" xml:space="preserve">
+    <value>Company: </value>
+  </data>
+  <data name="ProcessViewFileNameDetailed" xml:space="preserve">
+    <value>Path: </value>
+  </data>
+  <data name="ProcessViewProductVersionDetailed" xml:space="preserve">
+    <value>Version: </value>
+  </data>
 </root>

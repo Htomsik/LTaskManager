@@ -24,4 +24,55 @@
     <data name="AppSettingsProcessDelay" xml:space="preserve">
         <value>Задержка обновления процессов:</value>
     </data>
+    <data name="ProcessViewSearch" xml:space="preserve">
+        <value>Поиск</value>
+    </data>
+    <data name="ProcessViewKill" xml:space="preserve">
+        <value>Завершить</value>
+    </data>
+    <data name="ProcessViewProductName" xml:space="preserve">
+        <value>Имя продукта</value>
+    </data>
+    <data name="ProcessViewModuleName" xml:space="preserve">
+        <value>Имя файла</value>
+    </data>
+    <data name="ProcessViewProcessName" xml:space="preserve">
+        <value>Имя процесса</value>
+    </data>
+    <data name="ProcessViewStartTime" xml:space="preserve">
+        <value>Время старта</value>
+    </data>
+    <data name="ProcessViewTotalProcessorTime" xml:space="preserve">
+        <value>Общее время использования CPU</value>
+    </data>
+    <data name="ProcessViewPriority" xml:space="preserve">
+        <value>Приоритет</value>
+    </data>
+    <data name="ProcessViewProductNameDetailed" xml:space="preserve">
+        <value>Имя продукта: </value>
+    </data>
+    <data name="ProcessViewModuleNameDetailed" xml:space="preserve">
+        <value>Имя файла: </value>
+    </data>
+    <data name="ProcessViewProcessNameDetailed" xml:space="preserve">
+        <value>Имя процесса: </value>
+    </data>
+    <data name="ProcessViewStartTimeDetailed" xml:space="preserve">
+        <value>Время старта: </value>
+    </data>
+    <data name="ProcessViewTotalProcessorTimeDetailed" xml:space="preserve">
+        <value>Общее время использования CPU: </value>
+    </data>
+    <data name="ProcessViewPriorityDetailed" xml:space="preserve">
+        <value>Приоритет: </value>
+    </data>
+    <data name="ProcessViewCompanyNameDetailed" xml:space="preserve">
+        <value>Компания: </value>
+    </data>
+    <data name="ProcessViewFileNameDetailed" xml:space="preserve">
+        <value>Путь: </value>
+    </data>
+    <data name="ProcessViewProductVersionDetailed" xml:space="preserve">
+        <value>Версия: </value>
+    </data>
 </root>

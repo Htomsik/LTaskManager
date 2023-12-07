@@ -20,7 +20,8 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
         {typeof(ProcessesViewModel),typeof(ProcessesView)},
         {typeof(AppSettingsViewModel), typeof(AppSettingsView)},
         {typeof(StatusBarViewModel), typeof(StatusbarView)},
-        {typeof(AppInfoViewModel), typeof(AppInfoView)}
+        {typeof(AppInfoViewModel), typeof(AppInfoView)},
+        {typeof(AgreementViewModel), typeof(AgreementView)}
     };
     
     

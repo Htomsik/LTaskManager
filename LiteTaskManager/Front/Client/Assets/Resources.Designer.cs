@@ -77,5 +77,158 @@ namespace Client.Assets {
                 return ResourceManager.GetString("AppSettingsProcessDelay", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Company: .
+        /// </summary>
+        public static string ProcessViewCompanyNameDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewCompanyNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Path: .
+        /// </summary>
+        public static string ProcessViewFileNameDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewFileNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Kill.
+        /// </summary>
+        public static string ProcessViewKill {
+            get {
+                return ResourceManager.GetString("ProcessViewKill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на File Name.
+        /// </summary>
+        public static string ProcessViewModuleName {
+            get {
+                return ResourceManager.GetString("ProcessViewModuleName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на File Name: .
+        /// </summary>
+        public static string ProcessViewModuleNameDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewModuleNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Priority.
+        /// </summary>
+        public static string ProcessViewPriority {
+            get {
+                return ResourceManager.GetString("ProcessViewPriority", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Priority: .
+        /// </summary>
+        public static string ProcessViewPriorityDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewPriorityDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process Name.
+        /// </summary>
+        public static string ProcessViewProcessName {
+            get {
+                return ResourceManager.GetString("ProcessViewProcessName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process Name: .
+        /// </summary>
+        public static string ProcessViewProcessNameDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewProcessNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Product Name.
+        /// </summary>
+        public static string ProcessViewProductName {
+            get {
+                return ResourceManager.GetString("ProcessViewProductName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Product Name: .
+        /// </summary>
+        public static string ProcessViewProductNameDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewProductNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Version: .
+        /// </summary>
+        public static string ProcessViewProductVersionDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewProductVersionDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        public static string ProcessViewSearch {
+            get {
+                return ResourceManager.GetString("ProcessViewSearch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Start Time.
+        /// </summary>
+        public static string ProcessViewStartTime {
+            get {
+                return ResourceManager.GetString("ProcessViewStartTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Start Time: .
+        /// </summary>
+        public static string ProcessViewStartTimeDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewStartTimeDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Total CPU Usage Time.
+        /// </summary>
+        public static string ProcessViewTotalProcessorTime {
+            get {
+                return ResourceManager.GetString("ProcessViewTotalProcessorTime", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Total CPU Usage Time: .
+        /// </summary>
+        public static string ProcessViewTotalProcessorTimeDetailed {
+            get {
+                return ResourceManager.GetString("ProcessViewTotalProcessorTimeDetailed", resourceCulture);
+            }
+        }
     }
 }
