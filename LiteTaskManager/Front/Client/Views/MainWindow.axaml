@@ -1,8 +1,8 @@
 <Window
-    MinHeight="500"
-    MinWidth="500"
     Height="600"
     Icon="/Assets/Pictures/AppIcon.ico"
+    MinHeight="500"
+    MinWidth="500"
     Name="ThisWindow"
     Title="LiteTaskManager"
     Width="1000"
@@ -19,22 +19,28 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Grid ColumnDefinitions="Auto,*" RowDefinitions="*, 40">
+
         <!--  Принятие соглашения об отказе от ответственности  -->
-        <ContentControl Grid.RowSpan="2" Grid.ColumnSpan="2"
-                        Content="{Binding AgreementViewModel}"
-                        HorizontalAlignment="Stretch"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        VerticalContentAlignment="Stretch" 
-                        ZIndex="2"
-                        IsVisible="{Binding !AppSettings.Agreement}"
-        />
-        
+        <ContentControl
+            Content="{Binding AgreementViewModel}"
+            Grid.ColumnSpan="2"
+            Grid.RowSpan="2"
+            HorizontalAlignment="Stretch"
+            HorizontalContentAlignment="Stretch"
+            IsVisible="{Binding !AppSettings.Agreement}"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Stretch"
+            ZIndex="2" />
+
         <!--  Навигационное меню  -->
-        <Grid RowDefinitions="*, 40">
+        <Grid
+            Grid.Column="0"
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            RowDefinitions="*, 40">
 
             <ListBox Grid.Column="0" Items="{Binding MenuList}" />
-            
+
             <Grid ColumnDefinitions="*,*" Grid.Row="1">
                 <!--  Переход в настройки  -->
                 <Button Command="{Binding OpenAppSettings}">
