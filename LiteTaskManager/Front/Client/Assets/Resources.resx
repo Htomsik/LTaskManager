@@ -174,4 +174,28 @@
   <data name="ProcessViewProductVersionDetailed" xml:space="preserve">
     <value>Version: </value>
   </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
+  </data>
+  <data name="ProcessViewCurrentProcessNull" xml:space="preserve">
+    <value>Process not selected</value>
+  </data>
+  <data name="ProcessViewShowExtendedInfo" xml:space="preserve">
+    <value>Show extended info</value>
+  </data>
+  <data name="AgreementResponsibility" xml:space="preserve">
+    <value>Denial of responsibility</value>
+  </data>
+  <data name="AppSettingsGeneral" xml:space="preserve">
+    <value>General</value>
+  </data>
+  <data name="AppSettingsProcess" xml:space="preserve">
+    <value>Process</value>
+  </data>
+  <data name="WarningNoAdminRights" xml:space="preserve">
+    <value>Application running without administration rights. Some actions may not be available</value>
+  </data>
 </root>

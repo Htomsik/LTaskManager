@@ -61,11 +61,38 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Denial of responsibility.
+        /// </summary>
+        public static string AgreementResponsibility {
+            get {
+                return ResourceManager.GetString("AgreementResponsibility", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на General.
+        /// </summary>
+        public static string AppSettingsGeneral {
+            get {
+                return ResourceManager.GetString("AppSettingsGeneral", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Language:.
         /// </summary>
         public static string AppSettingsLanguage {
             get {
                 return ResourceManager.GetString("AppSettingsLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process.
+        /// </summary>
+        public static string AppSettingsProcess {
+            get {
+                return ResourceManager.GetString("AppSettingsProcess", resourceCulture);
             }
         }
         
@@ -79,11 +106,29 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Category.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Company: .
         /// </summary>
         public static string ProcessViewCompanyNameDetailed {
             get {
                 return ResourceManager.GetString("ProcessViewCompanyNameDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process not selected.
+        /// </summary>
+        public static string ProcessViewCurrentProcessNull {
+            get {
+                return ResourceManager.GetString("ProcessViewCurrentProcessNull", resourceCulture);
             }
         }
         
@@ -196,6 +241,15 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Show extended info.
+        /// </summary>
+        public static string ProcessViewShowExtendedInfo {
+            get {
+                return ResourceManager.GetString("ProcessViewShowExtendedInfo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Start Time.
         /// </summary>
         public static string ProcessViewStartTime {
@@ -228,6 +282,24 @@ namespace Client.Assets {
         public static string ProcessViewTotalProcessorTimeDetailed {
             get {
                 return ResourceManager.GetString("ProcessViewTotalProcessorTimeDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Search.
+        /// </summary>
+        public static string Search {
+            get {
+                return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Application running without administration rights. Some actions may not be available.
+        /// </summary>
+        public static string WarningNoAdminRights {
+            get {
+                return ResourceManager.GetString("WarningNoAdminRights", resourceCulture);
             }
         }
     }

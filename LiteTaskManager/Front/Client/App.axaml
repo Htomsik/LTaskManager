@@ -1,7 +1,6 @@
 <Application
     x:Class="Client.App"
     xmlns="https://github.com/avaloniaui"
-    xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:infrastructure="clr-namespace:Client.Infrastructure"
@@ -22,6 +21,7 @@
 
         <!--  Жирный текст  -->
         <Style Selector="TextBlock.FontBold">
+            <Setter Property="Margin" Value="2, 0" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="VerticalAlignment" Value="Stretch" />
         </Style>

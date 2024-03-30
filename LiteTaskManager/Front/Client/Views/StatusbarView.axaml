@@ -6,6 +6,7 @@
     x:Class="Client.Views.StatusbarView"
     x:DataType="viewModels:StatusBarViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -42,10 +43,9 @@
                 Height="24"
                 HorizontalAlignment="Center"
                 Kind="Warning"
+                ToolTip.Tip="{x:Static assets:Resources.WarningNoAdminRights}"
                 VerticalAlignment="Center"
-                Width="24">
-                <ToolTip.Tip>Application running without administration rights</ToolTip.Tip>
-            </avalonia:MaterialIcon>
+                Width="24" />
         </Grid>
 
     </Grid>

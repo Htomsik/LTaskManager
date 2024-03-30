@@ -37,7 +37,7 @@
                     Text="{Binding SearchText, Mode=TwoWay}"
                     Theme="{StaticResource OutlineTextBox}"
                     UseFloatingWatermark="True"
-                    assists:TextFieldAssist.Label="Search">
+                    assists:TextFieldAssist.Label="{x:Static assets:Resources.Search}">
                     <TextBox.InnerRightContent>
                         <Button
                             Classes="Flat"
@@ -58,11 +58,11 @@
                     Margin="5,2"
                     SelectedItem="{Binding ShowedProcessCategory}"
                     Theme="{StaticResource MaterialOutlineComboBox}"
-                    assists:ComboBoxAssist.Label="Category" />
+                    assists:ComboBoxAssist.Label="{x:Static assets:Resources.Category}" />
 
                 <!--  Доп действия  -->
                 <Grid Margin="5" Row="2">
-                    <CheckBox Content="Show extended info" Name="ProcessExtendedInfoCheckBox" />
+                    <CheckBox Content="{x:Static assets:Resources.ProcessViewShowExtendedInfo}" Name="ProcessExtendedInfoCheckBox" />
                 </Grid>
 
             </Grid>
@@ -128,7 +128,8 @@
             IsPaneOpen="{Binding #ProcessExtendedInfoCheckBox.IsChecked}">
 
             <SplitView.Pane>
-                <!--  Панель  -->
+
+                <!--  Process info panel  -->
                 <Grid Margin="5,20" RowDefinitions="Auto,*">
 
                     <!--  Header  -->
@@ -137,7 +138,7 @@
                             FontSize="24"
                             HorizontalAlignment="Center"
                             Margin="10"
-                            Text="{Binding Path=ProcessService.CurrentProcess.ProcessName, FallbackValue=Process cant selected}"
+                            Text="{Binding Path=ProcessService.CurrentProcess.ProcessName, FallbackValue={x:Static assets:Resources.ProcessViewCurrentProcessNull}}"
                             VerticalAlignment="Center" />
 
                         <Border
@@ -148,9 +149,25 @@
                             VerticalAlignment="Bottom" />
                     </Grid>
 
+                    <!--  PlaceHolder for body  -->
+                    <Grid
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNull}}"
+                        VerticalAlignment="Center">
+
+                        <avalonia:MaterialIcon
+                            Height="184"
+                            Kind="Cat"
+                            Width="184" />
+
+                    </Grid>
 
                     <!--  Body  -->
-                    <Grid Row="1" RowDefinitions="Auto,*">
+                    <Grid
+                        IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        Row="1"
+                        RowDefinitions="Auto,*">
 
                         <ScrollViewer
                             Grid.Row="0"
