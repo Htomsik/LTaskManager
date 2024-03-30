@@ -31,7 +31,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    /// </summary>
    [Reactive]
    public ProcessCategory ShowedProcessCategory { get; set; }
-
+   
    #endregion
 
    #region Fields

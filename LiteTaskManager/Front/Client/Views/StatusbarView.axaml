@@ -18,36 +18,34 @@
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch">
 
-        <!--  Запущено ли приложение в админ моде  -->
-        <Grid
-            Column="0"
-            ColumnDefinitions="Auto,Auto"
-            IsVisible="{Binding !AppInfoService.IsAdminMode}">
-            <avalonia:MaterialIcon
-                Foreground="DarkRed"
-                Height="26"
-                HorizontalAlignment="Center"
-                Kind="Warning"
-                VerticalAlignment="Center"
-                Width="26" />
-            <TextBlock
-                Foreground="DarkRed"
-                Grid.Column="1"
-                HorizontalAlignment="Center"
-                Text="User Mode"
-                VerticalAlignment="Center" />
-        </Grid>
-
-
         <!--  Статус обновления списка процессов  -->
-        <Grid Column="1" RowDefinitions="*,*">
-            <TextBlock HorizontalAlignment="Center" Text="Process update" />
+        <Grid Column="1">
+            <!-- <TextBlock HorizontalAlignment="Center" Text="Process update" /> -->
             <ProgressBar
                 Grid.Row="1"
                 Maximum="{Binding ProcessesMaxUpdateTime}"
                 Minimum="0"
                 Value="{Binding ProcessesCurrentUpdateTime}"
                 VerticalAlignment="Center" />
+        </Grid>
+
+        <!--  Запущено ли приложение в админ моде  -->
+        <Grid
+            Column="2"
+            ColumnDefinitions="Auto,Auto"
+            HorizontalAlignment="Right"
+            IsVisible="{Binding !AppInfoService.IsAdminMode}"
+            Margin="0,0,10,0">
+
+            <avalonia:MaterialIcon
+                Foreground="{DynamicResource MaterialPrimaryMidBrush}"
+                Height="24"
+                HorizontalAlignment="Center"
+                Kind="Warning"
+                VerticalAlignment="Center"
+                Width="24">
+                <ToolTip.Tip>Application running without administration rights</ToolTip.Tip>
+            </avalonia:MaterialIcon>
         </Grid>
 
     </Grid>

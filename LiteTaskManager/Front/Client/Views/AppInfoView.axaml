@@ -40,12 +40,7 @@
                 </StackPanel>
                 <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                     <Button Command="{Binding OpenGitHubUrl}">
-                        <avalonia:MaterialIcon
-                            Height="24"
-                            HorizontalAlignment="Center"
-                            Kind="Github"
-                            VerticalAlignment="Center"
-                            Width="24" />
+                        <avalonia:MaterialIcon Classes="Default" Kind="Github" />
                     </Button>
                 </StackPanel>
             </StackPanel>
