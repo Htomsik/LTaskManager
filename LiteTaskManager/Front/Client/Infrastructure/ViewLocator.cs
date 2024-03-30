@@ -25,9 +25,9 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
     };
     
     
-    public IControl Build(object vmd)
+    public Control Build(object vmd)
     {
-        IControl view = null!;
+        Control view = null!;
         
         try
         {

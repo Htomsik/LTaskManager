@@ -18,10 +18,10 @@
             <TextBox Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}" />
         </StackPanel>
 
-        <StackPanel Height="50" Orientation="Horizontal">
-            <TextBlock Text="{x:Static assets:Resources.AppSettingsLanguage}" />
-            <ComboBox Items="{Binding Settings.Culture, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding Settings.Culture}" />
-        </StackPanel>
+        <!-- <StackPanel Height="50" Orientation="Horizontal"> -->
+        <!--     <TextBlock Text="{x:Static assets:Resources.AppSettingsLanguage}" /> -->
+        <!--     <ComboBox Items="{Binding Settings.Culture, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding Settings.Culture}" /> -->
+        <!-- </StackPanel> -->
     </StackPanel>
 
 </UserControl>
