@@ -15,7 +15,7 @@
     <Grid ColumnDefinitions="*, Auto">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="20" Orientation="Horizontal">
                     <Image Source="../Assets/Pictures/AppIcon.png" />
                 </StackPanel>
 
@@ -39,7 +39,6 @@
                         <avalonia:MaterialIcon Classes="Default" Kind="Github" />
                     </Button>
                 </StackPanel>
-
             </StackPanel>
         </Grid>
     </Grid>

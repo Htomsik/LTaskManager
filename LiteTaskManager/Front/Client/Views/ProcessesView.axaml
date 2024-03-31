@@ -10,17 +10,13 @@
     xmlns:assets="clr-namespace:Client.Assets"
     xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-    xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Grid
-        ClipToBounds="True"
-        ColumnDefinitions="*,Auto"
-        Name="Test">
+    <Grid ClipToBounds="True" ColumnDefinitions="*,Auto">
 
         <!--  Информация о процессах  -->
         <Grid RowDefinitions="Auto, *">
@@ -130,7 +126,7 @@
             <SplitView.Pane>
 
                 <!--  Process info panel  -->
-                <Grid Margin="5,20" RowDefinitions="Auto,*">
+                <Grid Margin="5,20,5,0" RowDefinitions="Auto,*">
 
                     <!--  Header  -->
                     <Grid Row="0">

@@ -13,17 +13,46 @@
 
     <Grid Background="{DynamicResource MainWindowBackground}" RowDefinitions="0.92*, 0.08*">
 
-        <Grid
-            HorizontalAlignment="Center"
-            Row="0"
-            VerticalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Text="{x:Static assets:Resources.AgreementResponsibility}" />
+        <!--  Text  -->
+        <Grid Row="0" RowDefinitions="Auto, *">
+
+            <!--  Header  -->
+            <Grid
+                Margin="20"
+                Row="0"
+                VerticalAlignment="Center">
+
+                <TextBlock
+                    Classes="Headline6"
+                    HorizontalAlignment="Center"
+                    Margin="5"
+                    Text="{x:Static assets:Resources.AgreementResponsibility}" />
+
+                <Border
+                    BorderBrush="{DynamicResource MaterialPrimaryMidBrush}"
+                    BorderThickness="1"
+                    CornerRadius="10"
+                    Margin="20,0"
+                    VerticalAlignment="Bottom" />
+            </Grid>
+
+            <!--  Body  -->
+            <Border
+                Background="{DynamicResource MaterialPaperBrush}"
+                CornerRadius="10"
+                Grid.Row="1"
+                Margin="40,0">
+                <TextBlock
+                    Classes="FontBold"
+                    HorizontalAlignment="Center"
+                    Text="Text"
+                    VerticalAlignment="Center" />
+            </Border>
         </Grid>
 
-        <Grid
-            HorizontalAlignment="Center"
-            Row="1"
-            VerticalAlignment="Center">
+        <!--  Buttons  -->
+        <Grid Row="1" VerticalAlignment="Center">
+
             <Button
                 Command="{Binding AgreementAcceptance}"
                 Content="Agree"
