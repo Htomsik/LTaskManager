@@ -6,6 +6,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using Client.Models;
 using Client.Services;
+using Client.Services.AppInfoService;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -25,6 +26,11 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    ///   Сервис обрабатывающий процессы
    /// </summary>
    public  IProcessService<TaskProcess> ProcessService { get; init; }
+   
+   /// <summary>
+   ///   Сервис информации о приложении
+   /// </summary>
+   public IAppInfoService AppInfoService { get; init; }
    
    /// <summary>
    ///     Отображаемые категории процессов
@@ -82,8 +88,9 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    #region Constructor
 
    /// <param name="processService">Сервис обрабатывающий процессы</param>
-   public ProcessesViewModel(IProcessService<TaskProcess> processService) : base()
+   public ProcessesViewModel(IProcessService<TaskProcess> processService, IAppInfoService appInfoService) : base()
    {
+      AppInfoService = appInfoService;
       ProcessService = processService;
       
       KillProcess = ReactiveCommand.Create(processService.StopCurrentProcess);

@@ -16,7 +16,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     #region Properties
 
     [Reactive]
-    public ObservableCollection<TaskProcess> Processes { get; set; }
+    public ObservableCollection<TaskProcess> Processes { get; set; } = new ();
     
     [Reactive]
     public TaskProcess? CurrentProcess { get; set; }
@@ -52,10 +52,11 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         {
             this.WhenAnyValue(x => x._appSettingStore.CurrentValue.ProcessUpdateTimeOut)
                 .Throttle(TimeSpan.FromSeconds(1))
-                .Subscribe(x => SetSubscribes());
+                .Subscribe(_ => SetSubscribes());
+
+            this.WhenAnyValue(x => x._appSettingStore.CurrentValue.Agreement)
+                .Subscribe(_ => SetSubscribes());
         };
-        
-        UpdateProcesses();
     }
 
     #endregion
@@ -97,6 +98,18 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     {
         _processDisposable?.Dispose();
 
+        if (!_appSettingStore.CurrentValue.Agreement)
+        {
+            Processes.Clear();
+            return;
+        }
+        
+        // Нужен на случаи первых вызовов
+        if (Processes.Count == 0)
+        {
+            UpdateProcesses();
+        }
+        
         _processDisposable = this.WhenAnyValue(x => x.Processes)
             .Subscribe(_ => StartTimer());
     }
