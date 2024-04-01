@@ -7,7 +7,6 @@
     x:DataType="viewModels:AppSettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:assets="clr-namespace:Client.Assets"
-    xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -19,18 +18,14 @@
         <!--  Общие настройки  -->
         <controls:Card Background="{DynamicResource MainWindowBackground}" Margin="5">
             <StackPanel Margin="0,4">
+                <!--  Header  -->
                 <Grid>
                     <TextBlock
                         Classes="Headline6"
                         HorizontalAlignment="Left"
                         Margin="5"
                         Text="{x:Static assets:Resources.AppSettingsGeneral}" />
-                    <Border
-                        BorderBrush="{DynamicResource MaterialPrimaryMidBrush}"
-                        BorderThickness="1"
-                        CornerRadius="10"
-                        Margin="5,0"
-                        VerticalAlignment="Bottom" />
+                    <Border Classes="Separator" Margin="5,0" />
                 </Grid>
 
                 <!--  Язык  -->
@@ -63,18 +58,14 @@
         <!--  Процессы  -->
         <controls:Card Background="{DynamicResource MainWindowBackground}" Margin="5">
             <StackPanel Margin="0,4">
+                <!--  Header  -->
                 <Grid>
                     <TextBlock
                         Classes="Headline6"
                         HorizontalAlignment="Left"
                         Margin="5"
                         Text="{x:Static assets:Resources.AppSettingsProcess}" />
-                    <Border
-                        BorderBrush="{DynamicResource MaterialPrimaryMidBrush}"
-                        BorderThickness="1"
-                        CornerRadius="10"
-                        Margin="5,0"
-                        VerticalAlignment="Bottom" />
+                    <Border Classes="Separator" Margin="5,0" />
                 </Grid>
 
                 <!--  Задержка обновления  -->

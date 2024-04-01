@@ -123,56 +123,29 @@
   <data name="AppSettingsProcessDelay" xml:space="preserve">
     <value>Задержка обновления процессов:</value>
   </data>
-  <data name="ProcessViewSearch" xml:space="preserve">
+  <data name="ProcessSearch" xml:space="preserve">
     <value>Поиск</value>
   </data>
-  <data name="ProcessViewKill" xml:space="preserve">
+  <data name="ProcessKill" xml:space="preserve">
     <value>Завершить</value>
   </data>
-  <data name="ProcessViewProductName" xml:space="preserve">
+  <data name="ProcessProductName" xml:space="preserve">
     <value>Имя продукта</value>
   </data>
-  <data name="ProcessViewModuleName" xml:space="preserve">
+  <data name="ProcessModuleName" xml:space="preserve">
     <value>Имя файла</value>
   </data>
-  <data name="ProcessViewProcessName" xml:space="preserve">
+  <data name="ProcessName" xml:space="preserve">
     <value>Имя процесса</value>
   </data>
-  <data name="ProcessViewStartTime" xml:space="preserve">
+  <data name="ProcessStartTime" xml:space="preserve">
     <value>Время старта</value>
   </data>
-  <data name="ProcessViewTotalProcessorTime" xml:space="preserve">
+  <data name="ProcessTotalProcessorTime" xml:space="preserve">
     <value>Общее время использования CPU</value>
   </data>
-  <data name="ProcessViewPriority" xml:space="preserve">
+  <data name="ProcessPriority" xml:space="preserve">
     <value>Приоритет</value>
-  </data>
-  <data name="ProcessViewProductNameDetailed" xml:space="preserve">
-    <value>Имя продукта: </value>
-  </data>
-  <data name="ProcessViewModuleNameDetailed" xml:space="preserve">
-    <value>Имя файла: </value>
-  </data>
-  <data name="ProcessViewProcessNameDetailed" xml:space="preserve">
-    <value>Имя процесса: </value>
-  </data>
-  <data name="ProcessViewStartTimeDetailed" xml:space="preserve">
-    <value>Время старта: </value>
-  </data>
-  <data name="ProcessViewTotalProcessorTimeDetailed" xml:space="preserve">
-    <value>Общее время использования CPU: </value>
-  </data>
-  <data name="ProcessViewPriorityDetailed" xml:space="preserve">
-    <value>Приоритет: </value>
-  </data>
-  <data name="ProcessViewCompanyNameDetailed" xml:space="preserve">
-    <value>Компания: </value>
-  </data>
-  <data name="ProcessViewFileNameDetailed" xml:space="preserve">
-    <value>Путь: </value>
-  </data>
-  <data name="ProcessViewProductVersionDetailed" xml:space="preserve">
-    <value>Версия: </value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Поиск</value>
@@ -180,14 +153,14 @@
   <data name="Category" xml:space="preserve">
     <value>Категория</value>
   </data>
-  <data name="ProcessViewCurrentProcessNull" xml:space="preserve">
+  <data name="ProcessCurentNull" xml:space="preserve">
     <value>Не выбран процесс</value>
   </data>
-  <data name="ProcessViewShowExtendedInfo" xml:space="preserve">
+  <data name="ProcessShowExtendedInfo" xml:space="preserve">
     <value>Показать расширенную информацию</value>
   </data>
   <data name="AgreementResponsibility" xml:space="preserve">
-    <value>отказ от ответственности</value>
+    <value>Отказ от ответственности</value>
   </data>
   <data name="AppSettingsGeneral" xml:space="preserve">
     <value>Общее</value>
@@ -197,5 +170,14 @@
   </data>
   <data name="WarningNoAdminRights" xml:space="preserve">
     <value>Приложение запущено без прав администратора, некоторые действия могут быть недоступны</value>
+  </data>
+  <data name="ProcessProductVersion" xml:space="preserve">
+    <value>Версия</value>
+  </data>
+  <data name="ProcessCompany" xml:space="preserve">
+    <value>Компания</value>
+  </data>
+  <data name="ProcessFilePath" xml:space="preserve">
+    <value>Путь к файлу</value>
   </data>
 </root>

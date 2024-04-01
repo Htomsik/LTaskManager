@@ -29,9 +29,7 @@
                     Text="{x:Static assets:Resources.AgreementResponsibility}" />
 
                 <Border
-                    BorderBrush="{DynamicResource MaterialPrimaryMidBrush}"
-                    BorderThickness="1"
-                    CornerRadius="10"
+                    Classes="Separator"
                     Margin="20,0"
                     VerticalAlignment="Bottom" />
             </Grid>

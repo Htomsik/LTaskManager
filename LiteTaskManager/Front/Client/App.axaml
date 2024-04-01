@@ -15,9 +15,9 @@
             PrimaryColor="Red"
             SecondaryColor="Lime" />
 
-
         <materialIcons:MaterialIconStyles />
 
+        <StyleInclude Source="Infrastructure/Controls/DoubleLabelControl.axaml" />
 
         <!--  Жирный текст  -->
         <Style Selector="TextBlock.FontBold">
@@ -38,6 +38,20 @@
             <Setter Property="Width" Value="24" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  Стандартное конекст меню  -->
+        <Style Selector="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource MainWindowBackground}" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <!--  Визуальнеый Разделитель  -->
+        <Style Selector="Border.Separator">
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialPrimaryMidBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
 
     </Application.Styles>

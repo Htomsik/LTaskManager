@@ -7,6 +7,7 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:assets="clr-namespace:Client.Assets"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
@@ -19,26 +20,31 @@
                     <Image Source="../Assets/Pictures/AppIcon.png" />
                 </StackPanel>
 
-                <StackPanel Classes="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Classes="FontBold" Text="{x:Static assets:Resources.ProcessViewProductName}" />
-                    <TextBlock HorizontalAlignment="Center" Text="{Binding Path=AppInfoService.AppName}" />
-                </StackPanel>
+                <!--  Name  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppName}"
+                    Header="{x:Static assets:Resources.ProcessProductName}"
+                    HorizontalAlignment="Center" />
 
-                <StackPanel Classes="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Classes="FontBold" Text="{x:Static assets:Resources.ProcessViewCompanyNameDetailed}" />
-                    <TextBlock Text="{Binding Path=AppInfoService.AppManufacturer}" />
-                </StackPanel>
+                <!--  Company  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppManufacturer}"
+                    Header="{x:Static assets:Resources.ProcessCompany}"
+                    HorizontalAlignment="Center" />
 
-                <StackPanel Classes="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Classes="FontBold" Text="{x:Static assets:Resources.ProcessViewProductVersionDetailed}" />
-                    <TextBlock Text="{Binding Path=AppInfoService.AppVersion}" />
-                </StackPanel>
+                <!--  Version  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppVersion}"
+                    Header="{x:Static assets:Resources.ProcessProductVersion}"
+                    HorizontalAlignment="Center" />
 
+                <!--  Link panel  -->
                 <StackPanel Classes="Horizontal" HorizontalAlignment="Center">
                     <Button Command="{Binding OpenGitHubUrl}">
                         <avalonia:MaterialIcon Classes="Default" Kind="Github" />
                     </Button>
                 </StackPanel>
+
             </StackPanel>
         </Grid>
     </Grid>

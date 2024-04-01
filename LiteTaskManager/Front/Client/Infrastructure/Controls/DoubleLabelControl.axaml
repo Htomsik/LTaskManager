@@ -1,0 +1,20 @@
+﻿<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:controls="using:Client.Infrastructure.Controls"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Design.PreviewWith>
+        <controls:DoubleLabelControl />
+    </Design.PreviewWith>
+
+    <Style Selector="controls|DoubleLabelControl">
+        <!--  Set Defaults  -->
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel Classes="Horizontal">
+                    <TextBlock Classes="FontBold" Text="{TemplateBinding Header}" />
+                    <TextBlock Text="{TemplateBinding Body}" />
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+</Styles>
