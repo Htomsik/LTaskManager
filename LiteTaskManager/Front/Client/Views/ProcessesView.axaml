@@ -1,5 +1,6 @@
 ﻿<UserControl
     ClipToBounds="True"
+    Name="Test"
     d:DataContext="viewModels:ProcessesViewModel"
     d:DesignHeight="800"
     d:DesignWidth="800"
@@ -69,40 +70,60 @@
                     BorderBrush="Transparent"
                     ItemsSource="{Binding Items}"
                     SelectedItem="{Binding ProcessService.CurrentProcess}">
+
                     <DataGrid.ContextMenu>
-                        <ContextMenu>
+                        <ContextMenu IsEnabled="{Binding AppInfoService.IsAdminMode}">
                             <MenuItem Command="{Binding KillProcess}" Header="{x:Static assets:Resources.ProcessKill}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 
                     <DataGrid.Columns>
+
+                        <!--  Product name  -->
                         <DataGridTextColumn
                             Binding="{Binding ProductName}"
                             Header="{x:Static assets:Resources.ProcessProductName}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
+
+                        <!--  File name  -->
                         <DataGridTextColumn
                             Binding="{Binding ModuleName}"
                             Header="{x:Static assets:Resources.ProcessModuleName}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
+
+                        <!--  Process name  -->
                         <DataGridTextColumn
                             Binding="{Binding ProcessName}"
                             Header="{x:Static assets:Resources.ProcessName}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
+
+                        <!--  Start time  -->
                         <DataGridTextColumn
                             Binding="{Binding StartTime}"
                             Header="{x:Static assets:Resources.ProcessStartTime}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
+
+                        <!--  CPU use Time  -->
                         <DataGridTextColumn
                             Binding="{Binding TotalProcessorTime}"
                             Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
-                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}">
+
+                        <!--  Priority  -->
+                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="{Binding AppInfoService.IsAdminMode}">
+
                             <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding PriorityClassCore}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+
+                            <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox
                                         IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
@@ -110,8 +131,10 @@
                                         SelectedItem="{Binding PriorityClassCore}"
                                         x:DataType="models:TaskProcess" />
                                 </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+
                         </DataGridTemplateColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
