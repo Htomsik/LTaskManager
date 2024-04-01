@@ -1,6 +1,5 @@
 ﻿<UserControl
     ClipToBounds="True"
-    Name="Test"
     d:DataContext="viewModels:ProcessesViewModel"
     d:DesignHeight="800"
     d:DesignWidth="800"
@@ -101,6 +100,7 @@
                             x:DataType="models:TaskProcess" />
 
                         <!--  Start time  -->
+
                         <DataGridTextColumn
                             Binding="{Binding StartTime}"
                             Header="{x:Static assets:Resources.ProcessStartTime}"
@@ -113,6 +113,7 @@
                             Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
+
 
                         <!--  Priority  -->
                         <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="{Binding AppInfoService.IsAdminMode}">
