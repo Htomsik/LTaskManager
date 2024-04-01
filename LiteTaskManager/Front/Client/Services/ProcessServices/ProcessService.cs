@@ -121,7 +121,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             Processes.Remove(CurrentProcess);
         }
         
-        this.Log().Warn($"Process {CurrentProcess.ProcessName} was killed");
+        this.Log().Warn($"Process {CurrentProcess?.ProcessName} was killed");
     }
 
     
@@ -132,17 +132,15 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     {
         try
         {
-            List<TaskProcess> ProcessList = new List<TaskProcess>() { };
-            
-            //ToDo Подумать над оптимизацией
+            var processList = new List<TaskProcess>() { };
             
             foreach (var Process in Process.GetProcesses())
             {
                 TaskProcess taskProcessCopy = new TaskProcess(Process);
-                ProcessList.Add(taskProcessCopy); 
+                processList.Add(taskProcessCopy); 
             }
             
-            Processes = new ObservableCollection<TaskProcess>(ProcessList);
+            Processes = new ObservableCollection<TaskProcess>(processList);
             
             SetSubscribes();
 

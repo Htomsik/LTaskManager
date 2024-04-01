@@ -11,7 +11,6 @@ namespace Client.Models;
 internal sealed class AppSettings : ReactiveValidationObject
 {
     [Reactive]
-    
     public bool Agreement { get; set; }
     
     /// <summary>
@@ -37,7 +36,7 @@ internal sealed class AppSettings : ReactiveValidationObject
         }
     }
 
-    private double _processUpdateTimeOut;
+    private double _processUpdateTimeOut = 5;
 
     /// <summary>
     ///     Текущая выбранная локализация

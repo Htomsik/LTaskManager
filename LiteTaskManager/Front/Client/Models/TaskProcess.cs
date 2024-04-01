@@ -95,7 +95,7 @@ public class TaskProcess : ReactiveObject
         }
         catch (Exception e)
         {
-            this.Log().Warn($"Can't get process from {nameof(windowsProcess)} {(windowsProcess.ProcessName)}. {e.Message}" );
+             this.Log().Warn($"Can't get process from {nameof(windowsProcess)} {(windowsProcess.ProcessName)}. {e.Message}" );
         }
     }
 

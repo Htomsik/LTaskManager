@@ -22,6 +22,7 @@
         Background="{StaticResource MainWindowBackground}"
         ColumnDefinitions="Auto,*"
         RowDefinitions="*, 40">
+
         <!--  Принятие соглашения об отказе от ответственности  -->
         <ContentControl
             Content="{Binding AgreementViewModel}"
@@ -44,6 +45,7 @@
             <ListBox Grid.Column="0" ItemsSource="{Binding MenuList}" />
 
             <Grid Grid.Row="1">
+
                 <!--  Переход в настройки  -->
                 <Button
                     Command="{Binding OpenAppSettings}"

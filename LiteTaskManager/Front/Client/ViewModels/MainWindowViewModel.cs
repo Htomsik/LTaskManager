@@ -50,7 +50,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
     public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService,
         StatusBarViewModel statusBarViewModel, 
-        AgreementViewModel agreementViewModel, 
+        AgreementViewModel agreementViewModel,
+        ProcessesViewModel processesViewModel,
         IStore<AppSettings> appSettingsStore)
     {
         #region Commands Initialzie
@@ -58,14 +59,10 @@ internal sealed class MainWindowViewModel : ViewModelBase
         Navigate = ReactiveCommand.Create<Type>(
             type =>  CurrentViewModel = (Locator.Current.GetService(type) as ViewModelBase)!);
         
-        Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(Navigate)} command:{x.Message}"));
-        
         SaveAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.SetAsync);
-        SaveAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
-
+        
         GetAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.GetAsync);
-        GetAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
-
+        
         OpenAppSettings = ReactiveCommand.Create(() =>
         {
             CurrentViewModel = Locator.Current.GetService<AppSettingsViewModel>();
@@ -77,25 +74,40 @@ internal sealed class MainWindowViewModel : ViewModelBase
         });
 
         #endregion
+
+        #region Commands exeptions logging
+        
+        Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(Navigate)} command:{x.Message}"));
+        SaveAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
+        GetAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
+
+        #endregion
+
+        #region Commands logging
+
+        Navigate.Subscribe(_ => this.Log().Info($"Processing commnad {nameof(Navigate)}. Page {CurrentViewModel?.GetType()} is open"));
+
+        #endregion
+
+        #region VMD initialize
+
+        CurrentViewModel = processesViewModel;
+        StatusBarViewModel = statusBarViewModel;
+        AgreementViewModel = agreementViewModel;
+
+        #endregion
         
         MenuList = new ObservableCollection<MenuParamCommandItem>
         { 
             new MenuParamCommandItem("Processes", Navigate, typeof(ProcessesViewModel), MaterialIconKind.Memory),
         };
         
-        CurrentViewModel = Locator.Current.GetService<ProcessesViewModel>();
-
-        StatusBarViewModel = statusBarViewModel;
-
-        AgreementViewModel = agreementViewModel;
-
         AppSettings = appSettingsStore.CurrentValue;
         
         appSettingsStore.CurrentValueChangedNotifier += ()=>
         {
             AppSettings = appSettingsStore.CurrentValue;
         };
-
     }
 
     #endregion
