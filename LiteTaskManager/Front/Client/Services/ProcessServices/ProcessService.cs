@@ -143,17 +143,20 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     /// </summary>
     public void UpdateProcesses()
     {
+        var operationTimer = new Stopwatch();
+        operationTimer.Start();
+        
+        this.Log().Info($"Start processing {nameof(ProcessService)}:{nameof(UpdateProcesses)}");
+        
         try
         {
-            var processList = new List<TaskProcess>() { };
-            
-            foreach (var Process in Process.GetProcesses())
+            // При очистке медленнее, пересоздание быстрее
+            Processes = new ObservableCollection<TaskProcess>();
+            foreach (var process in Process.GetProcesses())
             {
-                TaskProcess taskProcessCopy = new TaskProcess(Process);
-                processList.Add(taskProcessCopy); 
+                var taskProcess = new TaskProcess(process);
+                Processes.Add(taskProcess);
             }
-            
-            Processes = new ObservableCollection<TaskProcess>(processList);
             
             SetSubscribes();
 
@@ -164,7 +167,10 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             this.Log().Error($"Can't {nameof(UpdateProcesses)} {nameof(Processes)} . {e.Message}");
             return;
         }
-        this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess");
+        
+        operationTimer.Stop();
+        
+        this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess. Elapsed Time {operationTimer.ElapsedMilliseconds} ms");
     }
 
     /// <summary>

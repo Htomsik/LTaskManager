@@ -71,7 +71,7 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Испольемые модули
     /// </summary>
-    public ProcessModuleCollection Modules { get; set; }
+    public ProcessModuleCollection Modules => _windowsProcess.Modules;
 
     private readonly Process _windowsProcess;
 
@@ -86,7 +86,6 @@ public class TaskProcess : ReactiveObject
             StartTime = windowsProcess.StartTime;
             TotalProcessorTime = windowsProcess.TotalProcessorTime;
             _priorityClassCore = windowsProcess.PriorityClass;
-            Modules = windowsProcess.Modules;
             ProductName = windowsProcess.MainModule.FileVersionInfo.ProductName;
             ModuleName = windowsProcess.MainModule.ModuleName;
             CompanyName = windowsProcess.MainModule.FileVersionInfo.CompanyName;
