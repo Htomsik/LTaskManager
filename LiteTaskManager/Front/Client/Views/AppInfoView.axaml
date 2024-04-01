@@ -5,7 +5,9 @@
     x:Class="Client.Views.AppInfoView"
     x:DataType="viewModels:AppInfoViewModel"
     xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
@@ -14,40 +16,35 @@
     <Grid ColumnDefinitions="*, Auto">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
-                <StackPanel Height="500" Orientation="Horizontal">
+                <StackPanel Margin="20" Orientation="Horizontal">
                     <Image Source="../Assets/Pictures/AppIcon.png" />
                 </StackPanel>
-                <StackPanel
-                    Height="20"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock HorizontalAlignment="Center" Text="Product Name: " />
-                    <TextBlock HorizontalAlignment="Center" Text="{Binding Path=AppInfoService.AppName}" />
-                </StackPanel>
-                <StackPanel
-                    Height="20"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Text="Company: " />
-                    <TextBlock Text="{Binding Path=AppInfoService.AppManufacturer}" />
-                </StackPanel>
-                <StackPanel
-                    Height="20"
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock Text="App version: " />
-                    <TextBlock Text="{Binding Path=AppInfoService.AppVersion}" />
-                </StackPanel>
-                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+
+                <!--  Name  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppName}"
+                    Header="{x:Static assets:Resources.ProcessProductName}"
+                    HorizontalAlignment="Center" />
+
+                <!--  Company  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppManufacturer}"
+                    Header="{x:Static assets:Resources.ProcessCompany}"
+                    HorizontalAlignment="Center" />
+
+                <!--  Version  -->
+                <controls:DoubleLabelControl
+                    Body="{Binding Path=AppInfoService.AppVersion}"
+                    Header="{x:Static assets:Resources.ProcessProductVersion}"
+                    HorizontalAlignment="Center" />
+
+                <!--  Link panel  -->
+                <StackPanel Classes="Horizontal" HorizontalAlignment="Center">
                     <Button Command="{Binding OpenGitHubUrl}">
-                        <avalonia:MaterialIcon
-                            Height="24"
-                            HorizontalAlignment="Center"
-                            Kind="Github"
-                            VerticalAlignment="Center"
-                            Width="24" />
+                        <avalonia:MaterialIcon Classes="Default" Kind="Github" />
                     </Button>
                 </StackPanel>
+
             </StackPanel>
         </Grid>
     </Grid>

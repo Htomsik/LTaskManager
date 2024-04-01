@@ -4,42 +4,88 @@
     xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
     xmlns:diagnostics="clr-namespace:System.Diagnostics;assembly=System.Diagnostics.Process"
     xmlns:infrastructure="clr-namespace:Client.Infrastructure"
+    xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:models="clr-namespace:Client.Models"
+    xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Application.Styles>
-        <FluentTheme Mode="Light" />
-        <StyleInclude Source="avares://Material.Icons.Avalonia/App.xaml" />
-        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml" />
+        <themes:MaterialTheme
+            BaseTheme="Dark"
+            PrimaryColor="Red"
+            SecondaryColor="Lime" />
+
+        <materialIcons:MaterialIconStyles />
+
+        <StyleInclude Source="Infrastructure/Controls/DoubleLabelControl.axaml" />
+
+        <!--  Жирный текст  -->
+        <Style Selector="TextBlock.FontBold">
+            <Setter Property="Margin" Value="2, 0" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+        </Style>
+
+        <!--  Стекпанель для надписей  -->
+        <Style Selector="StackPanel.Horizontal">
+            <Setter Property="Orientation" Value="Horizontal" />
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <!--  Стандартная иконка  -->
+        <Style Selector="materialIcons|MaterialIcon.Default">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Width" Value="24" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <!--  Стандартное конекст меню  -->
+        <Style Selector="ContextMenu">
+            <Setter Property="Background" Value="{DynamicResource MainWindowBackground}" />
+            <Setter Property="Padding" Value="0" />
+        </Style>
+
+        <!--  Визуальнеый Разделитель  -->
+        <Style Selector="Border.Separator">
+            <Setter Property="BorderBrush" Value="{DynamicResource MaterialPrimaryMidBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="10" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+        </Style>
+
     </Application.Styles>
 
     <Application.Resources>
         <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
         <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
+
+        <SolidColorBrush Color="#212121" x:Key="MainWindowBackground" />
     </Application.Resources>
 
     <Application.DataTemplates>
         <DataTemplate DataType="models:MenuParamCommandItem">
-            <Grid>
-                <Button
-                    Background="Transparent"
-                    Command="{Binding Command}"
-                    CommandParameter="{Binding CommandParam}"
-                    HorizontalAlignment="Stretch"
-                    HorizontalContentAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    VerticalContentAlignment="Stretch">
-                    <Button.Content>
+            <Button
+                Command="{Binding Command}"
+                CommandParameter="{Binding CommandParam}"
+                HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                VerticalContentAlignment="Stretch">
+                <Button.Content>
+                    <Grid ColumnDefinitions="Auto,*">
+                        <materialIcons:MaterialIcon Classes="Default" Kind="{Binding Kind}" />
+
                         <TextBlock
                             Classes="Headline6"
-                            Foreground="{DynamicResource MaterialDesignBody}"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
                             Text="{Binding Name}"
                             VerticalAlignment="Center" />
-                    </Button.Content>
-                </Button>
-            </Grid>
+                    </Grid>
+                </Button.Content>
+            </Button>
+
 
         </DataTemplate>
 

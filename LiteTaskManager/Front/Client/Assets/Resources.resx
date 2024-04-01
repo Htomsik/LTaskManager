@@ -123,55 +123,61 @@
   <data name="AppSettingsProcessDelay" xml:space="preserve">
     <value>Process update delay:</value>
   </data>
-  <data name="ProcessViewSearch" xml:space="preserve">
+  <data name="ProcessSearch" xml:space="preserve">
     <value>Search</value>
   </data>
-  <data name="ProcessViewKill" xml:space="preserve">
+  <data name="ProcessKill" xml:space="preserve">
     <value>Kill</value>
   </data>
-  <data name="ProcessViewProductName" xml:space="preserve">
+  <data name="ProcessProductName" xml:space="preserve">
     <value>Product Name</value>
   </data>
-  <data name="ProcessViewModuleName" xml:space="preserve">
+  <data name="ProcessModuleName" xml:space="preserve">
     <value>File Name</value>
   </data>
-  <data name="ProcessViewProcessName" xml:space="preserve">
+  <data name="ProcessName" xml:space="preserve">
     <value>Process Name</value>
   </data>
-  <data name="ProcessViewStartTime" xml:space="preserve">
+  <data name="ProcessStartTime" xml:space="preserve">
     <value>Start Time</value>
   </data>
-  <data name="ProcessViewTotalProcessorTime" xml:space="preserve">
+  <data name="ProcessTotalProcessorTime" xml:space="preserve">
     <value>Total CPU Usage Time</value>
   </data>
-  <data name="ProcessViewPriority" xml:space="preserve">
+  <data name="ProcessPriority" xml:space="preserve">
     <value>Priority</value>
   </data>
-  <data name="ProcessViewProductNameDetailed" xml:space="preserve">
-    <value>Product Name: </value>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
-  <data name="ProcessViewModuleNameDetailed" xml:space="preserve">
-    <value>File Name: </value>
+  <data name="Category" xml:space="preserve">
+    <value>Category</value>
   </data>
-  <data name="ProcessViewProcessNameDetailed" xml:space="preserve">
-    <value>Process Name: </value>
+  <data name="ProcessCurentNull" xml:space="preserve">
+    <value>Process not selected</value>
   </data>
-  <data name="ProcessViewStartTimeDetailed" xml:space="preserve">
-    <value>Start Time: </value>
+  <data name="ProcessShowExtendedInfo" xml:space="preserve">
+    <value>Show extended info</value>
   </data>
-  <data name="ProcessViewTotalProcessorTimeDetailed" xml:space="preserve">
-    <value>Total CPU Usage Time: </value>
+  <data name="AgreementResponsibility" xml:space="preserve">
+    <value>Denial of responsibility</value>
   </data>
-  <data name="ProcessViewPriorityDetailed" xml:space="preserve">
-    <value>Priority: </value>
+  <data name="AppSettingsGeneral" xml:space="preserve">
+    <value>General</value>
   </data>
-  <data name="ProcessViewCompanyNameDetailed" xml:space="preserve">
-    <value>Company: </value>
+  <data name="AppSettingsProcess" xml:space="preserve">
+    <value>Process</value>
   </data>
-  <data name="ProcessViewFileNameDetailed" xml:space="preserve">
-    <value>Path: </value>
+  <data name="WarningNoAdminRights" xml:space="preserve">
+    <value>Application running without administration rights. Some actions may not be available</value>
   </data>
-  <data name="ProcessViewProductVersionDetailed" xml:space="preserve">
-    <value>Version: </value>
+  <data name="ProcessProductVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="ProcessCompany" xml:space="preserve">
+    <value>Company</value>
+  </data>
+  <data name="ProcessFilePath" xml:space="preserve">
+    <value>File path</value>
   </data>
 </root>

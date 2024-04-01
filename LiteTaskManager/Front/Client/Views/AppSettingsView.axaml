@@ -7,21 +7,102 @@
     x:DataType="viewModels:AppSettingsViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:assets="clr-namespace:Client.Assets"
+    xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <StackPanel VerticalAlignment="Top">
-        <StackPanel Height="50" Orientation="Horizontal">
-            <TextBlock Text="{x:Static assets:Resources.AppSettingsProcessDelay}" />
-            <TextBox Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}" />
-        </StackPanel>
+    <UniformGrid>
+        <!--  Общие настройки  -->
+        <controls:Card Background="{DynamicResource MainWindowBackground}" Margin="5">
+            <StackPanel Margin="0,4">
+                <!--  Header  -->
+                <Grid>
+                    <TextBlock
+                        Classes="Headline6"
+                        HorizontalAlignment="Left"
+                        Margin="5"
+                        Text="{x:Static assets:Resources.AppSettingsGeneral}" />
+                    <Border Classes="Separator" Margin="5,0" />
+                </Grid>
 
-        <StackPanel Height="50" Orientation="Horizontal">
-            <TextBlock Text="{x:Static assets:Resources.AppSettingsLanguage}" />
-            <ComboBox Items="{Binding Settings.Culture, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding Settings.Culture}" />
-        </StackPanel>
-    </StackPanel>
+                <!--  Язык  -->
+                <StackPanel Classes="Horizontal">
+
+                    <avalonia:MaterialIcon
+                        Classes="Default"
+                        Kind="Language"
+                        Margin="2"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Classes="FontBold"
+                        Margin="2"
+                        Text="{x:Static assets:Resources.AppSettingsLanguage}"
+                        VerticalAlignment="Center" />
+
+                    <ComboBox
+                        ItemsSource="{Binding Settings.Culture, Converter={StaticResource EnumToCollectionConverter}}"
+                        Margin="2"
+                        MaxWidth="100"
+                        MinWidth="100"
+                        SelectedItem="{Binding Settings.Culture}"
+                        Theme="{StaticResource MaterialOutlineComboBox}"
+                        Width="100" />
+                </StackPanel>
+            </StackPanel>
+        </controls:Card>
+
+        <!--  Процессы  -->
+        <controls:Card Background="{DynamicResource MainWindowBackground}" Margin="5">
+            <StackPanel Margin="0,4">
+                <!--  Header  -->
+                <Grid>
+                    <TextBlock
+                        Classes="Headline6"
+                        HorizontalAlignment="Left"
+                        Margin="5"
+                        Text="{x:Static assets:Resources.AppSettingsProcess}" />
+                    <Border Classes="Separator" Margin="5,0" />
+                </Grid>
+
+                <!--  Задержка обновления  -->
+                <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">
+
+                    <avalonia:MaterialIcon
+                        Classes="Default"
+                        HorizontalAlignment="Stretch"
+                        Kind="Clock"
+                        Margin="2"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Classes="FontBold"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        Text="{x:Static assets:Resources.AppSettingsProcessDelay}"
+                        VerticalAlignment="Center" />
+
+                    <TextBox
+                        Classes="outline"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        MaxWidth="100"
+                        MinWidth="100"
+                        Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}"
+                        Theme="{StaticResource OutlineTextBox}"
+                        Width="100" />
+
+                </StackPanel>
+            </StackPanel>
+        </controls:Card>
+
+
+
+
+    </UniformGrid>
+
 
 </UserControl>

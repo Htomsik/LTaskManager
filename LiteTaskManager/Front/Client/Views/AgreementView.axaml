@@ -1,20 +1,61 @@
-<UserControl 
-             x:Class="Client.Views.AgreementView"
-             x:DataType="viewModels:AgreementViewModel"
-             xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Client.ViewModels"
-             xmlns:assets="clr-namespace:Client.Assets"
-             mc:Ignorable="d" d:DesignWidth="1000" d:DesignHeight="640"
-             >
-    <Grid RowDefinitions="0.92*, 0.08*" Background="Azure" >
-        <Grid Row="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock HorizontalAlignment="Center" Text="{x:Static assets:Resources.ProcessViewProductName}" />
+<UserControl
+    d:DesignHeight="640"
+    d:DesignWidth="1000"
+    mc:Ignorable="d"
+    x:Class="Client.Views.AgreementView"
+    x:DataType="viewModels:AgreementViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Background="{DynamicResource MainWindowBackground}" RowDefinitions="0.92*, 0.08*">
+
+        <!--  Text  -->
+        <Grid Row="0" RowDefinitions="Auto, *">
+
+            <!--  Header  -->
+            <Grid
+                Margin="20"
+                Row="0"
+                VerticalAlignment="Center">
+
+                <TextBlock
+                    Classes="Headline6"
+                    HorizontalAlignment="Center"
+                    Margin="5"
+                    Text="{x:Static assets:Resources.AgreementResponsibility}" />
+
+                <Border
+                    Classes="Separator"
+                    Margin="20,0"
+                    VerticalAlignment="Bottom" />
+            </Grid>
+
+            <!--  Body  -->
+            <Border
+                Background="{DynamicResource MaterialPaperBrush}"
+                CornerRadius="10"
+                Grid.Row="1"
+                Margin="40,0">
+                <TextBlock
+                    Classes="FontBold"
+                    HorizontalAlignment="Center"
+                    Text="Text"
+                    VerticalAlignment="Center" />
+            </Border>
         </Grid>
-        <Grid Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button HorizontalAlignment="Center" Command="{Binding AgreementAcceptance}" Content="Agree" HorizontalContentAlignment="Center" ></Button>
+
+        <!--  Buttons  -->
+        <Grid Row="1" VerticalAlignment="Center">
+
+            <Button
+                Command="{Binding AgreementAcceptance}"
+                Content="Agree"
+                HorizontalAlignment="Center"
+                HorizontalContentAlignment="Center" />
         </Grid>
     </Grid>
 </UserControl>

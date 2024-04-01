@@ -1,4 +1,5 @@
 ﻿<UserControl
+    ClipToBounds="True"
     d:DataContext="viewModels:ProcessesViewModel"
     d:DesignHeight="800"
     d:DesignWidth="800"
@@ -7,142 +8,242 @@
     x:DataType="viewModels:ProcessesViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:assets="clr-namespace:Client.Assets"
+    xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-
-    <Grid ColumnDefinitions="*, Auto">
+    <Grid ClipToBounds="True" ColumnDefinitions="*,Auto">
 
         <!--  Информация о процессах  -->
-        <Grid RowDefinitions="80, *">
+        <Grid RowDefinitions="Auto, *">
 
             <!--  Панель поиска  -->
-            <Grid Grid.Row="0" RowDefinitions="40,*">
+            <Grid Grid.Row="0" RowDefinitions="*,*,*">
+
                 <!--  Поиск по имени процесса  -->
                 <TextBox
+                    Classes="outline"
+                    Grid.Column="0"
+                    Margin="5,2"
                     Name="SearchTextBox"
                     Text="{Binding SearchText, Mode=TwoWay}"
-                    Watermark="Search">
+                    Theme="{StaticResource OutlineTextBox}"
+                    UseFloatingWatermark="True"
+                    assists:TextFieldAssist.Label="{x:Static assets:Resources.Search}">
                     <TextBox.InnerRightContent>
                         <Button
-                            Background="Transparent"
+                            Classes="Flat"
                             Command="{Binding ClearSearchText}"
-                            HorizontalAlignment="Stretch"
-                            ToolTip.Tip="Clear search text"
-                            VerticalAlignment="Stretch">
-                            <avalonia:MaterialIcon
-                                HorizontalAlignment="Left"
-                                Kind="Close"
-                                VerticalAlignment="Center" />
-                        </Button>
+                            Content="{avalonia:MaterialIconExt Close,
+                                                               Size=24}"
+                            IsVisible="{Binding SearchText, Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                            Padding="4"
+                            Width="{Binding $self.Bounds.Height}" />
                     </TextBox.InnerRightContent>
                 </TextBox>
 
                 <!--  Выбор категории процессов  -->
-                <StackPanel Grid.Row="1" Orientation="Horizontal">
-                    <TextBlock Text="Category" />
-                    <ComboBox Items="{Binding ShowedProcessCategory, Converter={StaticResource EnumToCollectionConverter}}" SelectedItem="{Binding ShowedProcessCategory}" />
-                </StackPanel>
+                <ComboBox
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    ItemsSource="{Binding ShowedProcessCategory, Converter={StaticResource EnumToCollectionConverter}}"
+                    Margin="5,2"
+                    SelectedItem="{Binding ShowedProcessCategory}"
+                    Theme="{StaticResource MaterialOutlineComboBox}"
+                    assists:ComboBoxAssist.Label="{x:Static assets:Resources.Category}" />
+
+                <!--  Доп действия  -->
+                <Grid Margin="5" Row="2">
+                    <CheckBox Content="{x:Static assets:Resources.ProcessShowExtendedInfo}" Name="ProcessExtendedInfoCheckBox" />
+                </Grid>
+
             </Grid>
 
-            <DataGrid
-                Grid.Row="1"
-                Items="{Binding Items}"
-                SelectedItem="{Binding ProcessService.CurrentProcess}">
-                <DataGrid.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Command="{Binding KillProcess}" Header="{x:Static assets:Resources.ProcessViewKill}" />
-                    </ContextMenu>
-                </DataGrid.ContextMenu>
+            <Grid Grid.Row="1" Margin="0,20,0,0">
+                <DataGrid
+                    BorderBrush="Transparent"
+                    ItemsSource="{Binding Items}"
+                    SelectedItem="{Binding ProcessService.CurrentProcess}">
+                    <DataGrid.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Command="{Binding KillProcess}" Header="{x:Static assets:Resources.ProcessKill}" />
+                        </ContextMenu>
+                    </DataGrid.ContextMenu>
 
-                <DataGrid.Columns>
-                    <DataGridTextColumn
-                        Binding="{Binding ProductName}"
-                        Header="{x:Static assets:Resources.ProcessViewProductName}"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
-                    <DataGridTextColumn
-                        Binding="{Binding ModuleName}"
-                        Header="{x:Static assets:Resources.ProcessViewModuleName}"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
-                    <DataGridTextColumn
-                        Binding="{Binding ProcessName}"
-                        Header="{x:Static assets:Resources.ProcessViewProcessName}"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
-                    <DataGridTextColumn
-                        Binding="{Binding StartTime}"
-                        Header="{x:Static assets:Resources.ProcessViewStartTime}"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
-                    <DataGridTextColumn
-                        Binding="{Binding TotalProcessorTime}"
-                        Header="{x:Static assets:Resources.ProcessViewTotalProcessorTime}"
-                        Width="*"
-                        x:DataType="models:TaskProcess" />
-                    <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessViewPriority}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <ComboBox
-                                    IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
-                                    Items="{Binding PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
-                                    SelectedItem="{Binding PriorityClassCore}"
-                                    x:DataType="models:TaskProcess" />
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                </DataGrid.Columns>
-            </DataGrid>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn
+                            Binding="{Binding ProductName}"
+                            Header="{x:Static assets:Resources.ProcessProductName}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+                        <DataGridTextColumn
+                            Binding="{Binding ModuleName}"
+                            Header="{x:Static assets:Resources.ProcessModuleName}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+                        <DataGridTextColumn
+                            Binding="{Binding ProcessName}"
+                            Header="{x:Static assets:Resources.ProcessName}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+                        <DataGridTextColumn
+                            Binding="{Binding StartTime}"
+                            Header="{x:Static assets:Resources.ProcessStartTime}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+                        <DataGridTextColumn
+                            Binding="{Binding TotalProcessorTime}"
+                            Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox
+                                        IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                        ItemsSource="{Binding PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
+                                        SelectedItem="{Binding PriorityClassCore}"
+                                        x:DataType="models:TaskProcess" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
         </Grid>
 
-        <!--  Подробная информация о процессах  -->
-        <Grid Grid.Column="1" IsVisible="{Binding Path=ProcessService.CurrentProcess, Converter={x:Static StringConverters.IsNotNullOrEmpty}}">
-            <StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProductNameDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductName}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewModuleNameDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ModuleName}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProcessNameDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProcessName}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewStartTimeDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.StartTime}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
+        <SplitView
+            Background="{DynamicResource MainWindowBackground}"
+            DisplayMode="Inline"
+            Grid.Column="1"
+            IsPaneOpen="{Binding #ProcessExtendedInfoCheckBox.IsChecked}">
 
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewTotalProcessorTimeDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewPriorityDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.PriorityClassCore}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewCompanyNameDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.CompanyName}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewFileNameDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.FileName}" />
-                </StackPanel>
-                <StackPanel Height="20" Orientation="Horizontal">
-                    <TextBlock Text="{x:Static assets:Resources.ProcessViewProductVersionDetailed}" />
-                    <TextBlock Text="{Binding Path=ProcessService.CurrentProcess.ProductVersion}" />
-                </StackPanel>
-                <ListBox Items="{Binding ProcessService.CurrentProcess.Modules}" />
-            </StackPanel>
-        </Grid>
+            <SplitView.Pane>
+
+                <!--  Process info panel  -->
+                <Grid Margin="5,20,5,0" RowDefinitions="Auto,*">
+
+                    <!--  Header  -->
+                    <Grid Row="0">
+                        <TextBlock
+                            FontSize="24"
+                            HorizontalAlignment="Center"
+                            Margin="10"
+                            Text="{Binding Path=ProcessService.CurrentProcess.ProcessName, FallbackValue={x:Static assets:Resources.ProcessCurentNull}}"
+                            VerticalAlignment="Center" />
+
+                        <Border
+                            Classes="Separator"
+                            Margin="10,0"
+                            VerticalAlignment="Bottom" />
+                    </Grid>
+
+                    <!--  PlaceHolder for body  -->
+                    <Grid
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNull}}"
+                        VerticalAlignment="Center">
+
+                        <avalonia:MaterialIcon
+                            Height="184"
+                            Kind="Cat"
+                            Width="184" />
+
+                    </Grid>
+
+                    <!--  Body  -->
+                    <Grid
+                        IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}"
+                        Row="1"
+                        RowDefinitions="Auto,*">
+
+                        <ScrollViewer
+                            Grid.Row="0"
+                            HorizontalAlignment="Stretch"
+                            HorizontalScrollBarVisibility="Auto"
+                            Margin="5"
+                            Theme="{StaticResource MaterialModernScrollViewer}"
+                            VerticalAlignment="Stretch">
+
+                            <StackPanel Margin="5">
+
+                                <!--  Company name  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.CompanyName}"
+                                    Header="{x:Static assets:Resources.ProcessCompany}"
+                                    Margin="0" />
+
+                                <!--  Product Name  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.ProductName}"
+                                    Header="{x:Static assets:Resources.ProcessProductName}"
+                                    Margin="0" />
+
+                                <!--  Process Name  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.ProcessName}"
+                                    Header="{x:Static assets:Resources.ProcessName}"
+                                    Margin="0" />
+
+                                <!--  File Name  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.ModuleName}"
+                                    Header="{x:Static assets:Resources.ProcessModuleName}"
+                                    Margin="0" />
+
+                                <!--  File path  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.FileName}"
+                                    Header="{x:Static assets:Resources.ProcessFilePath}"
+                                    Margin="0" />
+
+                                <!--  Product version  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.ProductVersion}"
+                                    Header="{x:Static assets:Resources.ProcessProductVersion}"
+                                    Margin="0" />
+
+                                <!--  Process priority  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.PriorityClassCore}"
+                                    Header="{x:Static assets:Resources.ProcessPriority}"
+                                    Margin="0" />
+
+                                <!--  Start Time  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.StartTime}"
+                                    Header="{x:Static assets:Resources.ProcessStartTime}"
+                                    Margin="0" />
+
+                                <!--  CPU use Time  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}"
+                                    Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                                    Margin="0" />
+
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <Expander
+                            Grid.Row="1"
+                            Header="DLL"
+                            VerticalAlignment="Top">
+                            <ListBox ClipToBounds="True" ItemsSource="{Binding ProcessService.CurrentProcess.Modules}" />
+                        </Expander>
+
+                    </Grid>
+                </Grid>
+            </SplitView.Pane>
+
+        </SplitView>
+
+
     </Grid>
 
 
