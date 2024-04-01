@@ -9,7 +9,7 @@ public class DoubleLabelControl : TemplatedControl
     #region Header
 
     public static readonly StyledProperty<string> HeaderProperty =
-        AvaloniaProperty.Register<DoubleLabelControl, string>(nameof(Header), defaultValue: "Header");
+        AvaloniaProperty.Register<DoubleLabelControl, string>(nameof(Header), defaultValue: "");
 
     public string Header
     {
@@ -31,12 +31,11 @@ public class DoubleLabelControl : TemplatedControl
     }
 
     #endregion
-
-
+    
     #region Body
 
     public static readonly StyledProperty<string> BodyProperty =
-        AvaloniaProperty.Register<DoubleLabelControl, string>(nameof(Body), defaultValue: "Body");
+        AvaloniaProperty.Register<DoubleLabelControl, string>(nameof(Body), defaultValue: "");
 
     public string Body
     {
