@@ -43,7 +43,8 @@ public sealed class ComputerInfoService : IComputerInfoService
 
       if (double.TryParse(data, out var parsed))
       {
-         TotalPhysicalMemoryBytes = parsed;
+         // По непонятной причине возвращает кбайты
+         TotalPhysicalMemoryBytes = parsed * 1024;
       }
    }
 

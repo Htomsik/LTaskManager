@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Client.Infrastructure.Logging;
+using Client.Services.ComputerInfoService;
 using ReactiveUI;
 using Splat;
 
@@ -11,6 +12,8 @@ namespace Client.Models;
 /// </summary>
 public class TaskProcess : ReactiveObject
 {
+    #region Properties
+
     /// <summary>
     ///     Наименование которое задал разработчик
     /// </summary>
@@ -70,11 +73,20 @@ public class TaskProcess : ReactiveObject
     ///     Версия продукта
     /// </summary>
     public string? ProductVersion { get; set; }
-
+    
     /// <summary>
     ///     Испольемые модули
     /// </summary>
     public ProcessModuleCollection Modules => _windowsProcess.Modules;
+    
+    
+    /// <summary>
+    ///     Процент использования ОЗУ
+    /// </summary>
+    public double RamUsagePercent { get; set; }
+
+    #endregion
+    
 
     private readonly Process _windowsProcess;
 
@@ -87,8 +99,6 @@ public class TaskProcess : ReactiveObject
             _windowsProcess = windowsProcess;
             ProcessName = windowsProcess.ProcessName;
             StartTime = windowsProcess.StartTime;
-            TotalProcessorTime = windowsProcess.TotalProcessorTime;
-            _priorityClassCore = windowsProcess.PriorityClass;
             ProductName = windowsProcess.MainModule.FileVersionInfo.ProductName;
             ModuleName = windowsProcess.MainModule.ModuleName;
             CompanyName = windowsProcess.MainModule.FileVersionInfo.CompanyName;
@@ -117,6 +127,25 @@ public class TaskProcess : ReactiveObject
             return false;
         }
         return true;
+    }
+
+    /// <summary>
+    ///     Обновление
+    /// </summary>
+    public void Refresh()
+    {
+        _windowsProcess.Refresh();
+        
+        TotalProcessorTime = _windowsProcess.TotalProcessorTime;
+        _priorityClassCore = _windowsProcess.PriorityClass;
+    }
+    
+    /// <summary>
+    ///     Перерасчет полей
+    /// </summary>
+    public void Recalc(IComputerInfoService computerInfoService)
+    {
+        RamUsagePercent = double.Round(_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes, 1);
     }
 
     /// <summary>

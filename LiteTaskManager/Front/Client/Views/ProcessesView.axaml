@@ -78,20 +78,6 @@
 
                     <DataGrid.Columns>
 
-                        <!--  Product name  -->
-                        <DataGridTextColumn
-                            Binding="{Binding ProductName}"
-                            Header="{x:Static assets:Resources.ProcessProductName}"
-                            Width="*"
-                            x:DataType="models:TaskProcess" />
-
-                        <!--  File name  -->
-                        <DataGridTextColumn
-                            Binding="{Binding ModuleName}"
-                            Header="{x:Static assets:Resources.ProcessModuleName}"
-                            Width="*"
-                            x:DataType="models:TaskProcess" />
-
                         <!--  Process name  -->
                         <DataGridTextColumn
                             Binding="{Binding ProcessName}"
@@ -99,21 +85,26 @@
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
-                        <!--  Start time  -->
+                        <!--  Product name  -->
+                        <DataGridTextColumn
+                            Binding="{Binding ProductName}"
+                            Header="{x:Static assets:Resources.ProcessProductName}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
 
+                        <!--  Start time  -->
                         <DataGridTextColumn
                             Binding="{Binding StartTime}"
                             Header="{x:Static assets:Resources.ProcessStartTime}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
-                        <!--  CPU use Time  -->
+                        <!--  Ram usage percent  -->
                         <DataGridTextColumn
-                            Binding="{Binding TotalProcessorTime}"
-                            Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                            Binding="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
+                            Header="{x:Static assets:Resources.ProcessRamUsage}"
                             Width="*"
                             x:DataType="models:TaskProcess" />
-
 
                         <!--  Priority  -->
                         <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="{Binding AppInfoService.IsAdminMode}">
@@ -249,6 +240,12 @@
                                 <controls:DoubleLabelControl
                                     Body="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}"
                                     Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                                    Margin="0" />
+
+                                <!--  RAM usage  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.RamUsagePercent, StringFormat='{}{0:P}'}"
+                                    Header="{x:Static assets:Resources.ProcessRamUsage}"
                                     Margin="0" />
 
                             </StackPanel>

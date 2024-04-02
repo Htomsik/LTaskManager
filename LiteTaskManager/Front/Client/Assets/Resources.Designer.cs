@@ -196,6 +196,15 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на RAM usage.
+        /// </summary>
+        public static string ProcessRamUsage {
+            get {
+                return ResourceManager.GetString("ProcessRamUsage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Search.
         /// </summary>
         public static string ProcessSearch {

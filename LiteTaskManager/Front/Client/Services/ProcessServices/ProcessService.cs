@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
+using Client.Services.ComputerInfoService;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -36,6 +37,8 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     
     private readonly IStore<AppSettings> _appSettingStore;
     
+    private readonly IComputerInfoService _computerInfoService;
+
     public event Action<double>? UpdateTimerChangeNotifier;
 
     public event Action? ProcessSubscriptionsChanged;
@@ -44,9 +47,10 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
     #region Constructions
 
-    public ProcessService(IStore<AppSettings> appSettingStore)
+    public ProcessService(IStore<AppSettings> appSettingStore, IComputerInfoService computerInfoService)
     {
         _appSettingStore = appSettingStore;
+        _computerInfoService = computerInfoService;
 
         appSettingStore.CurrentValueChangedNotifier += () =>
         {
@@ -139,7 +143,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
     
     /// <summary>
-    ///     Обновление текущего списка процессов
+    ///     Создание нового списка процессов
     /// </summary>
     public void UpdateProcesses()
     {
@@ -152,6 +156,8 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
                 var taskProcess = new TaskProcess(process);
                 Processes.Add(taskProcess);
             }
+
+            ReCalcProcess();
             
             SetSubscribes();
 
@@ -171,6 +177,21 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         {
             this.Log().StructLogDebug("Invoked");
         }
+    }
+
+    /// <summary>
+    ///     Обновление текущих процессов
+    /// </summary>
+    private void ReCalcProcess()
+    {
+        new Action(() =>
+        {
+            foreach (var process in Processes)
+            {
+                process.Recalc(_computerInfoService);
+            }
+            
+        }).TimeLog(this.Log());
     }
     
     #endregion

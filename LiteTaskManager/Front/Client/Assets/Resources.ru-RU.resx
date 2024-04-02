@@ -180,4 +180,7 @@
   <data name="ProcessFilePath" xml:space="preserve">
     <value>Путь к файлу</value>
   </data>
+  <data name="ProcessRamUsage" xml:space="preserve">
+    <value>Использование ОЗУ </value>
+  </data>
 </root>

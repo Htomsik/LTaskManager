@@ -41,7 +41,7 @@ public interface IProcessService<TProcess>
     public void StopCurrentProcess();
     
     /// <summary>
-    ///     Обновление загруженных процессов
+    ///     Подгрузка новых процессов
     /// </summary>
     public void UpdateProcesses();
 }
