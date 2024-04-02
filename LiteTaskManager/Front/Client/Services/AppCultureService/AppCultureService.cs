@@ -36,6 +36,8 @@ internal sealed class AppCultureService : IAppCultureService, IEnableLogger
             this.Log().StructLogError($"Localization for culture {appCulture} doesn't exist", e.Message);
             return false;
         }
+        
+        this.Log().StructLogInfo($"Localization changed to {value}");
 
         return true;
     }

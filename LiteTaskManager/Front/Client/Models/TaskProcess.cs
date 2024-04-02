@@ -95,9 +95,9 @@ public class TaskProcess : ReactiveObject
             FileName = windowsProcess.MainModule.FileName;
             ProductVersion = windowsProcess.MainModule.FileVersionInfo.ProductVersion;
         }
-        catch (Exception e)
+        catch 
         {
-             this.Log().StructLogError($"Don't have access to {windowsProcess.ProcessName}", e.Message);
+             this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}");
         }
     }
 
