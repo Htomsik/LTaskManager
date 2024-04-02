@@ -1,7 +1,7 @@
 ﻿using Serilog;
+using Serilog.Events;
 using Splat;
 using Splat.Serilog;
-
 
 namespace Client.Infrastructure.DI;
 
@@ -18,9 +18,15 @@ internal static class AppConfiguration
         SplatContainerRegistration.WindowRegistration();
         
         var newLogger = new LoggerConfiguration()
-            .WriteTo.File(@"logs\Log-.txt", rollingInterval: RollingInterval.Day)
+            .WriteTo.File(@"logs\Log-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Information)
+            .CreateLogger();
+
+        #if DEBUG
+        newLogger = new LoggerConfiguration()
+            .WriteTo.File(@"logs\Log-.txt", rollingInterval: RollingInterval.Day, restrictedToMinimumLevel: LogEventLevel.Debug)
             .WriteTo.Console()
             .CreateLogger();
+        #endif
         
         Locator.CurrentMutable.UseSerilogFullLogger(newLogger);
         
