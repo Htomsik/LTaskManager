@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
 using AppInfrastructure.Stores.DefaultStore;
+using Client.Infrastructure.Logging;
 using Client.Models;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -125,7 +125,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         }
         catch (Exception e)
         {
-            this.Log().Error($"Can't {nameof(StopCurrentProcess)} {nameof(CurrentProcess)}. {e.Message}");
+            this.Log().StructLogError($"Process {CurrentProcess?.ProcessName} not killed", e.Message);
             return;
         }
         
@@ -134,7 +134,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             Processes.Remove(CurrentProcess);
         }
         
-        this.Log().Warn($"Process {CurrentProcess?.ProcessName} was killed");
+        this.Log().StructLogInfo($"Process {CurrentProcess?.ProcessName} was killed");
     }
 
     
@@ -143,12 +143,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     /// </summary>
     public void UpdateProcesses()
     {
-        var operationTimer = new Stopwatch();
-        operationTimer.Start();
-        
-        this.Log().Info($"Start processing {nameof(ProcessService)}:{nameof(UpdateProcesses)}");
-        
-        try
+        new Action(() =>
         {
             // При очистке медленнее, пересоздание быстрее
             Processes = new ObservableCollection<TaskProcess>();
@@ -161,16 +156,8 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             SetSubscribes();
 
             InvokeProcessSubscriptions();
-        }
-        catch (Exception e)
-        {
-            this.Log().Error($"Can't {nameof(UpdateProcesses)} {nameof(Processes)} . {e.Message}");
-            return;
-        }
-        
-        operationTimer.Stop();
-        
-        this.Log().Warn($"{nameof(UpdateProcesses)} {nameof(Processes)} sucess. Elapsed Time {operationTimer.ElapsedMilliseconds} ms");
+            
+        }).TimeLog(this.Log());
     }
 
     /// <summary>
@@ -182,7 +169,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
         if (ProcessSubscriptionsChanged is not null)
         {
-            this.Log().Info($"{nameof(ProcessSubscriptionsChanged)} invoked");
+            this.Log().StructLogDebug("Invoked");
         }
     }
     

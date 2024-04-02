@@ -1,7 +1,11 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Reactive;
+using Client.Infrastructure.Logging;
 using Client.Services.AppInfoService;
 using ReactiveUI;
+using Splat;
+
 
 namespace Client.ViewModels;
 
@@ -24,6 +28,15 @@ internal sealed class AppInfoViewModel : ViewModelBase
         {
             Process.Start(new ProcessStartInfo{FileName = AppInfoService.AppGitHub, UseShellExecute = true});
         });
+
+        #region Command logging
+
+        OpenGitHubUrl.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(OpenGitHubUrl)));
+        
+        OpenGitHubUrl.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(OpenGitHubUrl)));
+
+        #endregion
     }
     public ReactiveCommand<Unit, Unit> OpenGitHubUrl { get; set; }
 }

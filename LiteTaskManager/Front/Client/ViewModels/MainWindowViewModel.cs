@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using AppInfrastructure.Services.FileService;
 using AppInfrastructure.Stores.DefaultStore;
+using Client.Infrastructure.Logging;
 using Client.Models;
 using Material.Icons;
 using ReactiveUI;
@@ -75,20 +76,31 @@ internal sealed class MainWindowViewModel : ViewModelBase
 
         #endregion
 
-        #region Commands exeptions logging
+        #region  logging
         
-        Navigate.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(Navigate)} command:{x.Message}"));
-        SaveAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
-        GetAppSettings.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(SaveAppSettings)} command:{x.Message}"));
-
+        Navigate.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(Navigate)));
+        SaveAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(SaveAppSettings)));
+        GetAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(GetAppSettings)));
+        OpenAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(OpenAppSettings)));
+        OpenAboutInfo.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(OpenAboutInfo)));
+        
+        Navigate.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(Navigate)));
+        
+        SaveAppSettings.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(SaveAppSettings)));
+        
+        GetAppSettings.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(GetAppSettings)));
+        
+        OpenAppSettings.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(OpenAppSettings)));
+        
+        OpenAboutInfo.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(OpenAboutInfo)));
+        
         #endregion
-
-        #region Commands logging
-
-        Navigate.Subscribe(_ => this.Log().Info($"Processing commnad {nameof(Navigate)}. Page {CurrentViewModel?.GetType()} is open"));
-
-        #endregion
-
+        
         #region VMD initialize
 
         CurrentViewModel = processesViewModel;

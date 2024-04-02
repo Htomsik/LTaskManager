@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Client.Infrastructure.Logging;
 using Client.Models;
 using Splat;
 
@@ -22,7 +23,7 @@ internal sealed class AppCultureService : IAppCultureService, IEnableLogger
     {
         if (!_culturesStr.TryGetValue(appCulture, out var value))
         {
-            this.Log().Fatal($"Localization for culture {appCulture} doesn't exist");
+            this.Log().StructLogFatal($"Localization for culture {appCulture} doesn't exist");
             return false;
         }
         
@@ -32,9 +33,11 @@ internal sealed class AppCultureService : IAppCultureService, IEnableLogger
         }
         catch (Exception e)
         {
-            this.Log().Fatal($"Can't load localization {appCulture}. {e.Message}");
+            this.Log().StructLogError($"Localization for culture {appCulture} doesn't exist", e.Message);
             return false;
         }
+        
+        this.Log().StructLogInfo($"Localization changed to {value}");
 
         return true;
     }

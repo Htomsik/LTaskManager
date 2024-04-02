@@ -254,10 +254,13 @@
                             </StackPanel>
                         </ScrollViewer>
 
-                        <Expander
-                            Grid.Row="1"
-                            Header="DLL"
-                            VerticalAlignment="Top">
+                        <Expander Grid.Row="1" VerticalAlignment="Top">
+                            <Expander.Header>
+                                <controls:DoubleLabelControl
+                                    Body="{Binding ProcessService.CurrentProcess.Modules.Count}"
+                                    Header="DLL"
+                                    HeaderPostfix="" />
+                            </Expander.Header>
                             <ListBox ClipToBounds="True" ItemsSource="{Binding ProcessService.CurrentProcess.Modules}" />
                         </Expander>
 

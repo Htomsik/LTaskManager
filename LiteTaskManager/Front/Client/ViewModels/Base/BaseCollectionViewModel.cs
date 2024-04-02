@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using Client.Infrastructure.Logging;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -56,8 +57,10 @@ internal abstract class BaseCollectionViewModel<T> : ViewModelBase where T : not
     {
         ClearSearchText = ReactiveCommand.Create(() => { SearchText = string.Empty;});
 
-        ClearSearchText.ThrownExceptions.Subscribe(e => this.Log().Error($"Can't clear {nameof(SearchText)}. {e.Message}"));
-        ClearSearchText.Subscribe(_ => this.Log().Info($"{nameof(ClearSearchText)} executed"));
+        ClearSearchText.ThrownExceptions.Subscribe(e =>
+            this.Log().StructLogError($"Processing", e.Message, nameof(ClearSearchText)));
+
+        ClearSearchText.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(ClearSearchText)));
     }
 
     #endregion
