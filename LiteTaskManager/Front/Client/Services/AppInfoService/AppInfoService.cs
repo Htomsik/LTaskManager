@@ -20,7 +20,7 @@ internal sealed class AppInfoService : IAppInfoService
     
     private bool IsAdminCheck()
     {
-        if (!OperatingSystem.IsWindows()) ;
+        if (!OperatingSystem.IsWindows());
         {
             var identity = WindowsIdentity.GetCurrent();
             var principal = new WindowsPrincipal(identity);

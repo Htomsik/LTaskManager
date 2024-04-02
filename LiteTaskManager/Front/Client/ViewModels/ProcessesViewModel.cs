@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using Client.Infrastructure.Logging;
 using Client.Models;
 using Client.Services;
 using Client.Services.AppInfoService;
@@ -94,7 +95,15 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
       ProcessService = processService;
       
       KillProcess = ReactiveCommand.Create(processService.StopCurrentProcess);
-      KillProcess.ThrownExceptions.Subscribe(x => this.Log().Error($"Execptions then processing {nameof(KillProcess)} command:{x.Message}"));
+      
+      #region Command logging
+
+      KillProcess.ThrownExceptions.Subscribe(e =>
+         this.Log().StructLogError($"Processing", e.Message, nameof(KillProcess)));
+        
+      KillProcess.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(KillProcess)));
+
+      #endregion
       
       processService.ProcessSubscriptionsChanged += () =>
       {
@@ -167,5 +176,4 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    }
 
    #endregion
-   
 }

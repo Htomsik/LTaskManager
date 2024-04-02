@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Client.Infrastructure.Logging;
 using ReactiveUI;
 using Splat;
 
@@ -45,9 +46,11 @@ public class TaskProcess : ReactiveObject
         {
             if (value is null)
                 return;
-            if (ChangePriority(value) == true)
+            
+            if (ChangePriority(value))
                 _priorityClassCore = value;
-            this.RaisePropertyChanged(nameof(PriorityClassCore));
+            
+            this.RaisePropertyChanged();
         }
     }
 
@@ -94,13 +97,14 @@ public class TaskProcess : ReactiveObject
         }
         catch (Exception e)
         {
-             this.Log().Warn($"Can't get process from {nameof(windowsProcess)} {(windowsProcess.ProcessName)}. {e.Message}" );
+             this.Log().StructLogError($"Don't have access to {windowsProcess.ProcessName}", e.Message);
         }
     }
 
     /// <summary>
     ///     Изменяет приоритет процесса
     /// </summary>
+    /// TODO: Подумать о сервисе который будет заниматься операциями с процессами
     public bool ChangePriority(ProcessPriorityClass? processPriorityClass)
     {
         try
@@ -109,7 +113,7 @@ public class TaskProcess : ReactiveObject
         }
         catch(Exception e)
         {
-            this.Log().Warn($"Can't change process priority in {(_windowsProcess.ProcessName)}");
+            this.Log().StructLogError($"Can't change priority of {ProcessName}", e.Message);
             return false;
         }
         return true;
