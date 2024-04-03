@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Services.ComputerInfoService;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Client.Models;
@@ -77,16 +79,42 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Испольемые модули
     /// </summary>
-    public ProcessModuleCollection Modules => _windowsProcess.Modules;
-    
-    
+    public ProcessModuleCollection Modules
+    {
+        get
+        {
+            try
+            {
+                return _windowsProcess.Modules;
+            }
+            catch 
+            {
+                this.Log().StructLogDebug($"Can't get modules of {ProcessName}");
+                
+                return new ProcessModuleCollection(new ProcessModule[]{});
+            }
+        }
+    }
+
+
     /// <summary>
     ///     Процент использования ОЗУ
     /// </summary>
+    [Reactive]
     public double RamUsagePercent { get; set; }
+    
+    /// <summary>
+    ///     Процент использования ЦПУ
+    /// </summary>
+    [Reactive]
+    public double CpuUsagePercent { get; set; }
 
     #endregion
-    
+
+    /// <summary>
+    ///     Счетчик производительности для виндовс
+    /// </summary>
+    private readonly PerformanceCounter _performanceCounter;
 
     private readonly Process _windowsProcess;
 
@@ -108,6 +136,17 @@ public class TaskProcess : ReactiveObject
         catch 
         {
              this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}");
+        }
+
+        try
+        {
+            if (OperatingSystem.IsWindows())
+            {
+                _performanceCounter = new PerformanceCounter(PerfCounterExtentions.ProcessCategory, PerfCounterExtentions.ProcessCpuUsageCounter, ProcessName, true);
+            }
+        }
+        catch
+        {
         }
     }
 
@@ -145,6 +184,27 @@ public class TaskProcess : ReactiveObject
     /// </summary>
     public void Recalc(IComputerInfoService computerInfoService)
     {
+        if (OperatingSystem.IsWindows() && _performanceCounter != null)
+        {
+            try
+            {
+                // TODO не спраишивайте меня почему так, я сам не знаю
+                if (ProcessName == "Idle")
+                {
+                    CpuUsagePercent = _performanceCounter.NextValue() / 10000;
+                }
+                else
+                {
+                    CpuUsagePercent = _performanceCounter.NextValue() / 100;
+                }
+            }
+            catch 
+            {
+                this.Log().StructLogDebug(
+                    $"Don't have access to {PerfCounterExtentions.ProcessCpuUsageCounter} {ProcessName}");
+            }
+        }
+        
         RamUsagePercent = double.Round(_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes, 1);
     }
 

@@ -120,9 +120,6 @@
   <data name="AppSettingsLanguage" xml:space="preserve">
     <value>Language:</value>
   </data>
-  <data name="AppSettingsProcessDelay" xml:space="preserve">
-    <value>Process update delay:</value>
-  </data>
   <data name="ProcessSearch" xml:space="preserve">
     <value>Search</value>
   </data>
@@ -181,6 +178,15 @@
     <value>File path</value>
   </data>
   <data name="ProcessRamUsage" xml:space="preserve">
-    <value>RAM usage</value>
+    <value>RAM</value>
+  </data>
+  <data name="ProcessCPUUsage" xml:space="preserve">
+    <value>CPU</value>
+  </data>
+  <data name="AppSettingsProcessUpdateDelay" xml:space="preserve">
+    <value>Process update delay</value>
+  </data>
+  <data name="AppSettingsProcessReCalcDelay" xml:space="preserve">
+    <value>Process reсalc delay</value>
   </data>
 </root>

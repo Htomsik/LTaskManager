@@ -1,9 +1,9 @@
-﻿namespace Client.Models;
+﻿namespace Client.Extensions;
 
 /// <summary>
 ///     WMI параметр
 /// </summary>
-public static class WmiElement
+public static class WMIExtentions
 {
     /// <summary>
     ///     Процессор

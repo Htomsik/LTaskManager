@@ -105,7 +105,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
 
       #endregion
       
-      processService.ProcessSubscriptionsChanged += () =>
+      processService.ProcessesChanged += () =>
       {
          SetItemsSubscriptions(processService.Processes);
       };

@@ -1,5 +1,5 @@
 ﻿using System;
-using Client.Models;
+using Client.Extensions;
 using Client.Services.WMIService;
 
 
@@ -39,7 +39,7 @@ public sealed class ComputerInfoService : IComputerInfoService
    {
       string data;
 
-      data = _wmiService.GetHardwareInfo(WmiElement.TotalPhysicalRAM.Item1, WmiElement.TotalPhysicalRAM.Item2);
+      data = _wmiService.GetHardwareInfo(WMIExtentions.TotalPhysicalRAM.Item1, WMIExtentions.TotalPhysicalRAM.Item2);
 
       if (double.TryParse(data, out var parsed))
       {

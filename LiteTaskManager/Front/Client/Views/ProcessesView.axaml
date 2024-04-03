@@ -99,6 +99,13 @@
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
+                        <!--  CPU usage percent  -->
+                        <DataGridTextColumn
+                            Binding="{Binding CpuUsagePercent, StringFormat='{}{0:P}'}"
+                            Header="{x:Static assets:Resources.ProcessCPUUsage}"
+                            Width="*"
+                            x:DataType="models:TaskProcess" />
+
                         <!--  Ram usage percent  -->
                         <DataGridTextColumn
                             Binding="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
@@ -107,7 +114,7 @@
                             x:DataType="models:TaskProcess" />
 
                         <!--  Priority  -->
-                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="{Binding AppInfoService.IsAdminMode}">
+                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="True">
 
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -240,6 +247,12 @@
                                 <controls:DoubleLabelControl
                                     Body="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}"
                                     Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                                    Margin="0" />
+
+                                <!--  CPU usage  -->
+                                <controls:DoubleLabelControl
+                                    Body="{Binding Path=ProcessService.CurrentProcess.CpuUsagePercent, StringFormat='{}{0:P}'}"
+                                    Header="{x:Static assets:Resources.ProcessCPUUsage}"
                                     Margin="0" />
 
                                 <!--  RAM usage  -->

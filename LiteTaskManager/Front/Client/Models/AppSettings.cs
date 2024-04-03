@@ -13,8 +13,10 @@ internal sealed class AppSettings : ReactiveValidationObject
     [Reactive]
     public bool Agreement { get; set; }
     
+    #region ProcessUpdateTimeOut
+
     /// <summary>
-    ///     Делей между обновлениями процессов
+    ///     Делей между загрузкой новых процессов
     /// </summary>
     public double ProcessUpdateTimeOut
     {
@@ -38,13 +40,43 @@ internal sealed class AppSettings : ReactiveValidationObject
 
     private double _processUpdateTimeOut = 5;
 
+    #endregion
+    
+    #region ProcessReCalcTimeOut
+
+    /// <summary>
+    ///     Делей между обновлением данных процессов
+    /// </summary>
+    public double ProcessReCalcTimeOut
+    {
+        get => _processReCalcTimeOut;
+        set
+        {
+            if (value < 0)
+            {
+                value = 0;
+            }
+            
+            this.RaiseAndSetIfChanged(ref _processReCalcTimeOut, value);
+           
+            if (value < 1)
+            {
+                _processReCalcTimeOut = 1;
+            }
+
+        }
+    }
+
+    private double _processReCalcTimeOut = 1;
+
+    #endregion
+    
     /// <summary>
     ///     Текущая выбранная локализация
     /// </summary>
     [Reactive]
     public AppCulture Culture { get; set; }
-
-
+    
     public AppSettings()
     {
         SetValidation();
@@ -57,8 +89,12 @@ internal sealed class AppSettings : ReactiveValidationObject
     {
        this.ValidationRule(
             appSettings => appSettings.ProcessUpdateTimeOut, 
-            value => value >= 5,
+            value => value > 4,
             "TimeOut must be more than 4 seconds");
-
+       
+       this.ValidationRule(
+           appSettings => appSettings._processReCalcTimeOut, 
+           value => value > 1,
+           "TimeOut must be more than 1 second");
     }
 }
