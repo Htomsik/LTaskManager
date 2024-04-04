@@ -144,7 +144,7 @@ public class TaskProcess : ReactiveObject
             FileName = windowsProcess.MainModule.FileName;
             ProductVersion = windowsProcess.MainModule.FileVersionInfo.ProductVersion;
         }
-        catch 
+        catch (Exception e)
         {
 
              this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}", e.Message);
@@ -157,9 +157,9 @@ public class TaskProcess : ReactiveObject
                 _performanceCounter = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessCpuUsageCounter, ProcessName, true);
             }
         }
-        catch
+        catch (Exception e)
         {
-
+            this.Log().StructLogDebug($"Can't create {_performanceCounter}", e.Message);
         }
     }
 
