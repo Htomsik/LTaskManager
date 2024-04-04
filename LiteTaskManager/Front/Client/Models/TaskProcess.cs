@@ -49,6 +49,11 @@ public class TaskProcess : ReactiveObject
         get => _priorityClassCore;
         set
         {
+            if (HasExited)
+            {
+                return;
+            }
+            
             if (value is null)
                 return;
             
@@ -87,9 +92,9 @@ public class TaskProcess : ReactiveObject
             {
                 return _windowsProcess.Modules;
             }
-            catch 
+            catch (Exception e)
             {
-                this.Log().StructLogDebug($"Can't get modules of {ProcessName}");
+                this.Log().StructLogDebug($"Can't get modules of {ProcessName}", e.Message);
                 
                 return new ProcessModuleCollection(new ProcessModule[]{});
             }
@@ -108,6 +113,12 @@ public class TaskProcess : ReactiveObject
     /// </summary>
     [Reactive]
     public double CpuUsagePercent { get; set; }
+    
+    /// <summary>
+    ///     Завершен ли процесс
+    /// </summary>
+    [Reactive]
+    public bool HasExited { get; set; }
 
     #endregion
 
@@ -133,22 +144,24 @@ public class TaskProcess : ReactiveObject
             FileName = windowsProcess.MainModule.FileName;
             ProductVersion = windowsProcess.MainModule.FileVersionInfo.ProductVersion;
         }
-        catch 
+        catch (Exception e)
         {
-             this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}");
+             this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}", e.Message);
         }
 
         try
         {
             if (OperatingSystem.IsWindows())
             {
-                _performanceCounter = new PerformanceCounter(PerfCounterExtentions.ProcessCategory, PerfCounterExtentions.ProcessCpuUsageCounter, ProcessName, true);
+                _performanceCounter = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessCpuUsageCounter, ProcessName, true);
             }
         }
         catch
         {
         }
     }
+
+    #region Методы взаимодействия с процессом
 
     /// <summary>
     ///     Изменяет приоритет процесса
@@ -171,43 +184,39 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Обновление
     /// </summary>
-    public void Refresh()
+    public bool Refresh(IComputerInfoService computerInfoService)
     {
-        _windowsProcess.Refresh();
-        
-        TotalProcessorTime = _windowsProcess.TotalProcessorTime;
-        _priorityClassCore = _windowsProcess.PriorityClass;
-    }
-    
-    /// <summary>
-    ///     Перерасчет полей
-    /// </summary>
-    public void Recalc(IComputerInfoService computerInfoService)
-    {
-        if (OperatingSystem.IsWindows() && _performanceCounter != null)
+        // Если процесс завершен нет смысла его считать
+        if (HasExited)
         {
-            try
-            {
-                // TODO не спраишивайте меня почему так, я сам не знаю
-                if (ProcessName == "Idle")
-                {
-                    CpuUsagePercent = _performanceCounter.NextValue() / 10000;
-                }
-                else
-                {
-                    CpuUsagePercent = _performanceCounter.NextValue() / 100;
-                }
-            }
-            catch 
-            {
-                this.Log().StructLogDebug(
-                    $"Don't have access to {PerfCounterExtentions.ProcessCpuUsageCounter} {ProcessName}");
-            }
+            return false;
         }
         
-        RamUsagePercent = double.Round(_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes, 1);
-    }
+        try
+        {
+            _windowsProcess.Refresh();
+        
+            HasExited = _windowsProcess.HasExited;
+            TotalProcessorTime = _windowsProcess.TotalProcessorTime;
+            _priorityClassCore = _windowsProcess.PriorityClass;
+            
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogDebug($"Can't Refresh {ProcessName}", e.Message);
+        }
+        
+        if (HasExited)
+        {
+            ReCalcClear();
+            return false;
+        }
+        
+        ReCalc(computerInfoService);
 
+        return true;
+    }
+    
     /// <summary>
     ///     Остановка процесса
     /// </summary>
@@ -215,6 +224,66 @@ public class TaskProcess : ReactiveObject
     {
         _windowsProcess.Kill();
     }
+
+    #endregion
+    
+    #region ReCalc методы перерасчета
+
+    /// <summary>
+    ///     Перерасчет 
+    /// </summary>
+    private void ReCalc(IComputerInfoService computerInfoService)
+    {
+        ReCalCpuUsage();
+        
+        try
+        {
+            RamUsagePercent = double.Round(_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes, 1);
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogDebug(
+                $"Don't have access to {PerfCounterExtension.ProcessCpuUsageCounter} {ProcessName}", e.Message);
+        }
+    }
+
+    /// <summary>
+    ///     Перерасчет использования CPU
+    /// </summary>
+    private void ReCalCpuUsage()
+    {
+        if (!OperatingSystem.IsWindows()) return;
+        
+        try
+        {
+            // TODO не спраишивайте меня почему так, я сам не знаю
+            if (ProcessName == ProcessExtension.ProcessIdle)
+            {
+                CpuUsagePercent = _performanceCounter.NextValue() / 10000;
+            }
+            else
+            {
+                CpuUsagePercent = _performanceCounter.NextValue() / 100;
+            }
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogDebug(
+                $"Don't have access to {PerfCounterExtension.ProcessCpuUsageCounter} {ProcessName}", e.Message);
+        }
+    }
+
+    /// <summary>
+    ///     Очистка перерасчитываемых значений
+    /// </summary>
+    private void ReCalcClear()
+    {
+        CpuUsagePercent = 0;
+        RamUsagePercent = 0;
+    }
+
+    #endregion
+    
 
     public override string ToString()
     {

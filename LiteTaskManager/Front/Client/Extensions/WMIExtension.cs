@@ -1,9 +1,9 @@
 ﻿namespace Client.Extensions;
 
 /// <summary>
-///     WMI параметр
+///     Расширения для взаимодействия с WMI
 /// </summary>
-public static class WMIExtentions
+public static class WmiExtension
 {
     /// <summary>
     ///     Процессор

@@ -39,7 +39,7 @@ public sealed class ComputerInfoService : IComputerInfoService
    {
       string data;
 
-      data = _wmiService.GetHardwareInfo(WMIExtentions.TotalPhysicalRAM.Item1, WMIExtentions.TotalPhysicalRAM.Item2);
+      data = _wmiService.GetHardwareInfo(WmiExtension.TotalPhysicalRAM.Item1, WmiExtension.TotalPhysicalRAM.Item2);
 
       if (double.TryParse(data, out var parsed))
       {

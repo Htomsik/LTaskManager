@@ -3,7 +3,7 @@
 /// <summary>
 /// 
 /// </summary>
-public class PerfCounterExtentions
+public class PerfCounterExtension
 {
     /// <summary>
     ///     Категория взаимодействия с процессами

@@ -219,15 +219,15 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         {
             return;
         }
+        
         new Action(() =>
         {
             foreach (var process in Processes)
             {
-                process.Recalc(_computerInfoService);
+                process.Refresh(_computerInfoService);
             }
             
         }).TimeLog(this.Log());
-        
     }
     
     /// <summary>
