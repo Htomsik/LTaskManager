@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
@@ -93,7 +94,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     /// <summary>
     ///     Установка таймера на обновление
     /// </summary>
-    private void SetUpdateSubscribes()
+    private async void SetUpdateSubscribes()
     {
         _processDisposable?.Dispose();
 
@@ -106,7 +107,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         // Нужен на случаи первых вызовов
         if (Processes.Count == 0)
         {
-            UpdateProcesses();
+            await Task.Run(UpdateProcesses);
         }
         
         _processDisposable = this.WhenAnyValue(x => x.Processes)
@@ -161,14 +162,13 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             
         }).TimeLog(this.Log());
 
+        _canReCalc = true;
 
         RefreshProcess();
         
         // Обновление подписок
         SetUpdateSubscribes();
         InvokeProcessSubscriptions();
-
-        _canReCalc = true;
     }
 
     public void RefreshProcess()
