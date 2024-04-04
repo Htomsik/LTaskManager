@@ -18,7 +18,7 @@ internal sealed class AppSettings : ReactiveValidationObject
     /// <summary>
     ///     Делей между загрузкой новых процессов
     /// </summary>
-    public double ProcessUpdateTimeOut
+    public int ProcessUpdateTimeOut
     {
         get => _processUpdateTimeOut;
         set
@@ -38,7 +38,7 @@ internal sealed class AppSettings : ReactiveValidationObject
         }
     }
 
-    private double _processUpdateTimeOut = 5;
+    private int _processUpdateTimeOut = 5;
 
     #endregion
     
@@ -47,7 +47,7 @@ internal sealed class AppSettings : ReactiveValidationObject
     /// <summary>
     ///     Делей между обновлением данных процессов
     /// </summary>
-    public double ProcessReCalcTimeOut
+    public int ProcessReCalcTimeOut
     {
         get => _processReCalcTimeOut;
         set
@@ -67,7 +67,7 @@ internal sealed class AppSettings : ReactiveValidationObject
         }
     }
 
-    private double _processReCalcTimeOut = 1;
+    private int _processReCalcTimeOut = 1;
 
     #endregion
     

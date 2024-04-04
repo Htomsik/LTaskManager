@@ -37,12 +37,12 @@ internal sealed class StatusBarViewModel : ViewModelBase
         AppInfoService = appInfoService;
         
         // Подписка на изменение таймера одо обновления процессов
-        processService.UpdateTimerChangeNotifier += sec =>
+        processService.UpdateTimer.TimerChangedNotifier += sec =>
         {
-            ProcessesCurrentUpdateTime = processService.UpdateTimerSeconds - sec;
-            ProcessesMaxUpdateTime = processService.UpdateTimerSeconds;
+            ProcessesCurrentUpdateTime = processService.UpdateTimer.UpdateDelaySeconds - sec;
+            ProcessesMaxUpdateTime = processService.UpdateTimer.UpdateDelaySeconds;
         };
         
-        ProcessesMaxUpdateTime = processService.UpdateTimerSeconds;
+        ProcessesMaxUpdateTime = processService.UpdateTimer.UpdateDelaySeconds;
     }
 }
