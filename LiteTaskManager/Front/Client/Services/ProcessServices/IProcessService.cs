@@ -18,12 +18,17 @@ public interface IProcessService<TProcess>
     ///     Уведомитель о том что требуется перепривязать подписки
     /// <remarks>Отрабатывает в случае подгрузки новых процессов</remarks>
     /// </summary>
-    public event Action ProcessSubscriptionsChanged;
+    public event Action ProcessesChanged;
     
     /// <summary>
     ///         Делей между обновлениями списка процессов
     /// </summary>
     public double UpdateTimerSeconds { get;}
+    
+    /// <summary>
+    ///         Делеай между перерасчетом данных процессов
+    /// </summary>
+    public double ReCalcTimerSeconds { get;}
     
     /// <summary>
     ///      Загруженные процессы
@@ -41,7 +46,7 @@ public interface IProcessService<TProcess>
     public void StopCurrentProcess();
     
     /// <summary>
-    ///     Обновление загруженных процессов
+    ///     Подгрузка новых процессов
     /// </summary>
     public void UpdateProcesses();
 }

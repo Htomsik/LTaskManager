@@ -68,7 +68,7 @@
                     <Border Classes="Separator" Margin="5,0" />
                 </Grid>
 
-                <!--  Задержка обновления  -->
+                <!--  Задержка загрузки новых процессов  -->
                 <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">
 
                     <avalonia:MaterialIcon
@@ -82,7 +82,7 @@
                         Classes="FontBold"
                         HorizontalAlignment="Stretch"
                         Margin="2"
-                        Text="{x:Static assets:Resources.AppSettingsProcessDelay}"
+                        Text="{x:Static assets:Resources.AppSettingsProcessUpdateDelay}"
                         VerticalAlignment="Center" />
 
                     <TextBox
@@ -92,6 +92,36 @@
                         MaxWidth="100"
                         MinWidth="100"
                         Text="{Binding Settings.ProcessUpdateTimeOut, Mode=TwoWay}"
+                        Theme="{StaticResource OutlineTextBox}"
+                        Width="100" />
+
+                </StackPanel>
+
+
+                <!--  Задержка обновления данных процессов  -->
+                <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">
+
+                    <avalonia:MaterialIcon
+                        Classes="Default"
+                        HorizontalAlignment="Stretch"
+                        Kind="Clock"
+                        Margin="2"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Classes="FontBold"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        Text="{x:Static assets:Resources.AppSettingsProcessReCalcDelay}"
+                        VerticalAlignment="Center" />
+
+                    <TextBox
+                        Classes="outline"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        MaxWidth="100"
+                        MinWidth="100"
+                        Text="{Binding Settings.ProcessReCalcTimeOut, Mode=TwoWay}"
                         Theme="{StaticResource OutlineTextBox}"
                         Width="100" />
 

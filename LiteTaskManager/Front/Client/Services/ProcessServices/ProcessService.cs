@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
+using Client.Services.ComputerInfoService;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -21,41 +22,57 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     [Reactive]
     public TaskProcess? CurrentProcess { get; set; }
     
-    [Reactive]
-    public bool ShowOnlySystemProcess { get; set; }
-    
     public double UpdateTimerSeconds => _appSettingStore.CurrentValue.ProcessUpdateTimeOut;
 
+    public double ReCalcTimerSeconds => _appSettingStore.CurrentValue.ProcessReCalcTimeOut;
+    
+    public event Action<double>? UpdateTimerChangeNotifier;
+
+    public event Action? ProcessesChanged;
+    
     #endregion
 
     #region Fiels
     
     private IDisposable _processDisposable;
     
-    private IDisposable? _timer;
+    /// <summary>
+    ///     Таймер перезагрузки процессов
+    /// </summary>
+    private IDisposable? _updateProcessTimer;
+    
+    /// <summary>
+    ///     Таймер перерасчета данных процессов
+    /// </summary>
+    private IDisposable? _reCalcProcessTimer;
+    
+    /// <summary>
+    ///     Производится ли обновелние процессов
+    /// </summary>
+    private bool _canReCalc = true;
     
     private readonly IStore<AppSettings> _appSettingStore;
     
-    public event Action<double>? UpdateTimerChangeNotifier;
-
-    public event Action? ProcessSubscriptionsChanged;
+    private readonly IComputerInfoService _computerInfoService;
+    
     
     #endregion
 
     #region Constructions
 
-    public ProcessService(IStore<AppSettings> appSettingStore)
+    public ProcessService(IStore<AppSettings> appSettingStore, IComputerInfoService computerInfoService)
     {
         _appSettingStore = appSettingStore;
+        _computerInfoService = computerInfoService;
 
         appSettingStore.CurrentValueChangedNotifier += () =>
         {
             this.WhenAnyValue(x => x._appSettingStore.CurrentValue.ProcessUpdateTimeOut)
                 .Throttle(TimeSpan.FromSeconds(1))
-                .Subscribe(_ => SetSubscribes());
+                .Subscribe(_ => SetUpdateSubscribes());
 
             this.WhenAnyValue(x => x._appSettingStore.CurrentValue.Agreement)
-                .Subscribe(_ => SetSubscribes());
+                .Subscribe(_ => SetUpdateSubscribes());
         };
     }
 
@@ -64,37 +81,63 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     #region Methods
 
     /// <summary>
-    ///     Вызов уведомления об изменении оставшегося
+    ///     Вызов уведомления об изменении оставшегося времени до пересоздания процессов
     /// </summary>
-    private void OnTimerChange(double currentSec)
+    private void UpdateOnTimerChange(double currentSec)
     {
         UpdateTimerChangeNotifier?.Invoke(currentSec);
 
-        if (currentSec == 0)
-        {
-            UpdateProcesses();
-        }
+        if (currentSec != 0) return;
+        
+        UpdateProcesses();
     } 
     
     /// <summary>
-    ///     Установка уведомлятора о том через сколько секунд обновится список процессов
+    ///     Вызов уведомления об изменении оставшегося времени до пересоздания процессов
     /// </summary>
-    private void StartTimer()
+    private void ReCalcOnTimerChange(double currentSec)
     {
-        _timer?.Dispose();
+        if (currentSec != 0) return;
         
-        _timer = Observable
+        ReCalcProcess();
+        StartReCalcTimer();
+    } 
+    
+    /// <summary>
+    ///     Установки подписки для пересоздания процессов
+    /// </summary>
+    private void StartUpdateTimer()
+    {
+        _updateProcessTimer?.Dispose();
+        
+        _updateProcessTimer = Observable
             .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1))
             .Select(currentSeconds => UpdateTimerSeconds  - currentSeconds)
             .TakeWhile(currentSeconds => currentSeconds >= 0)
-            .Subscribe(OnTimerChange);
+            .Subscribe(UpdateOnTimerChange);
+
+        StartReCalcTimer();
+    }
+
+    /// <summary>
+    ///     Установки подписки для обновелния данных процессов
+    /// </summary>
+    private void StartReCalcTimer()
+    {
+        _reCalcProcessTimer?.Dispose();
+        
+        _reCalcProcessTimer = Observable
+            .Timer(DateTimeOffset.Now, TimeSpan.FromSeconds(1))
+            .Select(currentSeconds => ReCalcTimerSeconds  - currentSeconds)
+            .TakeWhile(currentSeconds => currentSeconds >= 0)
+            .Subscribe(ReCalcOnTimerChange);
     }
     
     
     /// <summary>
     ///     Установка таймера на обновление
     /// </summary>
-    private void SetSubscribes()
+    private void SetUpdateSubscribes()
     {
         _processDisposable?.Dispose();
 
@@ -111,8 +154,9 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         }
         
         _processDisposable = this.WhenAnyValue(x => x.Processes)
-            .Subscribe(_ => StartTimer());
+            .Subscribe(_ => StartUpdateTimer());
     }
+
     
     /// <summary>
     ///     Остановка выбранного процесса
@@ -139,10 +183,12 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
     
     /// <summary>
-    ///     Обновление текущего списка процессов
+    ///     Создание нового списка процессов
     /// </summary>
     public void UpdateProcesses()
     {
+        _canReCalc = false;
+        
         new Action(() =>
         {
             // При очистке медленнее, пересоздание быстрее
@@ -153,21 +199,47 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
                 Processes.Add(taskProcess);
             }
             
-            SetSubscribes();
+        }).TimeLog(this.Log());
 
-            InvokeProcessSubscriptions();
+
+        ReCalcProcess();
+        
+        // Обновление подписок
+        SetUpdateSubscribes();
+        InvokeProcessSubscriptions();
+
+        _canReCalc = true;
+    }
+    
+    /// <summary>
+    ///     Обновление текущих процессов
+    /// </summary>
+    private void ReCalcProcess()
+    {
+        if (!_canReCalc)
+        {
+            return;
+        }
+        
+        new Action(() =>
+        {
+            foreach (var process in Processes)
+            {
+                process.Refresh(_computerInfoService);
+            }
+
             
         }).TimeLog(this.Log());
     }
-
+    
     /// <summary>
     ///     Метод уведомления о необходимости перепривязки подписок
     /// </summary>
     private void InvokeProcessSubscriptions()
     {
-        ProcessSubscriptionsChanged?.Invoke();
+        ProcessesChanged?.Invoke();
 
-        if (ProcessSubscriptionsChanged is not null)
+        if (ProcessesChanged is not null)
         {
             this.Log().StructLogDebug("Invoked");
         }

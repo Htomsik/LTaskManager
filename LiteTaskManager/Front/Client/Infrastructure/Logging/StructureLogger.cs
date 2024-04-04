@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reactive.Joins;
 using System.Runtime.CompilerServices;
 using Splat;
 
@@ -13,6 +14,9 @@ public static class StructureLogger
     #region Const
 
     private const string Pattern  = "[{caller}:{callerMethod}]: {text}";
+
+
+    private const string ErrorPattern = "Have error:";
 
     #endregion
 
@@ -28,10 +32,16 @@ public static class StructureLogger
     
     public static void StructLogDebug(this IFullLogger logger, 
         string text,
+        string errorMessage = "",
         [CallerMemberName] string callerMethod = "",
         [CallerFilePath] string callerClass = "")
     {
-        logger.StructLog(LogLevel.Debug, text, callerMethod, callerClass);
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+            errorMessage = string.Concat(ErrorPattern, errorMessage);
+        }
+        logger.StructLog(LogLevel.Debug, $"{text}.{errorMessage}", callerMethod, callerClass);
+
     }
     
     public static void StructLogWarn(this IFullLogger logger, 
@@ -48,7 +58,12 @@ public static class StructureLogger
         [CallerMemberName] string callerMethod = "",
         [CallerFilePath] string callerClass = "")
     {
-        logger.StructLog(LogLevel.Error, $"{text}. Have error: {errorMessage}", callerMethod, callerClass);
+
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+            errorMessage = string.Concat(ErrorPattern, errorMessage);
+        }
+        logger.StructLog(LogLevel.Error, $"{text}.{errorMessage}", callerMethod, callerClass);
     }
     
     public static void StructLogFatal(this IFullLogger logger, 

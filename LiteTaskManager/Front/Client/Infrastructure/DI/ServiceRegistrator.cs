@@ -7,8 +7,10 @@ using Client.Models;
 using Client.Services;
 using Client.Services.AppCultureService;
 using Client.Services.AppInfoService;
+using Client.Services.ComputerInfoService;
 using Client.Services.FileServices;
 using Client.Services.ParserService;
+using Client.Services.WMIService;
 using ReactiveUI;
 using Splat;
 
@@ -28,5 +30,7 @@ internal static partial class SplatContainerRegistration
         SplatRegistrations.Register<IStoreFileService<IStore<AppSettings>, AppSettings>,AppSettingsStoreFileService>();
         SplatRegistrations.Register<IAppInfoService, AppInfoService>();
         SplatRegistrations.Register<IAppCultureService, AppCultureService>();
+        SplatRegistrations.Register<IWmiService, WmiService>();
+        SplatRegistrations.RegisterLazySingleton<IComputerInfoService, ComputerInfoService>();
     }
 } 

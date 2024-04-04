@@ -48,6 +48,8 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Splat.Serilog" Version="14.8.6" />
+        <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
+        <PackageReference Include="System.Management" Version="8.0.0" />
     </ItemGroup>
 
     <ItemGroup>

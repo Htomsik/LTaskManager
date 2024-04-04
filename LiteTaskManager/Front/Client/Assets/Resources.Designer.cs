@@ -97,11 +97,20 @@ namespace Client.Assets {
         }
         
         /// <summary>
-        ///   Ищет локализованную строку, похожую на Process update delay:.
+        ///   Ищет локализованную строку, похожую на Process reсalc delay.
         /// </summary>
-        public static string AppSettingsProcessDelay {
+        public static string AppSettingsProcessReCalcDelay {
             get {
-                return ResourceManager.GetString("AppSettingsProcessDelay", resourceCulture);
+                return ResourceManager.GetString("AppSettingsProcessReCalcDelay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Process update delay.
+        /// </summary>
+        public static string AppSettingsProcessUpdateDelay {
+            get {
+                return ResourceManager.GetString("AppSettingsProcessUpdateDelay", resourceCulture);
             }
         }
         
@@ -120,6 +129,15 @@ namespace Client.Assets {
         public static string ProcessCompany {
             get {
                 return ResourceManager.GetString("ProcessCompany", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на CPU.
+        /// </summary>
+        public static string ProcessCPUUsage {
+            get {
+                return ResourceManager.GetString("ProcessCPUUsage", resourceCulture);
             }
         }
         
@@ -192,6 +210,15 @@ namespace Client.Assets {
         public static string ProcessProductVersion {
             get {
                 return ResourceManager.GetString("ProcessProductVersion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на RAM.
+        /// </summary>
+        public static string ProcessRamUsage {
+            get {
+                return ResourceManager.GetString("ProcessRamUsage", resourceCulture);
             }
         }
         
