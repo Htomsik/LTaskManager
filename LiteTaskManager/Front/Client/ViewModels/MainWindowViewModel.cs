@@ -6,6 +6,7 @@ using AppInfrastructure.Services.FileService;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
+using Client.Timers.Base;
 using Material.Icons;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;

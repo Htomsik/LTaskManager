@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reactive.Joins;
 using System.Runtime.CompilerServices;
 using Splat;
 

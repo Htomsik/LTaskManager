@@ -1,5 +1,6 @@
 using System;
 using System.Collections.ObjectModel;
+using Client.Timers.Base;
 
 namespace Client.Services;
 
@@ -10,25 +11,20 @@ namespace Client.Services;
 public interface IProcessService<TProcess>
 {
     /// <summary>
-    ///     Уведомитель об оставщемся времени до обновления процессов
+    ///     Тааймер пересоздания процессов
     /// </summary>
-    public event Action<double> UpdateTimerChangeNotifier;
-
+    public IReactiveTimer UpdateTimer { get; }
+    
+    /// <summary>
+    ///     Таймер обновления данных процессов
+    /// </summary>
+    public IReactiveTimer RefreshTimer { get;  }
+    
     /// <summary>
     ///     Уведомитель о том что требуется перепривязать подписки
     /// <remarks>Отрабатывает в случае подгрузки новых процессов</remarks>
     /// </summary>
     public event Action ProcessesChanged;
-    
-    /// <summary>
-    ///         Делей между обновлениями списка процессов
-    /// </summary>
-    public double UpdateTimerSeconds { get;}
-    
-    /// <summary>
-    ///         Делеай между перерасчетом данных процессов
-    /// </summary>
-    public double ReCalcTimerSeconds { get;}
     
     /// <summary>
     ///      Загруженные процессы
@@ -49,4 +45,9 @@ public interface IProcessService<TProcess>
     ///     Подгрузка новых процессов
     /// </summary>
     public void UpdateProcesses();
+
+    /// <summary>
+    ///     Обновление существующих процессов
+    /// </summary>
+    public void RefreshProcess();
 }

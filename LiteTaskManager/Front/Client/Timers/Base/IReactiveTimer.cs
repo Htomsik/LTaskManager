@@ -18,6 +18,11 @@ public interface IReactiveTimer
     public bool ReCreate { get; set; }
     
     /// <summary>
+    ///     Запущен ли таймер
+    /// </summary>
+    public bool Executing { get; set; }
+    
+    /// <summary>
     ///     Уведомлятор о том сколько времени осталось
     /// </summary>
     public event Action<long>? TimerChangedNotifier;
