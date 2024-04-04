@@ -201,6 +201,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             
         }).TimeLog(this.Log());
 
+
         ReCalcProcess();
         
         // Обновление подписок
@@ -226,6 +227,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
             {
                 process.Refresh(_computerInfoService);
             }
+
             
         }).TimeLog(this.Log());
     }

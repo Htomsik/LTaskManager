@@ -15,6 +15,7 @@ public static class StructureLogger
 
     private const string Pattern  = "[{caller}:{callerMethod}]: {text}";
 
+
     private const string ErrorPattern = "Have error:";
 
     #endregion
@@ -40,6 +41,7 @@ public static class StructureLogger
             errorMessage = string.Concat(ErrorPattern, errorMessage);
         }
         logger.StructLog(LogLevel.Debug, $"{text}.{errorMessage}", callerMethod, callerClass);
+
     }
     
     public static void StructLogWarn(this IFullLogger logger, 
@@ -50,13 +52,13 @@ public static class StructureLogger
         logger.StructLog(LogLevel.Warn, text, callerMethod, callerClass);
     }
     
-    
     public static void StructLogError(this IFullLogger logger, 
         string text,
         string errorMessage,
         [CallerMemberName] string callerMethod = "",
         [CallerFilePath] string callerClass = "")
     {
+
         if (!string.IsNullOrEmpty(errorMessage))
         {
             errorMessage = string.Concat(ErrorPattern, errorMessage);
