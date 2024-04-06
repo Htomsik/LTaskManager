@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reactive.Linq;
@@ -154,12 +155,15 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         new Action(() =>
         {
             // При очистке медленнее, пересоздание быстрее
-            Processes = new ObservableCollection<TaskProcess>();
+            // Буффер требуется для устранения визуальных багов
+            var buffer = new List<TaskProcess>();
             foreach (var process in Process.GetProcesses())
             {
                 var taskProcess = new TaskProcess(process);
-                Processes.Add(taskProcess);
+                buffer.Add(taskProcess);
             }
+            
+            Processes = new ObservableCollection<TaskProcess>(buffer);
             
         }).TimeLog(this.Log());
 
