@@ -26,12 +26,12 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    /// <summary>
    ///   Сервис обрабатывающий процессы
    /// </summary>
-   public  IProcessService<TaskProcess> ProcessService { get; init; }
+   public  IProcessService<TaskProcess> ProcessService { get; }
    
    /// <summary>
    ///   Сервис информации о приложении
    /// </summary>
-   public IAppInfoService AppInfoService { get; init; }
+   public IAppInfoService AppInfoService { get; }
    
    /// <summary>
    ///     Отображаемые категории процессов
@@ -89,6 +89,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    #region Constructor
 
    /// <param name="processService">Сервис обрабатывающий процессы</param>
+   /// <param name="appInfoService"> Сервис информации о приложении</param>
    public ProcessesViewModel(IProcessService<TaskProcess> processService, IAppInfoService appInfoService) : base()
    {
       AppInfoService = appInfoService;
@@ -162,12 +163,12 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    /// </summary>
    private  Func<TaskProcess, bool> OnlySystemProcessFilterBuilder(ProcessCategory category)
    {
-      if (category == ProcessCategory.notSystems)
+      if (category == ProcessCategory.NotSystems)
       {
          return entity => !_systemProcessLists.Any(elem => elem.Contains(entity.ProcessName,StringComparison.OrdinalIgnoreCase));
       }
       
-      if (category == ProcessCategory.systems)
+      if (category == ProcessCategory.Systems)
       {
          return entity => _systemProcessLists.Any(elem => elem.Contains(entity.ProcessName,StringComparison.OrdinalIgnoreCase));
       }

@@ -10,11 +10,11 @@ public interface IAppInfoService
     /// </summary>
     public bool IsAdminMode { get; }
     
-    public string AppName { get; set; }
+    public string AppName { get; }
         
-    public string AppManufacturer { get; set; }
+    public string AppManufacturer { get; }
         
-    public string AppGitHub { get; set; }
+    public string AppGitHub { get; }
         
-    public string AppVersion { get; set; }
+    public string AppVersion { get; }
 }

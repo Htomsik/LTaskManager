@@ -7,11 +7,15 @@ namespace Client.Services.ComputerInfoService;
 
 public sealed class ComputerInfoService : IComputerInfoService
 {
-   private readonly IWmiService _wmiService;
-
    #region Properties
 
    public double TotalPhysicalMemoryBytes { get; set; }
+
+   #endregion
+
+   #region Fields
+
+   private readonly IWmiService _wmiService;
 
    #endregion
 

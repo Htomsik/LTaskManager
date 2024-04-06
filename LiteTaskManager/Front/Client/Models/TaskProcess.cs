@@ -9,6 +9,8 @@ using Splat;
 
 namespace Client.Models;
 
+// TODO : В модели слишком много логики ее управления
+// Нужно сделать отдельный сервис который бу управлял текущей моделью
 /// <summary>
 ///     Модель процессов Windows
 /// </summary>
@@ -19,17 +21,17 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Наименование которое задал разработчик
     /// </summary>
-    public string ProductName { get; set; }
+    public string ProductName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Наименование exe/dll файла
     /// </summary>
-    public string ModuleName { get; set; }
+    public string ModuleName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Наименование процесса
     /// </summary>
-    public string ProcessName { get; set; }
+    public string ProcessName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Время от старта процесса
@@ -53,11 +55,13 @@ public class TaskProcess : ReactiveObject
             {
                 return;
             }
-            
+
             if (value is null)
+            {
                 return;
+            }
             
-            if (ChangePriority(value))
+            if (ChangePriority((ProcessPriorityClass)value))
                 _priorityClassCore = value;
             
             this.RaisePropertyChanged();
@@ -69,17 +73,17 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Компания изготовитель
     /// </summary>
-    public string? CompanyName { get; set; }
+    public string CompanyName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Путь к исполняемому файлу
     /// </summary>
-    public string FileName { get; set; }
+    public string FileName { get; set; } = string.Empty;
 
     /// <summary>
     ///     Версия продукта
     /// </summary>
-    public string? ProductVersion { get; set; }
+    public string ProductVersion { get; set; } = string.Empty;
     
     /// <summary>
     ///     Испольемые модули
@@ -127,31 +131,33 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Выполнен ли первый проход perfomanceCounter
     /// </summary>
-    private bool _recalced = false;
+    private bool _perfRefreshed;
 
     #endregion
 
     /// <summary>
     ///     Счетчик производительности для виндовс
     /// </summary>
-    private readonly PerformanceCounter _performanceCounter;
+    private readonly PerformanceCounter? _performanceCounter;
 
-    private readonly Process _windowsProcess;
-
-    public TaskProcess(){}
-
+    private readonly Process _windowsProcess = new ();
+    
     public TaskProcess(Process windowsProcess)
     {
         try
         {
             _windowsProcess = windowsProcess;
+            
+            // Данные которые точно можно получить 
             ProcessName = windowsProcess.ProcessName;
             StartTime = windowsProcess.StartTime;
-            ProductName = windowsProcess.MainModule.FileVersionInfo.ProductName;
-            ModuleName = windowsProcess.MainModule.ModuleName;
-            CompanyName = windowsProcess.MainModule.FileVersionInfo.CompanyName;
-            FileName = windowsProcess.MainModule.FileName;
-            ProductVersion = windowsProcess.MainModule.FileVersionInfo.ProductVersion;
+            
+            // Есть риск что выйдет ошибка 
+            ModuleName = windowsProcess.MainModule?.ModuleName ?? string.Empty;
+            FileName = windowsProcess.MainModule?.FileName ?? string.Empty;
+            ProductName = windowsProcess.MainModule?.FileVersionInfo.ProductName ?? string.Empty;
+            CompanyName = windowsProcess.MainModule?.FileVersionInfo.CompanyName ?? string.Empty;
+            ProductVersion = windowsProcess.MainModule?.FileVersionInfo.ProductVersion ?? string.Empty;
         }
         catch (Exception e)
         {
@@ -178,17 +184,23 @@ public class TaskProcess : ReactiveObject
     ///     Изменяет приоритет процесса
     /// </summary>
     /// TODO: Подумать о сервисе который будет заниматься операциями с процессами
-    public bool ChangePriority(ProcessPriorityClass? processPriorityClass)
+    private bool ChangePriority(ProcessPriorityClass processPriorityClass)
     {
+        if (_windowsProcess.PriorityClass == processPriorityClass)
+        {
+            return false;
+        }
+        
         try
         {
-            _windowsProcess.PriorityClass = (ProcessPriorityClass)processPriorityClass;
+            _windowsProcess.PriorityClass = processPriorityClass;
         }
         catch(Exception e)
         {
             this.Log().StructLogError($"Can't change priority of {ProcessName}", e.Message);
             return false;
         }
+        
         return true;
     }
 
@@ -265,9 +277,15 @@ public class TaskProcess : ReactiveObject
     {
         if (!OperatingSystem.IsWindows()) return;
 
-        if (!_recalced)
+        if (_performanceCounter is null)
         {
-            _recalced = true;
+            this.Log().StructLogDebug($"{nameof(_perfRefreshed)} not initialized");
+            return;
+        }
+
+        if (!_perfRefreshed)
+        {
+            _perfRefreshed = true;
             _performanceCounter.NextValue();
         }
         
@@ -301,7 +319,6 @@ public class TaskProcess : ReactiveObject
 
     #endregion
     
-
     public override string ToString()
     {
         return ProcessName;

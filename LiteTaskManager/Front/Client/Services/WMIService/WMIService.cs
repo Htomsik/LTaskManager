@@ -11,15 +11,30 @@ public class WmiService : ReactiveObject, IWmiService
 {
     public string GetHardwareInfo(string win32Class, string classItemField)
     {
+        if (!OperatingSystem.IsWindows())
+        {
+            return string.Empty;
+        }
+        
         var result = new List<string>();
 
         var searcher = new ManagementObjectSearcher("SELECT * FROM " + win32Class);
 
         try 
         {
-            foreach (var obj in searcher.Get()) 
+            foreach (var obj in searcher.Get())
             {
-                result.Add(obj[classItemField].ToString().Trim());
+                if (obj[classItemField] is  null)
+                {
+                    continue;
+                }
+
+                if (string.IsNullOrEmpty(obj[classItemField].ToString()))
+                {
+                    continue;
+                }
+                
+                result.Add(obj[classItemField].ToString()!.Trim());
             }
         }
         catch (Exception e) 

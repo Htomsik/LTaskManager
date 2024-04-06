@@ -22,18 +22,18 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     public IReactiveTimer RefreshTimer { get;  }
     
     [Reactive]
-    public ObservableCollection<TaskProcess> Processes { get; set; } = new ();
+    public ObservableCollection<TaskProcess> Processes { get; private set; } = new ();
     
     [Reactive]
-    public TaskProcess? CurrentProcess { get; set; }
-    
+    public TaskProcess CurrentProcess { get; set; } = null!;
+
     public event Action? ProcessesChanged;
     
     #endregion
 
     #region Fiels
     
-    private IDisposable _processDisposable;
+    private IDisposable? _processDisposable;
     
     /// <summary>
     ///     Производится ли обновелние процессов
@@ -100,7 +100,7 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
         if (!_appSettingStore.CurrentValue.Agreement)
         {
-            Processes?.Clear();
+            Processes.Clear();
             return;
         }
         
@@ -130,24 +130,25 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     {
         try
         {
-            CurrentProcess?.Kill();
+            CurrentProcess.Kill();
+            Processes.Remove(CurrentProcess);
         }
         catch (Exception e)
         {
-            this.Log().StructLogError($"Process {CurrentProcess?.ProcessName} not killed", e.Message);
+            this.Log().StructLogError($"Process {CurrentProcess.ProcessName} not killed", e.Message);
             return;
         }
         
-        if (CurrentProcess is not null)
-        {
-            Processes.Remove(CurrentProcess);
-        }
-        
-        this.Log().StructLogInfo($"Process {CurrentProcess?.ProcessName} was killed");
+        this.Log().StructLogInfo($"Process {CurrentProcess.ProcessName} was killed");
     }
     
     public void UpdateProcesses()
     {
+        if (!_appSettingStore.CurrentValue.Agreement)
+        {
+            return;
+        }
+        
         _canReCalc = false;
         
         new Action(() =>
@@ -173,6 +174,11 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
     public void RefreshProcess()
     {
+        if (!_appSettingStore.CurrentValue.Agreement)
+        {
+            return;
+        }
+        
         if (!_canReCalc)
         {
             return;

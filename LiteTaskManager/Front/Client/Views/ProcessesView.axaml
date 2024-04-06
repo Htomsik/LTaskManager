@@ -95,7 +95,10 @@
 
                     <DataGrid.ContextMenu>
                         <ContextMenu IsEnabled="{Binding AppInfoService.IsAdminMode}">
-                            <MenuItem Command="{Binding KillProcess}" Header="{x:Static assets:Resources.ProcessKill}" />
+                            <MenuItem
+                                Command="{Binding KillProcess}"
+                                Header="{x:Static assets:Resources.ProcessKill}"
+                                IsEnabled="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}" />
                         </ContextMenu>
                     </DataGrid.ContextMenu>
 
