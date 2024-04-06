@@ -25,25 +25,28 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
     };
     
     
-    public Control Build(object vmd)
+    public Control Build(object? vmd)
     {
-        Control view = null!;
+        var view = new Control();
         
         try
         {
             view = (Control)Activator.CreateInstance(typeof(NoDataView))!;
+
+            if (vmd is not null)
+            {
+                var viewType = _vmdToViewTypes[vmd.GetType()];
             
-            var viewType = _vmdToViewTypes[vmd.GetType()];
-            
-            view = (Control)Activator.CreateInstance(viewType)!;
+                view = (Control)Activator.CreateInstance(viewType)!;
+            }
         }
         catch(Exception e)
         {
-            this.Log().Error($"Could not find the view  for view model {vmd.GetType().FullName}. {e.Message}");
+            this.Log().Error($"Could not find the view for view model {vmd?.GetType().FullName}. {e.Message}");
         }
         
         return view;
     }
 
-    public bool Match(object data) => data is ReactiveObject;
+    public bool Match(object? data) => data is ReactiveObject;
 }

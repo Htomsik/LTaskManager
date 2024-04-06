@@ -8,15 +8,15 @@ public enum ProcessCategory
     /// <summary>
     ///     Все
     /// </summary>
-    all,
+    All,
     
     /// <summary>
     ///     Только системные
     /// </summary>
-    systems,
+    Systems,
     
     /// <summary>
     ///     Только не системные
     /// </summary>
-    notSystems
+    NotSystems
 }

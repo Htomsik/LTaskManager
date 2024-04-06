@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Reactive.Linq;
+using Client.Infrastructure.Logging;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Client.Timers.Base;
 
@@ -90,9 +92,16 @@ public class ReactiveTimer : ReactiveObject, IReactiveTimer
         TimerChangedNotifier?.Invoke(currentSec);
         
         if(currentSec != 0) return;
-        
-        _actionOver?.Invoke();
 
+        try
+        {
+            _actionOver.Invoke();
+        }
+        catch (Exception e)
+        {
+           this.Log().StructLogError("Invoke action error", e.Message);
+        }
+        
         if (ReCreate)
         {
             Start();
