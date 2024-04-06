@@ -11,6 +11,7 @@
     xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
+    xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
@@ -100,21 +101,61 @@
                             x:DataType="models:TaskProcess" />
 
                         <!--  CPU usage percent  -->
-                        <DataGridTextColumn
-                            Binding="{Binding CpuUsagePercent, StringFormat='{}{0:P}'}"
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessCPUUsage}"
+                            SortMemberPath="CpuUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="models:TaskProcess">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            Margin="0"
+                                            Text="{Binding CpuUsagePercent, StringFormat='{}{0:P}'}"
+                                            VerticalAlignment="Center"
+                                            ZIndex="1" />
+                                        <Border
+                                            Background="{Binding CpuUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                            Opacity="0.25"
+                                            ZIndex="0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                        <!--  Ram usage percent  -->
-                        <DataGridTextColumn
-                            Binding="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
+                        <!--  RAM usage percent  -->
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessRamUsage}"
+                            SortMemberPath="RamUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="models:TaskProcess">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            Margin="0"
+                                            Text="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
+                                            VerticalAlignment="Center"
+                                            ZIndex="1" />
+                                        <Border
+                                            Background="{Binding RamUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                            Opacity="0.25"
+                                            ZIndex="0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <!--  Priority  -->
-                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="True">
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
+                            Header="{x:Static assets:Resources.ProcessPriority}"
+                            IsVisible="True"
+                            SortMemberPath="PriorityClassCore">
 
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

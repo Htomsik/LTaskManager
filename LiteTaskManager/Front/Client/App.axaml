@@ -59,8 +59,14 @@
     <Application.Resources>
         <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
         <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
+        <converters:DoublePercentToColor x:Key="DoublePercentToColor" />
 
         <SolidColorBrush Color="#212121" x:Key="MainWindowBackground" />
+
+        <SolidColorBrush Color="#D50000" x:Key="Percent75" />
+        <SolidColorBrush Color="#FF6D00" x:Key="Percent50" />
+        <SolidColorBrush Color="#FFEB3B" x:Key="Percent25" />
+        <SolidColorBrush Color="#00C853" x:Key="Percent0" />
     </Application.Resources>
 
     <Application.DataTemplates>
