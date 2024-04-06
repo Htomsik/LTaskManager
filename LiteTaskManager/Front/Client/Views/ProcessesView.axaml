@@ -65,6 +65,20 @@
             </Grid>
 
             <Grid Grid.Row="1" Margin="0,20,0,0">
+
+                <!--  PlaceHolder for null processes  -->
+                <Grid
+                    HorizontalAlignment="Center"
+                    IsVisible="{Binding Items, Converter={StaticResource CollectionIsNullToVisibleConverter}}"
+                    VerticalAlignment="Center">
+
+                    <avalonia:MaterialIcon
+                        Height="184"
+                        Kind="Cat"
+                        Width="184" />
+                </Grid>
+
+                <!--  Базовая информация о процессе  -->
                 <DataGrid
                     BorderBrush="Transparent"
                     ItemsSource="{Binding Items}"
@@ -82,6 +96,7 @@
                         <DataGridTextColumn
                             Binding="{Binding ProcessName}"
                             Header="{x:Static assets:Resources.ProcessName}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
@@ -89,6 +104,7 @@
                         <DataGridTextColumn
                             Binding="{Binding ProductName}"
                             Header="{x:Static assets:Resources.ProcessProductName}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
@@ -96,25 +112,69 @@
                         <DataGridTextColumn
                             Binding="{Binding StartTime}"
                             Header="{x:Static assets:Resources.ProcessStartTime}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
                         <!--  CPU usage percent  -->
-                        <DataGridTextColumn
-                            Binding="{Binding CpuUsagePercent, StringFormat='{}{0:P}'}"
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessCPUUsage}"
+                            IsReadOnly="True"
+                            SortMemberPath="CpuUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="models:TaskProcess">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            Margin="0"
+                                            Text="{Binding CpuUsagePercent, StringFormat='{}{0:P}'}"
+                                            VerticalAlignment="Center"
+                                            ZIndex="1" />
+                                        <Border
+                                            Background="{Binding CpuUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                            Opacity="0.25"
+                                            ZIndex="0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                        <!--  Ram usage percent  -->
-                        <DataGridTextColumn
-                            Binding="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
+                        <!--  RAM usage percent  -->
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessRamUsage}"
+                            IsReadOnly="True"
+                            SortMemberPath="RamUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="models:TaskProcess">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            Margin="0"
+                                            Text="{Binding RamUsagePercent, StringFormat='{}{0:P}'}"
+                                            VerticalAlignment="Center"
+                                            ZIndex="1" />
+                                        <Border
+                                            Background="{Binding RamUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                            Opacity="0.25"
+                                            ZIndex="0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <!--  Priority  -->
-                        <DataGridTemplateColumn Header="{x:Static assets:Resources.ProcessPriority}" IsVisible="True">
+                        <DataGridTemplateColumn
+                            CanUserSort="True"
+                            Header="{x:Static assets:Resources.ProcessPriority}"
+                            IsVisible="True"
+                            SortMemberPath="PriorityClassCore"
+                            Width="*">
 
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -165,7 +225,7 @@
                             VerticalAlignment="Bottom" />
                     </Grid>
 
-                    <!--  PlaceHolder for body  -->
+                    <!--  PlaceHolder for null current process  -->
                     <Grid
                         Grid.Row="1"
                         HorizontalAlignment="Center"

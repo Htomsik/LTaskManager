@@ -122,6 +122,15 @@ public class TaskProcess : ReactiveObject
 
     #endregion
 
+    #region Fields
+
+    /// <summary>
+    ///     Выполнен ли первый проход perfomanceCounter
+    /// </summary>
+    private bool _recalced = false;
+
+    #endregion
+
     /// <summary>
     ///     Счетчик производительности для виндовс
     /// </summary>
@@ -255,6 +264,12 @@ public class TaskProcess : ReactiveObject
     private void ReCalCpuUsage()
     {
         if (!OperatingSystem.IsWindows()) return;
+
+        if (!_recalced)
+        {
+            _recalced = true;
+            _performanceCounter.NextValue();
+        }
         
         try
         {

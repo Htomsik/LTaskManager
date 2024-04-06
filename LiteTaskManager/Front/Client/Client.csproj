@@ -23,17 +23,17 @@
 
     <ItemGroup>
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-        <PackageReference Include="Avalonia" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Desktop" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.10" />
-        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.10" />
-        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10" />
+        <PackageReference Include="Avalonia" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Fonts.Inter" Version="11.0.0" />
+        <PackageReference Include="Avalonia.ReactiveUI" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.0" />
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.0" />
         <PackageReference Include="fastJSON" Version="2.4.0.4" />
         <PackageReference Include="LiteApp" Version="0.1.4" />
-        <PackageReference Include="Material.Avalonia" Version="3.4.1" />
-        <PackageReference Include="Material.Avalonia.DataGrid" Version="3.4.1" />
+        <PackageReference Include="Material.Avalonia" Version="3.4.0" />
+        <PackageReference Include="Material.Avalonia.DataGrid" Version="3.4.0" />
         <PackageReference Include="Material.Icons.Avalonia" Version="2.1.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
         <PackageReference Include="ReactiveUI" Version="19.6.1" />
