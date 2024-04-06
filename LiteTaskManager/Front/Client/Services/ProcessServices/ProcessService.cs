@@ -148,6 +148,11 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     
     public void UpdateProcesses()
     {
+        if (!_appSettingStore.CurrentValue.Agreement)
+        {
+            return;
+        }
+        
         _canReCalc = false;
         
         new Action(() =>
@@ -173,6 +178,11 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
 
     public void RefreshProcess()
     {
+        if (!_appSettingStore.CurrentValue.Agreement)
+        {
+            return;
+        }
+        
         if (!_canReCalc)
         {
             return;

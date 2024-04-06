@@ -21,16 +21,22 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
     
     public override Task<bool> GetAsync()
     {
-        Task<bool> result = null;
+        var result = new Task<bool>(() => false);
         
-        new Action(() => {result = base.GetAsync(); }).TimeLog(this.Log());
+        new Action(() => { result = base.GetAsync(); }).TimeLog(this.Log());
+
+        if (result.Exception is null && result.Result) return result;
         
+        this.Log().StructLogWarn($"Recreating {FileName}");
+        SetAsync();
+        new Action(() => { result = base.GetAsync(); }).TimeLog(this.Log());
+
         return result;
     }
 
     public override Task<bool> SetAsync()
     {
-        Task<bool> result = null;
+        var result = new Task<bool>(() => false);
         
         new Action(() => {result = base.SetAsync(); }).TimeLog(this.Log());
         
