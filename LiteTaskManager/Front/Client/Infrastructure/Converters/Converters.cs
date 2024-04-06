@@ -23,31 +23,6 @@ public class ObjectToStringConverter : IValueConverter
     }
 }
 
-/// <summary>
-///     Конвертер коллекции в visible
-/// <remarks> Коллекция пустая - true</remarks>
-/// </summary>
-public class CollectionIsNullToVisibleConverter : IValueConverter
-{
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        var isVisible = value switch
-        {
-            null => true,
-            ICollection collection => collection.Count == 0,
-            _ => false
-        };
-
-        return isVisible;
-    }
-
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
-}
-
-
 
 /// <summary>
 ///     Конвертер процентов в цвета

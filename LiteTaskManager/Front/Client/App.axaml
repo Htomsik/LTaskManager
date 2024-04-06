@@ -60,7 +60,6 @@
         <converters:ObjectToStringConverter x:Key="ObjectToStringConverter" />
         <converters:EnumToCollectionConverter x:Key="EnumToCollectionConverter" />
         <converters:DoublePercentToColor x:Key="DoublePercentToColor" />
-        <converters:CollectionIsNullToVisibleConverter x:Key="CollectionIsNullToVisibleConverter" />
 
         <SolidColorBrush Color="#212121" x:Key="MainWindowBackground" />
 

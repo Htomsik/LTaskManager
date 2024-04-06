@@ -69,18 +69,27 @@
                 <!--  PlaceHolder for null processes  -->
                 <Grid
                     HorizontalAlignment="Center"
-                    IsVisible="{Binding Items, Converter={StaticResource CollectionIsNullToVisibleConverter}}"
+                    IsVisible="{Binding !Items.Count}"
+                    RowDefinitions="Auto, Auto"
                     VerticalAlignment="Center">
 
                     <avalonia:MaterialIcon
                         Height="184"
                         Kind="Cat"
                         Width="184" />
+
+                    <TextBlock
+                        Classes="Headline6"
+                        Grid.Row="1"
+                        HorizontalAlignment="Center"
+                        Text="Wait updating process"
+                        VerticalAlignment="Center" />
                 </Grid>
 
                 <!--  Базовая информация о процессе  -->
                 <DataGrid
                     BorderBrush="Transparent"
+                    IsVisible="{Binding Items.Count}"
                     ItemsSource="{Binding Items}"
                     SelectedItem="{Binding ProcessService.CurrentProcess}">
 
