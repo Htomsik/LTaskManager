@@ -11,7 +11,6 @@
     xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
-    xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
@@ -66,6 +65,20 @@
             </Grid>
 
             <Grid Grid.Row="1" Margin="0,20,0,0">
+
+                <!--  PlaceHolder for null processes  -->
+                <Grid
+                    HorizontalAlignment="Center"
+                    IsVisible="{Binding Items, Converter={StaticResource CollectionIsNullToVisibleConverter}}"
+                    VerticalAlignment="Center">
+
+                    <avalonia:MaterialIcon
+                        Height="184"
+                        Kind="Cat"
+                        Width="184" />
+                </Grid>
+
+                <!--  Базовая информация о процессе  -->
                 <DataGrid
                     BorderBrush="Transparent"
                     ItemsSource="{Binding Items}"
@@ -83,6 +96,7 @@
                         <DataGridTextColumn
                             Binding="{Binding ProcessName}"
                             Header="{x:Static assets:Resources.ProcessName}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
@@ -90,6 +104,7 @@
                         <DataGridTextColumn
                             Binding="{Binding ProductName}"
                             Header="{x:Static assets:Resources.ProcessProductName}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
@@ -97,6 +112,7 @@
                         <DataGridTextColumn
                             Binding="{Binding StartTime}"
                             Header="{x:Static assets:Resources.ProcessStartTime}"
+                            IsReadOnly="True"
                             Width="*"
                             x:DataType="models:TaskProcess" />
 
@@ -104,6 +120,7 @@
                         <DataGridTemplateColumn
                             CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessCPUUsage}"
+                            IsReadOnly="True"
                             SortMemberPath="CpuUsagePercent"
                             Width="*"
                             x:DataType="models:TaskProcess">
@@ -129,6 +146,7 @@
                         <DataGridTemplateColumn
                             CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessRamUsage}"
+                            IsReadOnly="True"
                             SortMemberPath="RamUsagePercent"
                             Width="*"
                             x:DataType="models:TaskProcess">
@@ -155,7 +173,8 @@
                             CanUserSort="True"
                             Header="{x:Static assets:Resources.ProcessPriority}"
                             IsVisible="True"
-                            SortMemberPath="PriorityClassCore">
+                            SortMemberPath="PriorityClassCore"
+                            Width="*">
 
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -206,7 +225,7 @@
                             VerticalAlignment="Bottom" />
                     </Grid>
 
-                    <!--  PlaceHolder for body  -->
+                    <!--  PlaceHolder for null current process  -->
                     <Grid
                         Grid.Row="1"
                         HorizontalAlignment="Center"
