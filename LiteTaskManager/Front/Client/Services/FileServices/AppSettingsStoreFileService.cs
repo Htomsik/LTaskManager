@@ -25,7 +25,7 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
         
         new Action(() => { result = base.GetAsync(); }).TimeLog(this.Log());
 
-        if (result.Exception is null && result.Result) return result;
+        if (result.Exception is null) return result;
         
         this.Log().StructLogWarn($"Recreating {FileName}");
         SetAsync();

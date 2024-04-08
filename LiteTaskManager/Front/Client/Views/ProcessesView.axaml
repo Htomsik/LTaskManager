@@ -87,9 +87,57 @@
                 </Grid>
 
                 <!--  Базовая информация о процессе  -->
+                <TreeDataGrid Margin="5" Source="{Binding ItemsHierarch}">
+
+                    <TreeDataGrid.ContextMenu>
+                        <ContextMenu IsEnabled="{Binding AppInfoService.IsAdminMode}">
+                            <MenuItem
+                                Command="{Binding KillProcess}"
+                                Header="{x:Static assets:Resources.ProcessKill}"
+                                IsEnabled="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                        </ContextMenu>
+                    </TreeDataGrid.ContextMenu>
+
+                    <TreeDataGrid.Resources>
+                        <!--  Шаблон вывода использования RAM  -->
+                        <DataTemplate DataType="models:TaskProcess" x:Key="ProcessRamUsagePercentTemplate">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    Margin="0"
+                                    Text="{Binding RamUsagePercent, StringFormat='{}{0} %'}"
+                                    VerticalAlignment="Center"
+                                    ZIndex="1" />
+                                <Border
+                                    Background="{Binding RamUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                    Opacity="0.25"
+                                    ZIndex="0" />
+                            </Grid>
+                        </DataTemplate>
+
+                        <!--  Шаблон вывода использования CPU  -->
+                        <DataTemplate DataType="models:TaskProcess" x:Key="ProcessCpuUsagePercentTemplate">
+                            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                <TextBlock
+                                    HorizontalAlignment="Left"
+                                    Margin="0"
+                                    Text="{Binding CpuUsagePercent, StringFormat='{}{0} %'}"
+                                    VerticalAlignment="Center"
+                                    ZIndex="1" />
+                                <Border
+                                    Background="{Binding CpuUsagePercent, Converter={StaticResource DoublePercentToColor}}"
+                                    Opacity="0.25"
+                                    ZIndex="0" />
+                            </Grid>
+                        </DataTemplate>
+
+                    </TreeDataGrid.Resources>
+                </TreeDataGrid>
+
+                <!--  Базовая информация о процессе  -->
                 <DataGrid
                     BorderBrush="Transparent"
-                    IsVisible="{Binding Items.Count}"
+                    IsVisible="False"
                     ItemsSource="{Binding Items}"
                     SelectedItem="{Binding ProcessService.CurrentProcess}">
 
@@ -323,13 +371,13 @@
 
                                 <!--  CPU usage  -->
                                 <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.CpuUsagePercent, StringFormat='{}{0:P}'}"
+                                    Body="{Binding Path=ProcessService.CurrentProcess.CpuUsagePercent, StringFormat='{}{0} %'}"
                                     Header="{x:Static assets:Resources.ProcessCPUUsage}"
                                     Margin="0" />
 
                                 <!--  RAM usage  -->
                                 <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.RamUsagePercent, StringFormat='{}{0:P}'}"
+                                    Body="{Binding Path=ProcessService.CurrentProcess.RamUsagePercent, StringFormat='{}{0} %'}"
                                     Header="{x:Static assets:Resources.ProcessRamUsage}"
                                     Margin="0" />
 
