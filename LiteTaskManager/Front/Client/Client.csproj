@@ -6,9 +6,16 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <AssemblyVersion>0.0.0.1</AssemblyVersion>
-        <Company>BIBA &amp; BOBA CORP</Company>
+        <AssemblyVersion>0.0.2</AssemblyVersion>
+        <Company>Htomsik</Company>
         <Product>Lite Task Manager</Product>
+        <ApplicationIcon>Assets\Pictures\AppIcon.ico</ApplicationIcon>
+        <Version>0.0.2</Version>
+        <Title>LiteTaskManager</Title>
+        <Authors>Htomsik</Authors>
+        <Description>Simple task manager app</Description>
+        <PackageIcon>Assets\Pictures\AppIcon.png</PackageIcon>
+        <PackageReleaseNotes>Unstable</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
