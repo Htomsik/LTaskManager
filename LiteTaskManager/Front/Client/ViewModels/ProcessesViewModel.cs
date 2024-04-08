@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
+using Avalonia.Controls;
+using Avalonia.Controls.Models.TreeDataGrid;
+using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Models;
 using Client.Services;
@@ -22,6 +26,12 @@ namespace Client.ViewModels;
 internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
 {
    #region Properties
+   
+   /// <summary>
+   ///   Альетрнативная коллекция для деревьев
+   /// </summary>
+   [Reactive]
+   public HierarchicalTreeDataGridSource<TaskProcess>? ItemsHierarch { get; set; }
 
    /// <summary>
    ///   Сервис обрабатывающий процессы
@@ -149,8 +159,44 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
             .ObserveOn(RxApp.MainThreadScheduler)
             .Bind(out SelectedItems)
             .DisposeMany()
-            .Subscribe();
-        
+            .Subscribe(_ =>
+            {
+               if (ItemsHierarch is not null)
+               {
+                  ItemsHierarch.Items = Items!;
+               }
+               else
+               {
+                  ItemsHierarch = new HierarchicalTreeDataGridSource<TaskProcess>(Items!)
+                  {
+                     Columns =
+                     {
+                        new HierarchicalExpanderColumn<TaskProcess>(
+                           new TextColumn<TaskProcess, string>
+                              (Assets.Resources.ProcessName, x => x.ProcessName), 
+                           x => x.Childs,
+                           x => x.Childs.Count >0),
+                        
+                        new TextColumn<TaskProcess, double>("Id", x => x.ProcessId),
+                        new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessCPUUsage} (%)", ResourcesExtension.ProcessCpuUsagePercentTemplate),
+                        new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessRamUsage} (%)", ResourcesExtension.ProcessRamUsagePercentTemplate),
+                        new TextColumn<TaskProcess, ProcessPriorityClass?>(Assets.Resources.ProcessPriority, x => x.PriorityClassCore),
+                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessProductName, x => x.ProductName),
+                        new TextColumn<TaskProcess, TimeSpan>(Assets.Resources.ProcessTotalProcessorTime, x => x.TotalProcessorTime),
+                     }
+                  };
+               }
+               
+               if (ItemsHierarch.RowSelection != null)
+               {
+                  ItemsHierarch.RowSelection.SelectionChanged += (_, args) =>
+                  {
+                     ProcessService.CurrentProcess = args.SelectedItems[0];
+                  };
+               }
+                  
+            });
+      
       this.RaisePropertyChanged(nameof(Items));
    }
 

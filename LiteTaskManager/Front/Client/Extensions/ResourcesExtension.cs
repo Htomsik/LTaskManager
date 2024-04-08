@@ -49,4 +49,23 @@ public static class ResourcesExtension
     private static IBrush? _percent0Brush;
     
     #endregion
+
+    #region Templates names
+
+    /// <summary>
+    ///     Шаблон вывода % CPU
+    /// </summary>
+    public static readonly string ProcessCpuUsagePercentTemplate = "ProcessCpuUsagePercentTemplate";
+    
+    /// <summary>
+    ///     Шаблон вывода % RAM
+    /// </summary>
+    public static readonly string ProcessRamUsagePercentTemplate = "ProcessRamUsagePercentTemplate";
+
+    /// <summary>
+    ///     Шаблон выбора приоритета процесса
+    /// </summary>
+    public static readonly string ProcessPriorityTemplate = "ProcessPriorityTemplate";
+
+    #endregion
 }

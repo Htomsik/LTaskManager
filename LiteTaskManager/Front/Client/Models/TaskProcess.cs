@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
@@ -17,6 +18,18 @@ namespace Client.Models;
 public class TaskProcess : ReactiveObject
 {
     #region Properties
+    
+    /// <summary>
+    ///     Id процесса
+    /// </summary>
+    public int ProcessId => _windowsProcess.Id;
+
+    /// <summary>
+    ///     Id процесса
+    /// </summary>
+    public int ParentId => _parentId ??= GetParentId();
+
+    private int? _parentId;
 
     /// <summary>
     ///     Наименование которое задал разработчик
@@ -123,6 +136,9 @@ public class TaskProcess : ReactiveObject
     /// </summary>
     [Reactive]
     public bool HasExited { get; set; }
+    
+    
+    public List<TaskProcess> Childs { get; } = new();
 
     #endregion
 
@@ -138,7 +154,12 @@ public class TaskProcess : ReactiveObject
     /// <summary>
     ///     Счетчик производительности для виндовс
     /// </summary>
-    private readonly PerformanceCounter? _performanceCounter;
+    private readonly PerformanceCounter? _performanceCounterCpuUsage;
+    
+    /// <summary>
+    ///     Счетчик производительности для виндовс
+    /// </summary>
+    private readonly PerformanceCounter? _performanceCounterParentId;
 
     private readonly Process _windowsProcess = new ();
     
@@ -169,12 +190,13 @@ public class TaskProcess : ReactiveObject
         {
             if (OperatingSystem.IsWindows())
             {
-                _performanceCounter = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessCpuUsageCounter, ProcessName, true);
+                _performanceCounterCpuUsage = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessCpuUsageCounter, ProcessName, true);
+                _performanceCounterParentId = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessParentId, ProcessName, true);
             }
         }
         catch (Exception e)
         {
-            this.Log().StructLogDebug($"Can't create {_performanceCounter}", e.Message);
+            this.Log().StructLogDebug($"Can't create {_performanceCounterCpuUsage}", e.Message);
         }
     }
 
@@ -205,10 +227,18 @@ public class TaskProcess : ReactiveObject
     }
 
     /// <summary>
-    ///     Обновление
+    ///     Обновление данных
     /// </summary>
-    public bool Refresh(IComputerInfoService computerInfoService)
+    public bool Refresh(IComputerInfoService computerInfoService, bool includeChilds = true)
     {
+        if (includeChilds)
+        {
+            foreach (var elem in Childs)
+            {
+                elem.Refresh(computerInfoService, true);
+            }
+        }
+        
         // Если процесс завершен нет смысла его считать
         if (HasExited)
         {
@@ -261,7 +291,7 @@ public class TaskProcess : ReactiveObject
         
         try
         {
-            RamUsagePercent = double.Round(_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes, 1);
+            RamUsagePercent = double.Round((_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes) * 100, 2);
         }
         catch (Exception e)
         {
@@ -277,29 +307,33 @@ public class TaskProcess : ReactiveObject
     {
         if (!OperatingSystem.IsWindows()) return;
 
-        if (_performanceCounter is null)
+        if (_performanceCounterCpuUsage is null)
         {
             this.Log().StructLogDebug($"{nameof(_perfRefreshed)} not initialized");
             return;
         }
-
+        
         if (!_perfRefreshed)
         {
             _perfRefreshed = true;
-            _performanceCounter.NextValue();
+            _performanceCounterCpuUsage.NextValue();
         }
         
         try
         {
+            double cpuUsage; 
+            
             // TODO не спраишивайте меня почему так, я сам не знаю
             if (ProcessName == ProcessExtension.ProcessIdle)
             {
-                CpuUsagePercent = _performanceCounter.NextValue() / 10000;
+                cpuUsage = _performanceCounterCpuUsage.NextValue() / 10000;
             }
             else
             {
-                CpuUsagePercent = _performanceCounter.NextValue() / 100;
+                cpuUsage = _performanceCounterCpuUsage.NextValue() / 100;
             }
+
+            CpuUsagePercent = double.Round(cpuUsage * 100, 2);
         }
         catch (Exception e)
         {
@@ -315,6 +349,25 @@ public class TaskProcess : ReactiveObject
     {
         CpuUsagePercent = 0;
         RamUsagePercent = 0;
+    }
+
+    /// <summary>
+    ///     Получение Id родителя
+    /// </summary>
+    private int GetParentId()
+    {
+        if (!OperatingSystem.IsWindows())
+        {
+            return 0;
+        }
+        
+        if (_performanceCounterParentId is null)
+        {
+            this.Log().StructLogDebug($"{nameof(_perfRefreshed)} not initialized");
+            return 0;
+        }
+        
+        return (int)_performanceCounterParentId.NextValue();
     }
 
     #endregion

@@ -14,4 +14,9 @@ public class PerfCounterExtension
     ///     Процент использования CPU
     /// </summary>
     public static string ProcessCpuUsageCounter = "% Processor Time";
+    
+    /// <summary>
+    ///     Id родительского процесса
+    /// </summary>
+    public static string ProcessParentId = "Creating Process ID";
 }

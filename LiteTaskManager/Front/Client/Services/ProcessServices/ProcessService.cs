@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AppInfrastructure.Stores.DefaultStore;
@@ -145,27 +146,23 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
     
     public void UpdateProcesses()
     {
+        CurrentProcess = null!;
+        
         if (!_appSettingStore.CurrentValue.Agreement)
         {
             return;
         }
         
         _canReCalc = false;
-        
-        new Action(() =>
+
+        if (OperatingSystem.IsWindows())
         {
-            // При очистке медленнее, пересоздание быстрее
-            // Буффер требуется для устранения визуальных багов
-            var buffer = new List<TaskProcess>();
-            foreach (var process in Process.GetProcesses())
-            {
-                var taskProcess = new TaskProcess(process);
-                buffer.Add(taskProcess);
-            }
-            
-            Processes = new ObservableCollection<TaskProcess>(buffer);
-            
-        }).TimeLog(this.Log());
+            UpdateProcessWindows();
+        }
+        else
+        {
+            UpdateProcessUnix();
+        }
 
         _canReCalc = true;
 
@@ -176,6 +173,83 @@ internal sealed class ProcessService : ReactiveObject, IProcessService<TaskProce
         InvokeProcessSubscriptions();
     }
 
+    /// <summary>
+    ///     Обновление списка процессов для винды
+    /// </summary>
+    private void UpdateProcessWindows()
+    {
+        new Action(() =>
+        {
+            if (!OperatingSystem.IsWindows())
+            {
+                throw new NotSupportedException("Method invoked in not supported os");
+            }
+            
+            // 1 итерация, собираем все процессы в один список
+            var buffer = new Dictionary<int, TaskProcess>();
+            foreach (var process in Process.GetProcesses())
+            {
+                var taskProcess = new TaskProcess(process);
+                
+                buffer.Add(taskProcess.ProcessId,  taskProcess);
+            }
+
+            var childsIdx = new List<int>();
+            // 2 итерация, распределяем процессы по родителям
+            foreach (var taskProcess in buffer.Values.Where(taskProcess => taskProcess.ParentId != 0))
+            {
+                var getParent =  buffer.TryGetValue(taskProcess.ParentId, out var parentTaskProcess);
+                
+                if (!getParent)
+                {
+                    try
+                    {
+                        var parent =   Process.GetProcessById(taskProcess.ParentId);
+                        parentTaskProcess = new TaskProcess(parent);
+                        buffer.Add(parentTaskProcess.ProcessId, parentTaskProcess);
+                    }
+                    catch
+                    {
+                        this.Log().StructLogDebug("Can't get parent process");
+                        continue;
+                    }
+                }
+
+                parentTaskProcess.Childs.Add(taskProcess);
+                
+                childsIdx.Add(taskProcess.ProcessId);
+            }
+            
+            // 3. Удаляем лишние
+            foreach (var processId in childsIdx)
+            {
+                buffer.Remove(processId);
+            }
+            
+            Processes = new ObservableCollection<TaskProcess>(buffer.Values);
+            
+        }).TimeLog(this.Log());
+    }
+    
+    /// <summary>
+    ///     Обновление списка процессов для Unix систем
+    /// </summary>
+    private void UpdateProcessUnix()
+    {
+        new Action(() =>
+        {
+            var buffer = new HashSet<TaskProcess>();
+            foreach (var process in Process.GetProcesses())
+            {
+                var taskProcess = new TaskProcess(process);
+                buffer.Add(taskProcess);
+            }
+            
+            Processes = new ObservableCollection<TaskProcess>(buffer);
+            
+        }).TimeLog(this.Log());
+    }
+    
     public void RefreshProcess()
     {
         if (!_appSettingStore.CurrentValue.Agreement)
