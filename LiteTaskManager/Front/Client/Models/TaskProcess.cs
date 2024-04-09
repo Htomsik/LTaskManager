@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Linq;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Services.ComputerInfoService;
@@ -139,6 +141,36 @@ public class TaskProcess : ReactiveObject
     
     
     public List<TaskProcess> Childs { get; } = new();
+
+ 
+    /// <summary>
+    ///     Используемые ядра процесса
+    /// </summary>
+    public ObservableCollection<ProcessAffinityCore> ProcessorAffinity
+    {
+        get
+        {
+            try
+            {
+                var chars = Convert.ToString(_windowsProcess.ProcessorAffinity, 2).ToList();
+            
+                var affinity = new ObservableCollection<ProcessAffinityCore>();
+            
+                for (var index = 0; index < chars.Count; index++)
+                {
+                    affinity.Add(new ProcessAffinityCore(index, chars[index] == '1'));
+                }
+            
+                return affinity;
+            }
+            catch (Exception e)
+            {
+                this.Log().StructLogDebug("Can't get affinity", e.Message);
+                return new ObservableCollection<ProcessAffinityCore>();
+            }
+        }
+    }
+ 
 
     #endregion
 

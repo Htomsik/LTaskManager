@@ -399,10 +399,11 @@
 
                             <!--  Операции с текущим процессом  -->
                             <TabItem Header="{x:Static assets:Resources.Modify}">
-                                <controlsMaterail:Card Classes="ExtendedProcessInfoPanel">
-                                    <StackPanel>
 
-                                        <!--  Изменение приоритета  -->
+                                <Grid Classes="ExtendedProcessInfoPanel" RowDefinitions="Auto, *">
+
+                                    <!--  Изменение приоритета  -->
+                                    <controlsMaterail:Card Margin="0,0,0,5">
                                         <Grid
                                             Classes="Horizontal"
                                             ColumnDefinitions="Auto,*"
@@ -425,9 +426,54 @@
                                                 SelectedItem="{Binding ProcessService.CurrentProcess.PriorityClassCore}"
                                                 Theme="{StaticResource MaterialOutlineComboBox}" />
                                         </Grid>
+                                    </controlsMaterail:Card>
 
-                                    </StackPanel>
-                                </controlsMaterail:Card>
+                                    <!--  Используемые ядра  -->
+                                    <controlsMaterail:Card Grid.Row="1" VerticalAlignment="Stretch">
+                                        <Grid RowDefinitions="Auto, *">
+
+                                            <TextBlock
+                                                Classes="Headline6"
+                                                Grid.Row="0"
+                                                HorizontalAlignment="Center"
+                                                Text="Process core usage"
+                                                VerticalAlignment="Center" />
+
+                                            <ListBox
+                                                Grid.Row="1"
+                                                HorizontalAlignment="Center"
+                                                IsEnabled="False"
+                                                ItemsSource="{Binding ProcessService.CurrentProcess.ProcessorAffinity}"
+                                                VerticalAlignment="Top">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                HorizontalAlignment="Center"
+                                                                Text="{Binding Number}"
+                                                                VerticalAlignment="Center" />
+                                                            <CheckBox
+                                                                HorizontalAlignment="Center"
+                                                                IsChecked="{Binding Used}"
+                                                                VerticalAlignment="Center" />
+                                                        </StackPanel>
+
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+
+                                    </controlsMaterail:Card>
+
+                                </Grid>
+
+
                             </TabItem>
                         </TabControl>
                     </Grid>
