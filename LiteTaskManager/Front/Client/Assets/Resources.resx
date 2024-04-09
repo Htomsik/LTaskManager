@@ -189,4 +189,10 @@
   <data name="AppSettingsProcessReCalcDelay" xml:space="preserve">
     <value>Process reсalc delay</value>
   </data>
+  <data name="Modify" xml:space="preserve">
+    <value>Modify</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Info</value>
+  </data>
 </root>

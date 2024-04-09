@@ -181,8 +181,9 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
                         new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessCPUUsage} (%)", ResourcesExtension.ProcessCpuUsagePercentTemplate),
                         new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessRamUsage} (%)", ResourcesExtension.ProcessRamUsagePercentTemplate),
                         new TextColumn<TaskProcess, ProcessPriorityClass?>(Assets.Resources.ProcessPriority, x => x.PriorityClassCore),
-                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessProductName, x => x.ProductName),
                         new TextColumn<TaskProcess, TimeSpan>(Assets.Resources.ProcessTotalProcessorTime, x => x.TotalProcessorTime),
+                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessProductName, x => x.ProductName),
+                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessModuleName, x => x.ModuleName),
                      }
                   };
                }
@@ -191,7 +192,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
                {
                   ItemsHierarch.RowSelection.SelectionChanged += (_, args) =>
                   {
-                     ProcessService.CurrentProcess = args.SelectedItems[0];
+                     ProcessService.CurrentProcess = args.SelectedItems.Count != 0 ? args.SelectedItems[0] : null;
                   };
                }
                   

@@ -124,6 +124,24 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Info.
+        /// </summary>
+        public static string Info {
+            get {
+                return ResourceManager.GetString("Info", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Modify.
+        /// </summary>
+        public static string Modify {
+            get {
+                return ResourceManager.GetString("Modify", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Company.
         /// </summary>
         public static string ProcessCompany {

@@ -11,6 +11,7 @@
     xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
+    xmlns:controlsMaterail="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
@@ -266,7 +267,6 @@
             IsPaneOpen="{Binding #ProcessExtendedInfoCheckBox.IsChecked}">
 
             <SplitView.Pane>
-
                 <!--  Process info panel  -->
                 <Grid Margin="5,20,5,0" RowDefinitions="Auto,*">
 
@@ -300,108 +300,185 @@
                     </Grid>
 
                     <!--  Body  -->
-                    <Grid
-                        IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}"
-                        Row="1"
-                        RowDefinitions="Auto,*">
+                    <Grid IsVisible="{Binding ProcessService.CurrentProcess, Converter={x:Static ObjectConverters.IsNotNull}}" Row="1">
 
-                        <ScrollViewer
-                            Grid.Row="0"
-                            HorizontalAlignment="Stretch"
-                            HorizontalScrollBarVisibility="Auto"
-                            Margin="5"
-                            Theme="{StaticResource MaterialModernScrollViewer}"
-                            VerticalAlignment="Stretch">
+                        <TabControl>
+                            <!--  extended info  -->
+                            <TabItem Header="{x:Static assets:Resources.Info}">
+                                <controlsMaterail:Card Classes="ExtendedProcessInfoPanel">
+                                    <ScrollViewer HorizontalScrollBarVisibility="Auto">
+                                        <StackPanel Margin="5">
 
-                            <StackPanel Margin="5">
+                                            <!--  Company name  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.CompanyName}"
+                                                Header="{x:Static assets:Resources.ProcessCompany}"
+                                                Margin="0" />
 
-                                <!--  Company name  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.CompanyName}"
-                                    Header="{x:Static assets:Resources.ProcessCompany}"
-                                    Margin="0" />
+                                            <!--  Product Name  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.ProductName}"
+                                                Header="{x:Static assets:Resources.ProcessProductName}"
+                                                Margin="0" />
 
-                                <!--  Product Name  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.ProductName}"
-                                    Header="{x:Static assets:Resources.ProcessProductName}"
-                                    Margin="0" />
+                                            <!--  Process Name  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.ProcessName}"
+                                                Header="{x:Static assets:Resources.ProcessName}"
+                                                Margin="0" />
 
-                                <!--  Process Name  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.ProcessName}"
-                                    Header="{x:Static assets:Resources.ProcessName}"
-                                    Margin="0" />
+                                            <!--  File Name  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.ModuleName}"
+                                                Header="{x:Static assets:Resources.ProcessModuleName}"
+                                                Margin="0" />
 
-                                <!--  File Name  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.ModuleName}"
-                                    Header="{x:Static assets:Resources.ProcessModuleName}"
-                                    Margin="0" />
+                                            <!--  File path  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.FileName}"
+                                                Header="{x:Static assets:Resources.ProcessFilePath}"
+                                                Margin="0" />
 
-                                <!--  File path  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.FileName}"
-                                    Header="{x:Static assets:Resources.ProcessFilePath}"
-                                    Margin="0" />
+                                            <!--  Product version  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.ProductVersion}"
+                                                Header="{x:Static assets:Resources.ProcessProductVersion}"
+                                                Margin="0" />
 
-                                <!--  Product version  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.ProductVersion}"
-                                    Header="{x:Static assets:Resources.ProcessProductVersion}"
-                                    Margin="0" />
+                                            <!--  Process priority  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.PriorityClassCore}"
+                                                Header="{x:Static assets:Resources.ProcessPriority}"
+                                                Margin="0" />
 
-                                <!--  Process priority  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.PriorityClassCore}"
-                                    Header="{x:Static assets:Resources.ProcessPriority}"
-                                    Margin="0" />
+                                            <!--  Start Time  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.StartTime}"
+                                                Header="{x:Static assets:Resources.ProcessStartTime}"
+                                                Margin="0" />
 
-                                <!--  Start Time  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.StartTime}"
-                                    Header="{x:Static assets:Resources.ProcessStartTime}"
-                                    Margin="0" />
+                                            <!--  CPU use Time  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}"
+                                                Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
+                                                Margin="0" />
 
-                                <!--  CPU use Time  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.TotalProcessorTime}"
-                                    Header="{x:Static assets:Resources.ProcessTotalProcessorTime}"
-                                    Margin="0" />
+                                            <!--  CPU usage  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.CpuUsagePercent, StringFormat='{}{0} %'}"
+                                                Header="{x:Static assets:Resources.ProcessCPUUsage}"
+                                                Margin="0" />
 
-                                <!--  CPU usage  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.CpuUsagePercent, StringFormat='{}{0} %'}"
-                                    Header="{x:Static assets:Resources.ProcessCPUUsage}"
-                                    Margin="0" />
+                                            <!--  RAM usage  -->
+                                            <controls:DoubleLabelControl
+                                                Body="{Binding Path=ProcessService.CurrentProcess.RamUsagePercent, StringFormat='{}{0} %'}"
+                                                Header="{x:Static assets:Resources.ProcessRamUsage}"
+                                                Margin="0" />
 
-                                <!--  RAM usage  -->
-                                <controls:DoubleLabelControl
-                                    Body="{Binding Path=ProcessService.CurrentProcess.RamUsagePercent, StringFormat='{}{0} %'}"
-                                    Header="{x:Static assets:Resources.ProcessRamUsage}"
-                                    Margin="0" />
+                                        </StackPanel>
+                                    </ScrollViewer>
+                                </controlsMaterail:Card>
+                            </TabItem>
 
-                            </StackPanel>
-                        </ScrollViewer>
+                            <!--  DLLs  -->
+                            <TabItem Header="DLL">
+                                <Grid Classes="ExtendedProcessInfoPanel" RowDefinitions="Auto, *">
 
-                        <Expander Grid.Row="1" VerticalAlignment="Top">
-                            <Expander.Header>
-                                <controls:DoubleLabelControl
-                                    Body="{Binding ProcessService.CurrentProcess.Modules.Count}"
-                                    Header="DLL"
-                                    HeaderPostfix="" />
-                            </Expander.Header>
-                            <ListBox ClipToBounds="True" ItemsSource="{Binding ProcessService.CurrentProcess.Modules}" />
-                        </Expander>
+                                    <controlsMaterail:Card Grid.Row="0" Margin="0,0,0,5">
+                                        <controls:DoubleLabelControl
+                                            Body="{Binding ProcessService.CurrentProcess.Modules.Count}"
+                                            Header="Count"
+                                            Margin="0,0,0,5" />
+                                    </controlsMaterail:Card>
 
+                                    <controlsMaterail:Card Grid.Row="1">
+                                        <ListBox ClipToBounds="True" ItemsSource="{Binding ProcessService.CurrentProcess.Modules}" />
+                                    </controlsMaterail:Card>
+                                </Grid>
+                            </TabItem>
+
+                            <!--  Операции с текущим процессом  -->
+                            <TabItem Header="{x:Static assets:Resources.Modify}">
+
+                                <Grid Classes="ExtendedProcessInfoPanel" RowDefinitions="Auto, *">
+
+                                    <!--  Изменение приоритета  -->
+                                    <controlsMaterail:Card Margin="0,0,0,5">
+                                        <Grid
+                                            Classes="Horizontal"
+                                            ColumnDefinitions="Auto,*"
+                                            HorizontalAlignment="Stretch">
+
+                                            <TextBlock
+                                                Classes="FontBold"
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Left"
+                                                Margin="2"
+                                                Text="{x:Static assets:Resources.ProcessPriority}"
+                                                VerticalAlignment="Center" />
+
+                                            <ComboBox
+                                                Grid.Column="1"
+                                                HorizontalAlignment="Stretch"
+                                                IsEnabled="{Binding ProcessService.CurrentProcess.PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                                ItemsSource="{Binding ProcessService.CurrentProcess.PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
+                                                Margin="2"
+                                                SelectedItem="{Binding ProcessService.CurrentProcess.PriorityClassCore}"
+                                                Theme="{StaticResource MaterialOutlineComboBox}" />
+                                        </Grid>
+                                    </controlsMaterail:Card>
+
+                                    <!--  Используемые ядра  -->
+                                    <controlsMaterail:Card Grid.Row="1" VerticalAlignment="Stretch">
+                                        <Grid RowDefinitions="Auto, *">
+
+                                            <TextBlock
+                                                Classes="Headline6"
+                                                Grid.Row="0"
+                                                HorizontalAlignment="Center"
+                                                Text="Process core usage"
+                                                VerticalAlignment="Center" />
+
+                                            <ListBox
+                                                Grid.Row="1"
+                                                HorizontalAlignment="Center"
+                                                IsEnabled="False"
+                                                ItemsSource="{Binding ProcessService.CurrentProcess.ProcessorAffinity}"
+                                                VerticalAlignment="Top">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+
+                                                <ListBox.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                HorizontalAlignment="Center"
+                                                                Text="{Binding Number}"
+                                                                VerticalAlignment="Center" />
+                                                            <CheckBox
+                                                                HorizontalAlignment="Center"
+                                                                IsChecked="{Binding Used}"
+                                                                VerticalAlignment="Center" />
+                                                        </StackPanel>
+
+                                                    </DataTemplate>
+                                                </ListBox.ItemTemplate>
+                                            </ListBox>
+                                        </Grid>
+
+                                    </controlsMaterail:Card>
+
+                                </Grid>
+
+
+                            </TabItem>
+                        </TabControl>
                     </Grid>
                 </Grid>
             </SplitView.Pane>
-
         </SplitView>
-
-
     </Grid>
-
-
 </UserControl>
