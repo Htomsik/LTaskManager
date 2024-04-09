@@ -189,4 +189,10 @@
   <data name="AppSettingsProcessReCalcDelay" xml:space="preserve">
     <value>Задержка перерасчета процессов</value>
   </data>
+  <data name="Modify" xml:space="preserve">
+    <value>Изменение</value>
+  </data>
+  <data name="Info" xml:space="preserve">
+    <value>Информация</value>
+  </data>
 </root>
