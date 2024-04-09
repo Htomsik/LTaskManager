@@ -36,9 +36,7 @@ public class DoublePercentToColor : IValueConverter
         {
             return brush;
         }
-
-        percent*= 100;
-
+        
         brush = percent switch
         {
             >= 75 => ResourcesExtension.Percent75Brush,
