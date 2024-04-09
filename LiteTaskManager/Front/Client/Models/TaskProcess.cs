@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -142,7 +143,7 @@ public class TaskProcess : ReactiveObject
     
     public List<TaskProcess> Childs { get; } = new();
 
- 
+
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
@@ -170,7 +171,7 @@ public class TaskProcess : ReactiveObject
             }
         }
     }
- 
+
 
     #endregion
 

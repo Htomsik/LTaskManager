@@ -101,7 +101,6 @@
 
     <Application.DataTemplates>
 
-
         <!--  Шаблон элемента меню  -->
         <DataTemplate DataType="models:MenuParamCommandItem">
             <Button
