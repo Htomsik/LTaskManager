@@ -10,8 +10,11 @@ using Avalonia.Controls.Models.TreeDataGrid;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Models;
+using Client.Models.TaskProcess;
+using Client.Models.TaskProcess.Base;
 using Client.Services;
 using Client.Services.AppInfoService;
+using Client.Services.Base;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -23,7 +26,7 @@ namespace Client.ViewModels;
 /// <summary>
 ///   Вьюмодель процессов
 /// </summary>
-internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
+internal sealed class ProcessesViewModel : BaseCollectionViewModel<IProcess>
 {
    #region Properties
    
@@ -31,12 +34,12 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    ///   Альетрнативная коллекция для деревьев
    /// </summary>
    [Reactive]
-   public HierarchicalTreeDataGridSource<TaskProcess>? ItemsHierarch { get; set; }
+   public HierarchicalTreeDataGridSource<IProcess>? ItemsHierarch { get; set; }
 
    /// <summary>
    ///   Сервис обрабатывающий процессы
    /// </summary>
-   public  IProcessService<TaskProcess> ProcessService { get; }
+   public  IProcessService ProcessService { get; }
    
    /// <summary>
    ///   Сервис информации о приложении
@@ -56,7 +59,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    /// <summary>
    ///     Наблюдатель за свойством поиска
    /// </summary>
-   private IObservable<Func<TaskProcess, bool>> _onlySystemProcessFilter = null!;
+   private IObservable<Func<IProcess, bool>> _onlySystemProcessFilter = null!;
 
    /// <summary>
    ///   Список системных процессов
@@ -100,7 +103,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
 
    /// <param name="processService">Сервис обрабатывающий процессы</param>
    /// <param name="appInfoService"> Сервис информации о приложении</param>
-   public ProcessesViewModel(IProcessService<TaskProcess> processService, IAppInfoService appInfoService) : base()
+   public ProcessesViewModel(IProcessService processService, IAppInfoService appInfoService) : base()
    {
       AppInfoService = appInfoService;
       ProcessService = processService;
@@ -146,7 +149,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
             .Select(OnlySystemProcessFilterBuilder);
    }
    
-   protected override void SetItemsSubscriptions(ObservableCollection<TaskProcess> inputData)
+   protected override void SetItemsSubscriptions(ObservableCollection<IProcess> inputData)
    {
       // Предварительная утилизация старой подписки
       ItemsSubscriptions?.Dispose();
@@ -167,23 +170,23 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
                }
                else
                {
-                  ItemsHierarch = new HierarchicalTreeDataGridSource<TaskProcess>(Items!)
+                  ItemsHierarch = new HierarchicalTreeDataGridSource<IProcess>(Items!)
                   {
                      Columns =
                      {
-                        new HierarchicalExpanderColumn<TaskProcess>(
-                           new TextColumn<TaskProcess, string>
+                        new HierarchicalExpanderColumn<IProcess>(
+                           new TextColumn<IProcess, string>
                               (Assets.Resources.ProcessName, x => x.ProcessName), 
                            x => x.Childs,
                            x => x.Childs.Count >0),
                         
-                        new TextColumn<TaskProcess, double>("Id", x => x.ProcessId),
-                        new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessCPUUsage} (%)", ResourcesExtension.ProcessCpuUsagePercentTemplate),
-                        new TemplateColumn<TaskProcess>($"{Assets.Resources.ProcessRamUsage} (%)", ResourcesExtension.ProcessRamUsagePercentTemplate),
-                        new TextColumn<TaskProcess, ProcessPriorityClass?>(Assets.Resources.ProcessPriority, x => x.PriorityClassCore),
-                        new TextColumn<TaskProcess, TimeSpan>(Assets.Resources.ProcessTotalProcessorTime, x => x.TotalProcessorTime),
-                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessProductName, x => x.ProductName),
-                        new TextColumn<TaskProcess, string>(Assets.Resources.ProcessModuleName, x => x.ModuleName),
+                        new TextColumn<IProcess, double>("Id", x => x.ProcessId),
+                        new TemplateColumn<IProcess>($"{Assets.Resources.ProcessCPUUsage} (%)", ResourcesExtension.ProcessCpuUsagePercentTemplate),
+                        new TemplateColumn<IProcess>($"{Assets.Resources.ProcessRamUsage} (%)", ResourcesExtension.ProcessRamUsagePercentTemplate),
+                        new TextColumn<IProcess, ProcessPriorityClass?>(Assets.Resources.ProcessPriority, x => x.PriorityClassCore),
+                        new TextColumn<IProcess, TimeSpan>(Assets.Resources.ProcessTotalProcessorTime, x => x.TotalProcessorTime),
+                        new TextColumn<IProcess, string>(Assets.Resources.ProcessProductName, x => x.ProductName),
+                        new TextColumn<IProcess, string>(Assets.Resources.ProcessModuleName, x => x.ModuleName),
                      }
                   };
                }
@@ -208,7 +211,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<TaskProcess>
    /// <summary>
    ///   Фильтр по категориям
    /// </summary>
-   private  Func<TaskProcess, bool> OnlySystemProcessFilterBuilder(ProcessCategory category)
+   private  Func<IProcess, bool> OnlySystemProcessFilterBuilder(ProcessCategory category)
    {
       if (category == ProcessCategory.NotSystems)
       {

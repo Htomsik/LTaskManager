@@ -10,11 +10,13 @@
     xmlns:assets="clr-namespace:Client.Assets"
     xmlns:assists="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
     xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:base="clr-namespace:Client.Models.TaskProcess.Base"
     xmlns:controls="clr-namespace:Client.Infrastructure.Controls"
     xmlns:controlsMaterail="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:Client.Models"
+    xmlns:taskProcess="clr-namespace:Client.Models.TaskProcess"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -101,7 +103,7 @@
 
                     <TreeDataGrid.Resources>
                         <!--  Шаблон вывода использования RAM  -->
-                        <DataTemplate DataType="models:TaskProcess" x:Key="ProcessRamUsagePercentTemplate">
+                        <DataTemplate DataType="base:BaseProcess" x:Key="ProcessRamUsagePercentTemplate">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <TextBlock
                                     HorizontalAlignment="Left"
@@ -117,7 +119,7 @@
                         </DataTemplate>
 
                         <!--  Шаблон вывода использования CPU  -->
-                        <DataTemplate DataType="models:TaskProcess" x:Key="ProcessCpuUsagePercentTemplate">
+                        <DataTemplate DataType="base:BaseProcess" x:Key="ProcessCpuUsagePercentTemplate">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <TextBlock
                                     HorizontalAlignment="Left"
@@ -159,7 +161,7 @@
                             Header="{x:Static assets:Resources.ProcessName}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="base:BaseProcess" />
 
                         <!--  Product name  -->
                         <DataGridTextColumn
@@ -167,7 +169,7 @@
                             Header="{x:Static assets:Resources.ProcessProductName}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="base:BaseProcess" />
 
                         <!--  Start time  -->
                         <DataGridTextColumn
@@ -175,7 +177,7 @@
                             Header="{x:Static assets:Resources.ProcessStartTime}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="models:TaskProcess" />
+                            x:DataType="base:BaseProcess" />
 
                         <!--  CPU usage percent  -->
                         <DataGridTemplateColumn
@@ -184,7 +186,7 @@
                             IsReadOnly="True"
                             SortMemberPath="CpuUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess">
+                            x:DataType="base:BaseProcess">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -210,7 +212,7 @@
                             IsReadOnly="True"
                             SortMemberPath="RamUsagePercent"
                             Width="*"
-                            x:DataType="models:TaskProcess">
+                            x:DataType="base:BaseProcess">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -249,7 +251,7 @@
                                         IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
                                         ItemsSource="{Binding PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
                                         SelectedItem="{Binding PriorityClassCore}"
-                                        x:DataType="models:TaskProcess" />
+                                        x:DataType="base:BaseProcess" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
 

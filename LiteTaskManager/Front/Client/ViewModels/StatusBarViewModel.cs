@@ -1,6 +1,7 @@
-﻿using Client.Models;
+﻿using Client.Models.TaskProcess;
 using Client.Services;
 using Client.Services.AppInfoService;
+using Client.Services.Base;
 using ReactiveUI.Fody.Helpers;
 
 namespace Client.ViewModels;
@@ -32,7 +33,7 @@ internal sealed class StatusBarViewModel : ViewModelBase
     
     /// <param name="processService"> Сервис обработки процессов </param>
     /// <param name="appInfoService"> Сервис предоставляющий информацию о прилоджении </param>
-    public StatusBarViewModel(IProcessService<TaskProcess> processService, IAppInfoService appInfoService)
+    public StatusBarViewModel(IProcessService processService, IAppInfoService appInfoService)
     {
         AppInfoService = appInfoService;
         

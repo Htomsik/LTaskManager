@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -11,21 +10,21 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
-namespace Client.Models;
+namespace Client.Models.TaskProcess.Base;
 
 // TODO : В модели слишком много логики ее управления
 // Нужно сделать отдельный сервис который бу управлял текущей моделью
 /// <summary>
-///     Модель процессов Windows
+///     Базовая модель процессов общая для всех платформ
 /// </summary>
-public class TaskProcess : ReactiveObject
+public abstract class BaseProcess : ReactiveObject, IProcess
 {
     #region Properties
     
     /// <summary>
     ///     Id процесса
     /// </summary>
-    public int ProcessId => _windowsProcess.Id;
+    public int ProcessId => _process.Id;
 
     /// <summary>
     ///     Id процесса
@@ -110,7 +109,7 @@ public class TaskProcess : ReactiveObject
         {
             try
             {
-                return _windowsProcess.Modules;
+                return _process.Modules;
             }
             catch (Exception e)
             {
@@ -139,21 +138,21 @@ public class TaskProcess : ReactiveObject
     /// </summary>
     [Reactive]
     public bool HasExited { get; set; }
-    
-    
-    public List<TaskProcess> Childs { get; } = new();
+
+
+    public ICollection<BaseProcess> Childs { get; } = new List<BaseProcess>();
 
 
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
-    public ObservableCollection<ProcessAffinityCore> ProcessorAffinity
+    public ICollection<ProcessAffinityCore> ProcessorAffinity
     {
         get
         {
             try
             {
-                var chars = Convert.ToString(_windowsProcess.ProcessorAffinity, 2).ToList();
+                var chars = Convert.ToString(_process.ProcessorAffinity, 2).ToList();
             
                 var affinity = new ObservableCollection<ProcessAffinityCore>();
             
@@ -171,84 +170,90 @@ public class TaskProcess : ReactiveObject
             }
         }
     }
-
-
+    
     #endregion
 
     #region Fields
-
+    
     /// <summary>
-    ///     Выполнен ли первый проход perfomanceCounter
+    ///     Основной процесс
     /// </summary>
-    private bool _perfRefreshed;
+    private readonly Process _process = new ();
 
     #endregion
 
-    /// <summary>
-    ///     Счетчик производительности для виндовс
-    /// </summary>
-    private readonly PerformanceCounter? _performanceCounterCpuUsage;
-    
-    /// <summary>
-    ///     Счетчик производительности для виндовс
-    /// </summary>
-    private readonly PerformanceCounter? _performanceCounterParentId;
+    #region Constructors
 
-    private readonly Process _windowsProcess = new ();
-    
-    public TaskProcess(Process windowsProcess)
+    public BaseProcess(Process process)
     {
         try
         {
-            _windowsProcess = windowsProcess;
+            _process = process;
             
             // Данные которые точно можно получить 
-            ProcessName = windowsProcess.ProcessName;
-            StartTime = windowsProcess.StartTime;
+            ProcessName = process.ProcessName;
+            StartTime = process.StartTime;
             
             // Есть риск что выйдет ошибка 
-            ModuleName = windowsProcess.MainModule?.ModuleName ?? string.Empty;
-            FileName = windowsProcess.MainModule?.FileName ?? string.Empty;
-            ProductName = windowsProcess.MainModule?.FileVersionInfo.ProductName ?? string.Empty;
-            CompanyName = windowsProcess.MainModule?.FileVersionInfo.CompanyName ?? string.Empty;
-            ProductVersion = windowsProcess.MainModule?.FileVersionInfo.ProductVersion ?? string.Empty;
+            ModuleName = process.MainModule?.ModuleName ?? string.Empty;
+            FileName = process.MainModule?.FileName ?? string.Empty;
+            ProductName = process.MainModule?.FileVersionInfo.ProductName ?? string.Empty;
+            CompanyName = process.MainModule?.FileVersionInfo.CompanyName ?? string.Empty;
+            ProductVersion = process.MainModule?.FileVersionInfo.ProductVersion ?? string.Empty;
         }
         catch (Exception e)
         {
 
-             this.Log().StructLogDebug($"Don't have access to {windowsProcess.ProcessName}", e.Message);
-        }
-
-        try
-        {
-            if (OperatingSystem.IsWindows())
-            {
-                _performanceCounterCpuUsage = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessCpuUsageCounter, ProcessName, true);
-                _performanceCounterParentId = new PerformanceCounter(PerfCounterExtension.ProcessCategory, PerfCounterExtension.ProcessParentId, ProcessName, true);
-            }
-        }
-        catch (Exception e)
-        {
-            this.Log().StructLogDebug($"Can't create {_performanceCounterCpuUsage}", e.Message);
+            this.Log().StructLogDebug($"Don't have access to {process.ProcessName}", e.Message);
         }
     }
 
-    #region Методы взаимодействия с процессом
+    #endregion
+    
+    #region Methods
 
+    #region Operations
+    
+    /// <summary>
+    ///     Получение Id родителя
+    /// </summary>
+    protected abstract int GetParentId();
+
+    public virtual bool Kill()
+    {
+        if (HasExited)
+        {
+            return true;
+        }
+        
+        try
+        {
+            _process.Kill();
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogError($"Can't kill process {ProcessName}", e.Message);
+            return false;
+        }
+
+        HasExited = true;
+
+        return true;
+    }
+    
     /// <summary>
     ///     Изменяет приоритет процесса
     /// </summary>
-    /// TODO: Подумать о сервисе который будет заниматься операциями с процессами
-    private bool ChangePriority(ProcessPriorityClass processPriorityClass)
+    protected virtual bool ChangePriority(ProcessPriorityClass processPriorityClass)
     {
-        if (_windowsProcess.PriorityClass == processPriorityClass)
+        if (_process.PriorityClass == processPriorityClass)
         {
             return false;
         }
         
         try
         {
-            _windowsProcess.PriorityClass = processPriorityClass;
+            _process.PriorityClass = processPriorityClass;
         }
         catch(Exception e)
         {
@@ -259,9 +264,10 @@ public class TaskProcess : ReactiveObject
         return true;
     }
 
-    /// <summary>
-    ///     Обновление данных
-    /// </summary>
+    #endregion
+    
+    #region Recacl methods
+    
     public bool Refresh(IComputerInfoService computerInfoService, bool includeChilds = true)
     {
         if (includeChilds)
@@ -280,11 +286,11 @@ public class TaskProcess : ReactiveObject
         
         try
         {
-            _windowsProcess.Refresh();
+            _process.Refresh();
         
-            HasExited = _windowsProcess.HasExited;
-            TotalProcessorTime = _windowsProcess.TotalProcessorTime;
-            _priorityClassCore = _windowsProcess.PriorityClass;
+            HasExited = _process.HasExited;
+            TotalProcessorTime = _process.TotalProcessorTime;
+            _priorityClassCore = _process.PriorityClass;
             
         }
         catch (Exception e)
@@ -294,79 +300,30 @@ public class TaskProcess : ReactiveObject
         
         if (HasExited)
         {
-            ReCalcClear();
+            ClearUsages();
             return false;
         }
         
-        ReCalc(computerInfoService);
+        ReCalcRamUsage(computerInfoService);
+        ReCalCpuUsage();
 
         return true;
     }
     
     /// <summary>
-    ///     Остановка процесса
-    /// </summary>
-    public void Kill()
-    {
-        _windowsProcess.Kill();
-    }
-
-    #endregion
-    
-    #region ReCalc методы перерасчета
-
-    /// <summary>
-    ///     Перерасчет 
-    /// </summary>
-    private void ReCalc(IComputerInfoService computerInfoService)
-    {
-        ReCalCpuUsage();
-        
-        try
-        {
-            RamUsagePercent = double.Round((_windowsProcess.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes) * 100, 2);
-        }
-        catch (Exception e)
-        {
-            this.Log().StructLogDebug(
-                $"Don't have access to {PerfCounterExtension.ProcessCpuUsageCounter} {ProcessName}", e.Message);
-        }
-    }
-
-    /// <summary>
     ///     Перерасчет использования CPU
     /// </summary>
-    private void ReCalCpuUsage()
+    protected abstract void ReCalCpuUsage();
+    
+    /// <summary>
+    ///     Перерасчет использования RAM
+    /// </summary>
+    /// <param name="computerInfoService">  Информация о системе, нужна для расчета использования </param>
+    protected virtual void ReCalcRamUsage(IComputerInfoService computerInfoService)
     {
-        if (!OperatingSystem.IsWindows()) return;
-
-        if (_performanceCounterCpuUsage is null)
-        {
-            this.Log().StructLogDebug($"{nameof(_perfRefreshed)} not initialized");
-            return;
-        }
-        
-        if (!_perfRefreshed)
-        {
-            _perfRefreshed = true;
-            _performanceCounterCpuUsage.NextValue();
-        }
-        
         try
         {
-            double cpuUsage; 
-            
-            // TODO не спраишивайте меня почему так, я сам не знаю
-            if (ProcessName == ProcessExtension.ProcessIdle)
-            {
-                cpuUsage = _performanceCounterCpuUsage.NextValue() / 10000;
-            }
-            else
-            {
-                cpuUsage = _performanceCounterCpuUsage.NextValue() / 100;
-            }
-
-            CpuUsagePercent = double.Round(cpuUsage * 100, 2);
+            RamUsagePercent = double.Round((_process.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes) * 100, 2);
         }
         catch (Exception e)
         {
@@ -374,35 +331,18 @@ public class TaskProcess : ReactiveObject
                 $"Don't have access to {PerfCounterExtension.ProcessCpuUsageCounter} {ProcessName}", e.Message);
         }
     }
-
+    
     /// <summary>
     ///     Очистка перерасчитываемых значений
     /// </summary>
-    private void ReCalcClear()
+    private void ClearUsages()
     {
         CpuUsagePercent = 0;
         RamUsagePercent = 0;
     }
 
-    /// <summary>
-    ///     Получение Id родителя
-    /// </summary>
-    private int GetParentId()
-    {
-        if (!OperatingSystem.IsWindows())
-        {
-            return 0;
-        }
-        
-        if (_performanceCounterParentId is null)
-        {
-            this.Log().StructLogDebug($"{nameof(_perfRefreshed)} not initialized");
-            return 0;
-        }
-        
-        return (int)_performanceCounterParentId.NextValue();
-    }
-
+    #endregion
+    
     #endregion
     
     public override string ToString()
