@@ -193,7 +193,7 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<IProcess>
                {
                   ItemsHierarch.RowSelection.SelectionChanged += (_, args) =>
                   {
-                     ProcessService.CurrentProcess = args.SelectedItems.Count != 0 ? args.SelectedItems[0] : null;
+                     ProcessService.CurrentProcess = (args.SelectedItems.Count != 0 ? args.SelectedItems[0] : null) ?? null!;
                   };
                }
                   

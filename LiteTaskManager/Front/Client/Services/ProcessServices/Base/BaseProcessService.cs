@@ -8,6 +8,7 @@ using Client.Models;
 using Client.Models.TaskProcess.Base;
 using Client.Services.ComputerInfoService.Base;
 using Client.Timers.Base;
+using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -20,11 +21,10 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
     public IReactiveTimer UpdateTimer { get; protected set; }
     
     public IReactiveTimer RefreshTimer { get; protected set;  }
-    
-    [Reactive]
-    public virtual ObservableCollection<IProcess> Processes { get; protected set; }
 
-    [Reactive] public virtual IProcess CurrentProcess { get; set; }
+    [Reactive] public ObservableCollection<IProcess> Processes { get; protected set; }
+    
+    [Reactive] public IProcess CurrentProcess { get; set; }
 
     public event Action? ProcessesChanged;
     
@@ -52,8 +52,9 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         AppSettingStore = appSettingStore;
         ComputerInfoService = computerInfoService;
 
-        Processes = new ObservableCollection<IProcess>();
-
+        Processes = new ObservableCollectionExtended<IProcess>();
+        CurrentProcess = null!;
+        
         appSettingStore.CurrentValueChangedNotifier += () =>
         {
             this.WhenAnyValue(x => x.AppSettingStore.CurrentValue.ProcessUpdateTimeOut)

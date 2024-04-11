@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Services.ComputerInfoService.Base;
@@ -24,7 +22,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Id процесса
     /// </summary>
-    public int ProcessId => _process.Id;
+    public int ProcessId => Process.Id;
 
     /// <summary>
     ///     Id процесса
@@ -109,7 +107,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         {
             try
             {
-                return _process.Modules;
+                return Process.Modules;
             }
             catch (Exception e)
             {
@@ -146,30 +144,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
-    public ICollection<ProcessAffinityCore> ProcessorAffinity
-    {
-        get
-        {
-            try
-            {
-                var chars = Convert.ToString(_process.ProcessorAffinity, 2).ToList();
-            
-                var affinity = new ObservableCollection<ProcessAffinityCore>();
-            
-                for (var index = 0; index < chars.Count; index++)
-                {
-                    affinity.Add(new ProcessAffinityCore(index, chars[index] == '1'));
-                }
-            
-                return affinity;
-            }
-            catch (Exception e)
-            {
-                this.Log().StructLogDebug("Can't get affinity", e.Message);
-                return new ObservableCollection<ProcessAffinityCore>();
-            }
-        }
-    }
+    public ICollection<ProcessAffinityCore> ProcessorAffinity => GetProcessorAffinity();
+    
     
     #endregion
 
@@ -178,7 +154,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Основной процесс
     /// </summary>
-    private readonly Process _process = new ();
+    protected readonly Process Process = new ();
 
     #endregion
 
@@ -188,7 +164,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     {
         try
         {
-            _process = process;
+            Process = process;
             
             // Данные которые точно можно получить 
             ProcessName = process.ProcessName;
@@ -219,6 +195,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// </summary>
     protected abstract int GetParentId();
 
+    protected abstract ICollection<ProcessAffinityCore> GetProcessorAffinity();
+
     public virtual bool Kill()
     {
         if (HasExited)
@@ -228,7 +206,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         
         try
         {
-            _process.Kill();
+            Process.Kill();
         }
         catch (Exception e)
         {
@@ -246,14 +224,14 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// </summary>
     protected virtual bool ChangePriority(ProcessPriorityClass processPriorityClass)
     {
-        if (_process.PriorityClass == processPriorityClass)
+        if (Process.PriorityClass == processPriorityClass)
         {
             return false;
         }
         
         try
         {
-            _process.PriorityClass = processPriorityClass;
+            Process.PriorityClass = processPriorityClass;
         }
         catch(Exception e)
         {
@@ -286,11 +264,11 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         
         try
         {
-            _process.Refresh();
+            Process.Refresh();
         
-            HasExited = _process.HasExited;
-            TotalProcessorTime = _process.TotalProcessorTime;
-            _priorityClassCore = _process.PriorityClass;
+            HasExited = Process.HasExited;
+            TotalProcessorTime = Process.TotalProcessorTime;
+            _priorityClassCore = Process.PriorityClass;
             
         }
         catch (Exception e)
@@ -321,9 +299,16 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <param name="computerInfoService">  Информация о системе, нужна для расчета использования </param>
     protected virtual void ReCalcRamUsage(IComputerInfoService computerInfoService)
     {
+        if (computerInfoService.TotalPhysicalMemoryBytes == 0)
+        {
+            this.Log().StructLogFatal(
+                $"Can't calculate RAM usage becasude {nameof(computerInfoService.TotalPhysicalMemoryBytes)} is 0");
+            return;
+        }
+        
         try
         {
-            RamUsagePercent = double.Round((_process.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes) * 100, 2);
+            RamUsagePercent = double.Round((Process.WorkingSet64 / computerInfoService.TotalPhysicalMemoryBytes) * 100, 2);
         }
         catch (Exception e)
         {

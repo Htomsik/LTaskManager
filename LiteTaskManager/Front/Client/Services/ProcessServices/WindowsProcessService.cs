@@ -57,8 +57,10 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
                     }
                 }
 
-                parentTaskProcess.Childs.Add(taskProcess);
+                if (parentTaskProcess == null) continue;
                 
+                parentTaskProcess?.Childs.Add(taskProcess);
+
                 childsIdx.Add(taskProcess.ProcessId);
             }
             
