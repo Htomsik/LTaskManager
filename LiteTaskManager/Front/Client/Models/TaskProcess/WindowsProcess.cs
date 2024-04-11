@@ -45,7 +45,6 @@ public sealed class WindowsProcess : BaseProcess
         
     }
 
-
     #region Methods
 
     #region Operations

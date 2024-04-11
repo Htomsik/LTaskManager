@@ -8,7 +8,7 @@ using Client.Models;
 using Client.Models.TaskProcess;
 using Client.Models.TaskProcess.Base;
 using Client.Services.Base;
-using Client.Services.ComputerInfoService;
+using Client.Services.ComputerInfoService.Base;
 using Splat;
 
 namespace Client.Services;

@@ -1,4 +1,12 @@
-﻿using Serilog;
+﻿using System;
+using System.Runtime.InteropServices;
+using Client.Services;
+using Client.Services.AppInfoService;
+using Client.Services.AppInfoService.Base;
+using Client.Services.Base;
+using Client.Services.ComputerInfoService;
+using Client.Services.ComputerInfoService.Base;
+using Serilog;
 using Serilog.Events;
 using Splat;
 using Splat.Serilog;

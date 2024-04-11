@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Reactive;
 using Client.Infrastructure.Logging;
-using Client.Services.AppInfoService;
+using Client.Services.AppInfoService.Base;
 using ReactiveUI;
 using Splat;
 

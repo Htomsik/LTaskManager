@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
-using Client.Services.ComputerInfoService;
+using Client.Services.ComputerInfoService.Base;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

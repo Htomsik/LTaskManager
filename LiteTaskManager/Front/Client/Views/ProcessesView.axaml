@@ -103,7 +103,7 @@
 
                     <TreeDataGrid.Resources>
                         <!--  Шаблон вывода использования RAM  -->
-                        <DataTemplate DataType="base:BaseProcess" x:Key="ProcessRamUsagePercentTemplate">
+                        <DataTemplate DataType="base:IProcess" x:Key="ProcessRamUsagePercentTemplate">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <TextBlock
                                     HorizontalAlignment="Left"
@@ -119,7 +119,7 @@
                         </DataTemplate>
 
                         <!--  Шаблон вывода использования CPU  -->
-                        <DataTemplate DataType="base:BaseProcess" x:Key="ProcessCpuUsagePercentTemplate">
+                        <DataTemplate DataType="base:IProcess" x:Key="ProcessCpuUsagePercentTemplate">
                             <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                                 <TextBlock
                                     HorizontalAlignment="Left"
@@ -161,7 +161,7 @@
                             Header="{x:Static assets:Resources.ProcessName}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="base:BaseProcess" />
+                            x:DataType="base:IProcess" />
 
                         <!--  Product name  -->
                         <DataGridTextColumn
@@ -169,7 +169,7 @@
                             Header="{x:Static assets:Resources.ProcessProductName}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="base:BaseProcess" />
+                            x:DataType="base:IProcess" />
 
                         <!--  Start time  -->
                         <DataGridTextColumn
@@ -177,7 +177,7 @@
                             Header="{x:Static assets:Resources.ProcessStartTime}"
                             IsReadOnly="True"
                             Width="*"
-                            x:DataType="base:BaseProcess" />
+                            x:DataType="base:IProcess" />
 
                         <!--  CPU usage percent  -->
                         <DataGridTemplateColumn
@@ -186,7 +186,7 @@
                             IsReadOnly="True"
                             SortMemberPath="CpuUsagePercent"
                             Width="*"
-                            x:DataType="base:BaseProcess">
+                            x:DataType="base:IProcess">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -212,7 +212,7 @@
                             IsReadOnly="True"
                             SortMemberPath="RamUsagePercent"
                             Width="*"
-                            x:DataType="base:BaseProcess">
+                            x:DataType="base:IProcess">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -251,7 +251,7 @@
                                         IsEnabled="{Binding PriorityClassCore, Converter={x:Static ObjectConverters.IsNotNull}}"
                                         ItemsSource="{Binding PriorityClassCore, Converter={StaticResource EnumToCollectionConverter}}"
                                         SelectedItem="{Binding PriorityClassCore}"
-                                        x:DataType="base:BaseProcess" />
+                                        x:DataType="base:IProcess" />
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
 

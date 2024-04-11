@@ -1,6 +1,4 @@
-﻿using Client.Models.TaskProcess;
-using Client.Services;
-using Client.Services.AppInfoService;
+﻿using Client.Services.AppInfoService.Base;
 using Client.Services.Base;
 using ReactiveUI.Fody.Helpers;
 

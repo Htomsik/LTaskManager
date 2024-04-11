@@ -7,7 +7,7 @@ using Splat;
 
 namespace Client.Services.WMIService;
 
-public class WmiService : ReactiveObject, IWmiService
+public class WindowsWmiService : ReactiveObject, IWindowsWmiService
 {
     public string GetHardwareInfo(string win32Class, string classItemField)
     {

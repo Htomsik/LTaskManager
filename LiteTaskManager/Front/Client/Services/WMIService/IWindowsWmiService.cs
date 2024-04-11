@@ -3,7 +3,7 @@
 /// <summary>
 ///     Сервис получения данных из WMI
 /// </summary>
-public interface IWmiService
+public interface IWindowsWmiService
 {
     /// <summary>
     ///     Получение данных из WMI

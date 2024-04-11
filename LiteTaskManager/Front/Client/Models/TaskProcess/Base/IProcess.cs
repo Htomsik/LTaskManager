@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Client.Services.ComputerInfoService;
+using Client.Services.ComputerInfoService.Base;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -72,13 +72,11 @@ public interface IProcess : IReactiveObject
     /// <summary>
     ///     Процент использования ОЗУ
     /// </summary>
-    [Reactive]
     public double RamUsagePercent { get; set; }
     
     /// <summary>
     ///     Процент использования ЦПУ
     /// </summary>
-    [Reactive]
     public double CpuUsagePercent { get; set; }
     
     /// <summary>

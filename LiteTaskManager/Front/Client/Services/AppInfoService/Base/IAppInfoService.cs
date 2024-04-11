@@ -1,4 +1,4 @@
-﻿namespace Client.Services.AppInfoService;
+﻿namespace Client.Services.AppInfoService.Base;
 
 /// <summary>
 ///     Предоставляет информацию о текущем запущенном приложении

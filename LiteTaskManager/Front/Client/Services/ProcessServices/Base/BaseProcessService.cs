@@ -6,7 +6,7 @@ using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
 using Client.Models.TaskProcess.Base;
-using Client.Services.ComputerInfoService;
+using Client.Services.ComputerInfoService.Base;
 using Client.Timers.Base;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -21,7 +21,8 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
     
     public IReactiveTimer RefreshTimer { get; protected set;  }
     
-    public virtual ObservableCollection<IProcess> Processes { get; protected set; } = new();
+    [Reactive]
+    public virtual ObservableCollection<IProcess> Processes { get; protected set; }
 
     [Reactive] public virtual IProcess CurrentProcess { get; set; }
 
@@ -50,6 +51,8 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
     {
         AppSettingStore = appSettingStore;
         ComputerInfoService = computerInfoService;
+
+        Processes = new ObservableCollection<IProcess>();
 
         appSettingStore.CurrentValueChangedNotifier += () =>
         {
