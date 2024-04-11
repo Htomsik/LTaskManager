@@ -1,4 +1,4 @@
-﻿namespace Client.Services.ComputerInfoService;
+﻿namespace Client.Services.ComputerInfoService.Base;
 
 /// <summary>
 ///     Характеристики компьютера

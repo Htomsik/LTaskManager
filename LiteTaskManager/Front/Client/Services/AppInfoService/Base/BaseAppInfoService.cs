@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics;
 using System.Reflection;
-using System.Security.Principal;
 using Client.Infrastructure.Logging;
 using Splat;
 
-namespace Client.Services.AppInfoService;
+namespace Client.Services.AppInfoService.Base;
 
-internal sealed class AppInfoService : IAppInfoService, IEnableLogger
+/// <summary>
+///     <seealso cref="IAppInfoService"/>
+/// </summary>
+internal abstract class BaseAppInfoService : IAppInfoService, IEnableLogger
 {
     #region Properties
 
@@ -27,7 +27,7 @@ internal sealed class AppInfoService : IAppInfoService, IEnableLogger
 
     #region Constructors
 
-    public AppInfoService()
+    public BaseAppInfoService()
     {
         var assembly = Assembly.GetEntryAssembly();
 
@@ -53,29 +53,7 @@ internal sealed class AppInfoService : IAppInfoService, IEnableLogger
     
     #region Methods
 
-    [SuppressMessage("Interoperability", "CA1416:Проверка совместимости платформы")]
-    private bool IsAdminCheck()
-    {
-        var isAdmin = false;
-
-        if (!OperatingSystem.IsWindows()) 
-            return isAdmin;
-           
-        try
-        {
-            var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);
-            isAdmin = principal.IsInRole(WindowsBuiltInRole.Administrator);
-        }
-        catch (Exception e)
-        {
-            this.Log().StructLogError("Can't check admin role for Windowns", e.Message);
-            isAdmin = false;
-        }
-
-        return isAdmin;
-    }
-
+    protected abstract bool IsAdminCheck();
+    
     #endregion
-
 }

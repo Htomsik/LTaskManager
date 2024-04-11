@@ -1,14 +1,15 @@
 using System;
 using System.Collections.ObjectModel;
+using Client.Models.TaskProcess.Base;
 using Client.Timers.Base;
 
-namespace Client.Services;
+namespace Client.Services.Base;
 
 /// <summary>
 ///     Сервис обработки windows процессов
 /// </summary>
 /// <typeparam name="TProcess"></typeparam>
-public interface IProcessService<TProcess>
+public interface IProcessService
 {
     /// <summary>
     ///     Тааймер пересоздания процессов
@@ -29,12 +30,12 @@ public interface IProcessService<TProcess>
     /// <summary>
     ///      Загруженные процессы
     /// </summary>
-    public ObservableCollection<TProcess> Processes { get; }
+    public ObservableCollection<IProcess> Processes { get; }
     
     /// <summary>
     ///     Текущий выбранный процесс
     /// </summary>
-    public TProcess CurrentProcess { get; set; }
+    public IProcess CurrentProcess { get; set; }
     
     /// <summary>
     ///     Остановка текущего процесса
