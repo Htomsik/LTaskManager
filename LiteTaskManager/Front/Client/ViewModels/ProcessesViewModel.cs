@@ -49,6 +49,12 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<IProcess>
    /// </summary>
    [Reactive]
    public ProcessCategory ShowedProcessCategory { get; set; }
+
+   /// <summary>
+   ///   Пустая ли коллекция процессов
+   /// </summary>
+   [Reactive]
+   public bool ProcessesIsNull { get; set; } = true;
    
    #endregion
 
@@ -124,6 +130,12 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<IProcess>
       
       SetFiltersSubscriptions();
       SetItemsSubscriptions(processService.Processes);
+      
+      this
+         .WhenAnyValue(x => x.ProcessService.Processes)
+         .Throttle(TimeSpan.FromMicroseconds(250))
+         .Select(x => ProcessesIsNull = x.Count == 0)
+         .Subscribe();
    }
 
    #endregion
