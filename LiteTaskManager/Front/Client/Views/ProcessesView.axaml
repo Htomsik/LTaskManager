@@ -72,7 +72,7 @@
                 <!--  PlaceHolder for null processes  -->
                 <Grid
                     HorizontalAlignment="Center"
-                    IsVisible="{Binding !Items.Count}"
+                    IsVisible="{Binding ProcessesIsNull}"
                     RowDefinitions="Auto, Auto"
                     VerticalAlignment="Center">
 
@@ -90,7 +90,10 @@
                 </Grid>
 
                 <!--  Базовая информация о процессе  -->
-                <TreeDataGrid Margin="5" Source="{Binding ItemsHierarch}">
+                <TreeDataGrid
+                    IsVisible="{Binding !ProcessesIsNull}"
+                    Margin="5"
+                    Source="{Binding ItemsHierarch}">
 
                     <TreeDataGrid.ContextMenu>
                         <ContextMenu IsEnabled="{Binding AppInfoService.IsAdminMode}">

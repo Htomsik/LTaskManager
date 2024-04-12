@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
@@ -25,53 +25,51 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
     
     protected override void UpdateProcessesCore()
     {
-        new Action(() =>
+        // 1 итерация, собираем все процессы в один список
+        var buffer = new ConcurrentDictionary<int, WindowsProcess>();
+            
+        Parallel.ForEach(Process.GetProcesses() ,process =>
         {
-            // 1 итерация, собираем все процессы в один список
-            var buffer = new Dictionary<int, WindowsProcess>();
-            foreach (var process in Process.GetProcesses())
+            var taskProcess = new WindowsProcess(process);
+            
+            buffer.TryAdd(taskProcess.ProcessId, taskProcess);
+        });
+        
+        // 2 распределяем по родителям
+        var childIdx = new ConcurrentBag<int>();
+        
+        Parallel.ForEach(buffer.Values.Where(taskProcess => taskProcess.ParentId != 0), taskProcess =>
+        {
+            var getParent = buffer.TryGetValue(taskProcess.ParentId, out var parentTaskProcess);
+            
+            if (!getParent)
             {
-                var taskProcess = new WindowsProcess(process);
-                
-                buffer.Add(taskProcess.ProcessId,  taskProcess);
-            }
-
-            var childsIdx = new List<int>();
-            // 2 итерация, распределяем процессы по родителям
-            foreach (var taskProcess in buffer.Values.Where(taskProcess => taskProcess.ParentId != 0))
-            {
-                var getParent =  buffer.TryGetValue(taskProcess.ParentId, out var parentTaskProcess);
-                
-                if (!getParent)
+                try
                 {
-                    try
-                    {
-                        var parent =   Process.GetProcessById(taskProcess.ParentId);
-                        parentTaskProcess = new WindowsProcess(parent);
-                        buffer.Add(parentTaskProcess.ProcessId, parentTaskProcess);
-                    }
-                    catch
-                    {
-                        this.Log().StructLogDebug("Can't get parent process");
-                        continue;
-                    }
+                    var parent = Process.GetProcessById(taskProcess.ParentId);
+                    parentTaskProcess = new WindowsProcess(parent);
+                    buffer.TryAdd(parentTaskProcess.ProcessId, parentTaskProcess);
                 }
-
-                if (parentTaskProcess == null) continue;
-                
-                parentTaskProcess?.Childs.Add(taskProcess);
-
-                childsIdx.Add(taskProcess.ProcessId);
+                catch
+                {
+                    this.Log().StructLogDebug("Can't get parent process");
+                    return;
+                }
             }
             
-            // 3. Удаляем лишние
-            foreach (var processId in childsIdx)
-            {
-                buffer.Remove(processId);
-            }
+            if (parentTaskProcess == null) return;
             
-            Processes = new ObservableCollection<IProcess>(buffer.Values);
+            parentTaskProcess.Childs.Add(taskProcess);
             
-        }).TimeLog(this.Log());
+            childIdx.Add(taskProcess.ProcessId);
+        });
+            
+        // 3. Удаляем лишние
+        foreach (var processId in childIdx)
+        {
+            buffer.TryRemove(processId, out var process);
+        }
+            
+        Processes = new ObservableCollection<IProcess>(buffer.Values);
     }
 }

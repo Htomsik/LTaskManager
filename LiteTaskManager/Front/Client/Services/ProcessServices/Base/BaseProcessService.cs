@@ -154,8 +154,8 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         
         CanReCalc = false;
 
-        UpdateProcessesCore();
-
+        new Action(UpdateProcessesCore).TimeLog(this.Log(),nameof(UpdateProcessesCore));
+        
         CanReCalc = true;
 
         RefreshProcess();
@@ -169,7 +169,6 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
     ///     Обновление списка процессов 
     /// </summary>
     protected abstract void UpdateProcessesCore();
-   
     
     public void RefreshProcess()
     {
@@ -182,15 +181,25 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         {
             return;
         }
-        
-        new Action(() =>
+
+        CanReCalc = false;
+
+        new Action(async () =>
         {
-            foreach (var process in Processes)
+            ParallelOptions parallelOptions = new()
+            {
+                MaxDegreeOfParallelism = -1
+            };
+            
+            await Parallel.ForEachAsync(Processes, parallelOptions, (process, _) =>
             {
                 process.Refresh(ComputerInfoService);
-            }
+                return ValueTask.CompletedTask;
+            });
             
         }).TimeLog(this.Log());
+
+        CanReCalc = true;
     }
     
     /// <summary>

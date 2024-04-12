@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Services.ComputerInfoService.Base;
@@ -138,7 +139,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     public bool HasExited { get; set; }
 
 
-    public ICollection<BaseProcess> Childs { get; } = new List<BaseProcess>();
+    public ICollection<IProcess> Childs { get; } = new List<IProcess>();
 
 
     /// <summary>
@@ -250,7 +251,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     {
         if (includeChilds)
         {
-            foreach (var elem in Childs)
+            foreach (var elem in Childs.ToArray())
             {
                 elem.Refresh(computerInfoService, true);
             }

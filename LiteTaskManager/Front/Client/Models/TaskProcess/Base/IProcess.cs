@@ -88,7 +88,7 @@ public interface IProcess : IReactiveObject
     /// <summary>
     ///     Запущенные процессом процессы
     /// </summary>
-    public ICollection<BaseProcess> Childs { get; } 
+    public ICollection<IProcess> Childs { get; } 
     
     /// <summary>
     ///     Используемые ядра процесса
