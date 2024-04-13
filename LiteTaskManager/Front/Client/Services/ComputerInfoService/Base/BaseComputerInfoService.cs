@@ -8,6 +8,8 @@ internal abstract class BaseComputerInfoService : IComputerInfoService
    #region Properties
 
    public double TotalPhysicalMemoryBytes { get; set; }
+   
+   public int CpuThreadCount { get; set; }
 
    #endregion
    

@@ -11,6 +11,11 @@ public static class WmiExtension
     public static (string, string) Processor = ("Win32_Processor", "Name");
     
     /// <summary>
+    ///     Количесто потоков процессора
+    /// </summary>
+    public static (string, string) ProcessorThreadNumbers = ("Win32_Processor", "NumberOfCores");
+    
+    /// <summary>
     ///     Производитель процессора
     /// </summary>
     public static (string, string) ProcessorManufacturer = ("Win32_Processor", "Manufacturer");

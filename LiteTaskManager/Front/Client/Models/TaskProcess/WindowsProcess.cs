@@ -77,9 +77,18 @@ public sealed class WindowsProcess : BaseProcess
     {
         try
         {
-            var chars = Convert.ToString(Process.ProcessorAffinity, 2).ToList();
+            var affinity = new List<ProcessAffinityCore>();
             
-            var affinity = new ObservableCollection<ProcessAffinityCore>();
+            var chars = Convert.ToString(Process.ProcessorAffinity, 2).ToList();
+
+            // TODO: Ненадежный метод, когда текущий процесс будет перенесен в отдельный класс
+            // Переделать через получение количества ядер пк из wmi
+            var deltaProcess = Environment.ProcessorCount - chars.Count;
+
+            for (var i = 0; i < deltaProcess; i++)
+            {
+                chars.Insert(0,'0');
+            }
             
             for (var index = 0; index < chars.Count; index++)
             {
@@ -93,6 +102,40 @@ public sealed class WindowsProcess : BaseProcess
             this.Log().StructLogDebug("Can't get affinity", e.Message);
             return new ObservableCollection<ProcessAffinityCore>();
         }
+    }
+
+    protected override bool ChangeAffinity()
+    {
+        if (HasExited || FakeProcess)
+        {
+            return false;
+        }
+
+        try
+        {
+            var affinity = ProcessorAffinityBackground.Select(x => x.Used ? "1" : "0");
+
+            var binaryCode = string.Join("", affinity);
+
+            var numberToHex = (IntPtr)Convert.ToUInt64(binaryCode, 2);
+
+            // Не стоит лишний раз устанавливать приоритет 
+            if (numberToHex == Process.ProcessorAffinity)
+            {
+                return false;
+            }
+        
+            Process.ProcessorAffinity = numberToHex;
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogError($"Can't change affinity of {ProcessName} process", e.Message);
+            return false;
+        }
+        
+        this.Log().StructLogInfo($"Process {ProcessName} Affinity changed");
+        
+        return true;
     }
 
     #endregion
