@@ -22,10 +22,17 @@ internal sealed class WindowsComputerInfoService : BaseComputerInfoService
     {
         var data = _windowsWmiService.GetHardwareInfo(WmiExtension.TotalPhysicalRAM.Item1, WmiExtension.TotalPhysicalRAM.Item2);
 
-        if (double.TryParse(data, out var parsed))
+        if (double.TryParse(data, out var physicalMemory))
         {
             // По непонятной причине возвращает кбайты
-            TotalPhysicalMemoryBytes = parsed * 1024;
+            TotalPhysicalMemoryBytes = physicalMemory * 1024;
+        }
+        
+        data = _windowsWmiService.GetHardwareInfo(WmiExtension.ProcessorThreadNumbers.Item1, WmiExtension.ProcessorThreadNumbers.Item2);
+         
+        if (int.TryParse(data, out var cpuThreadCount))
+        {
+            CpuThreadCount = cpuThreadCount;
         }
     }
 }

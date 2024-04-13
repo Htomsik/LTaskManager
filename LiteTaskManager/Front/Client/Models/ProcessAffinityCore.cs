@@ -1,9 +1,12 @@
-﻿namespace Client.Models;
+﻿using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+
+namespace Client.Models;
 
 /// <summary>
 ///     Ядро приоритета процесса
 /// </summary>
-public class ProcessAffinityCore
+public class ProcessAffinityCore : ReactiveObject
 {
     /// <summary>
     ///     Номер ядра
@@ -13,6 +16,7 @@ public class ProcessAffinityCore
     /// <summary>
     ///     Используется ли
     /// </summary>
+    [Reactive]
     public bool Used { get; set; } = false;
     
     #region Constructors
@@ -24,5 +28,4 @@ public class ProcessAffinityCore
     }
 
     #endregion
-    
 }

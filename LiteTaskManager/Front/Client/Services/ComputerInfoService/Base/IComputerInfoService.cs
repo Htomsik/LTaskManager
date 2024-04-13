@@ -9,4 +9,9 @@ public interface IComputerInfoService
     ///     Физическая память ПК
     /// </summary>
     public double TotalPhysicalMemoryBytes { get; protected set; }
+    
+    /// <summary>
+    ///     Количество потоков процессора
+    /// </summary>
+    public int CpuThreadCount { get; protected set; }
 }

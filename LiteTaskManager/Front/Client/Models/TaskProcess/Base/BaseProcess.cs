@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using Client.Extensions;
 using Client.Infrastructure.Logging;
 using Client.Services.ComputerInfoService.Base;
+using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -121,9 +124,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         }
     }
 
-    protected ProcessModuleCollection? _modules;
-
-
+    private ProcessModuleCollection? _modules;
+    
     /// <summary>
     ///     Процент использования ОЗУ
     /// </summary>
@@ -145,7 +147,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Фейковый ли процесс
     /// </summary>
-    public bool FakeProcess { get; } = false;
+    public bool FakeProcess { get; }
 
     /// <summary>
     ///     Процессы запущенные процессом
@@ -155,8 +157,26 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
-    public ICollection<ProcessAffinityCore> ProcessorAffinity => GetProcessorAffinity();
-    
+    public ObservableCollection<ProcessAffinityCore> ProcessorAffinity
+    {
+        get
+        {
+            ProcessorAffinityBackground = new ObservableCollection<ProcessAffinityCore>(GetProcessorAffinity());
+
+            ProcessorAffinityBackground
+                .AsObservableChangeSet()
+                .WhenValueChanged(x => x.Used)
+                .Throttle(TimeSpan.FromMilliseconds(250))
+                .Subscribe(_=>ChangeAffinity())
+                .Dispose();
+
+
+            return ProcessorAffinityBackground;
+        }
+    }
+
+
+    protected ObservableCollection<ProcessAffinityCore> ProcessorAffinityBackground = new();
     
     #endregion
 
@@ -227,7 +247,15 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// </summary>
     protected abstract int GetParentId();
 
+    /// <summary>
+    ///     Получение приоритета ядер процесса
+    /// </summary>
     protected abstract ICollection<ProcessAffinityCore> GetProcessorAffinity();
+    
+    /// <summary>
+    ///     Установка приоритета ядер процесса
+    /// </summary>
+    protected abstract bool ChangeAffinity();
 
     public virtual bool Kill()
     {
@@ -256,6 +284,11 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// </summary>
     protected virtual bool ChangePriority(ProcessPriorityClass processPriorityClass)
     {
+        if (HasExited || FakeProcess)
+        {
+            return false;
+        }
+        
         if (Process.PriorityClass == processPriorityClass)
         {
             return false;
@@ -284,7 +317,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         {
             foreach (var elem in Childs.ToArray())
             {
-                elem.Refresh(computerInfoService, true);
+                elem.Refresh(computerInfoService, includeChilds);
             }
         }
         

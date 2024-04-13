@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using Client.Services.ComputerInfoService.Base;
 using ReactiveUI;
@@ -98,7 +99,7 @@ public interface IProcess : IReactiveObject
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
-    public ICollection<ProcessAffinityCore> ProcessorAffinity { get; }
+    public ObservableCollection<ProcessAffinityCore> ProcessorAffinity { get; }
     
     /// <summary>
     ///     Обновление данных процесса
