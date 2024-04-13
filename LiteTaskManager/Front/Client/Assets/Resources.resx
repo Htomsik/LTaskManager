@@ -195,4 +195,10 @@
   <data name="Info" xml:space="preserve">
     <value>Info</value>
   </data>
+  <data name="WarningProcessManualMode" xml:space="preserve">
+    <value>Updating processes manually via buttons</value>
+  </data>
+  <data name="AppSettingsManualMode" xml:space="preserve">
+    <value>Manual mode</value>
+  </data>
 </root>

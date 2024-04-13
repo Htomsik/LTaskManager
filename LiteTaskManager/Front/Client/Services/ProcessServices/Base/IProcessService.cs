@@ -1,5 +1,7 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Threading;
+using System.Threading.Tasks;
 using Client.Models.TaskProcess.Base;
 using Client.Timers.Base;
 
@@ -45,7 +47,7 @@ public interface IProcessService
     /// <summary>
     ///     Подгрузка новых процессов
     /// </summary>
-    public void UpdateProcesses();
+    public void UpdateProcesses(bool alsoRefresh = true, bool setSubscriptions = true);
 
     /// <summary>
     ///     Обновление существующих процессов

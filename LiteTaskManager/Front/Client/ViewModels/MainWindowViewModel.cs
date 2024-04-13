@@ -26,9 +26,14 @@ internal sealed class MainWindowViewModel : ViewModelBase
     [Reactive] public ViewModelBase? CurrentViewModel { get; set; } 
     
     /// <summary>
-    ///     Статус - бар. Нижняя часть программы в которую выводится интерактивная информация пользователию
+    ///     Нижняя плашка с интерактивной информацией
     /// </summary>
-    [Reactive] public ViewModelBase? StatusBarViewModel { get; set; } 
+    [Reactive] public ViewModelBase? ProcessStatusViewModel { get; set; } 
+    
+    /// <summary>
+    ///     Нижняя плашка с уведомлениями
+    /// </summary>
+    [Reactive] public ViewModelBase? NotificationBarViewModel { get; set; } 
     
     /// <summary>
     /// Соглашение, которое не пускает в приложение, если его не принять
@@ -50,11 +55,16 @@ internal sealed class MainWindowViewModel : ViewModelBase
     #region Constructors
 
     public MainWindowViewModel(IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService,
-        StatusBarViewModel statusBarViewModel, 
         AgreementViewModel agreementViewModel,
         ProcessesViewModel processesViewModel,
+        ProcessStatusViewModel  processStatusViewModel,
+        NotificationBarViewModel notificationBarViewModel,
         IStore<AppSettings> appSettingsStore)
     {
+        AppSettings = appSettingsStore.CurrentValue;
+        NotificationBarViewModel = notificationBarViewModel;
+        ProcessStatusViewModel = processStatusViewModel;
+        
         #region Commands Initialzie
 
         Navigate = ReactiveCommand.Create<Type>(
@@ -104,7 +114,6 @@ internal sealed class MainWindowViewModel : ViewModelBase
         #region VMD initialize
 
         CurrentViewModel = processesViewModel;
-        StatusBarViewModel = statusBarViewModel;
         AgreementViewModel = agreementViewModel;
 
         #endregion
@@ -113,8 +122,6 @@ internal sealed class MainWindowViewModel : ViewModelBase
         { 
             new MenuParamCommandItem("Processes", Navigate, typeof(ProcessesViewModel), MaterialIconKind.Memory),
         };
-        
-        AppSettings = appSettingsStore.CurrentValue;
         
         appSettingsStore.CurrentValueChangedNotifier += ()=>
         {

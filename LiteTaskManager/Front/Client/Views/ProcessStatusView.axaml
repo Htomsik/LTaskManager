@@ -1,0 +1,45 @@
+﻿<UserControl
+    d:DesignHeight="40"
+    d:DesignWidth="500"
+    mc:Ignorable="d"
+    x:Class="Client.Views.ProcessStatusView"
+    x:DataType="viewModels:ProcessStatusViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid ColumnDefinitions="*,*,*">
+
+        <!--  Время до обновления  -->
+        <ProgressBar
+            Grid.Column="1"
+            IsVisible="{Binding !Settings.ManualMode}"
+            Maximum="{Binding ProcessesMaxUpdateTime}"
+            Minimum="0"
+            Value="{Binding ProcessesCurrentUpdateTime}"
+            VerticalAlignment="Center" />
+
+        <!--  Ручной режим  -->
+        <StackPanel
+            Grid.Column="1"
+            HorizontalAlignment="Center"
+            IsVisible="{Binding Settings.ManualMode}"
+            Orientation="Horizontal"
+            VerticalAlignment="Center">
+
+            <!--  Обновление процессов  -->
+            <Button Command="{Binding UpdateProcesses}" Margin="2">
+                Update
+            </Button>
+
+            <!--  Перерасчет данных процессов  -->
+            <Button Command="{Binding RefreshProcesses}" Margin="2">
+                Recalc
+            </Button>
+
+        </StackPanel>
+    </Grid>
+
+</UserControl>

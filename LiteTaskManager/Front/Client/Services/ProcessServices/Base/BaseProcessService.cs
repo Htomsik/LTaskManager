@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
@@ -71,13 +72,26 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
                     if (RefreshTimer != null)
                         RefreshTimer.UpdateDelaySeconds = AppSettingStore.CurrentValue.ProcessReCalcTimeOut;
                 });
-
+            
             this.WhenAnyValue(x => x.AppSettingStore.CurrentValue.Agreement)
                 .Subscribe(_ => SetUpdateSubscribes());
+
+            this.WhenAnyValue(x => x.AppSettingStore.CurrentValue.ManualMode)
+                .Subscribe(isManual =>
+                {
+                    if (isManual)
+                    {
+                        StopTimers();
+                    }
+                    else
+                    {
+                        StartTimers();
+                    }
+                });
         };
 
 
-        UpdateTimer = new ReactiveTimer(UpdateProcesses)
+        UpdateTimer = new ReactiveTimer(()=> UpdateProcesses())
         {
             UpdateDelaySeconds = appSettingStore.CurrentValue.ProcessUpdateTimeOut
         };
@@ -108,20 +122,31 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         // Нужен на случаи первых вызовов
         if (Processes.Count == 0)
         {
-            await Task.Run(UpdateProcesses);
+            await Task.Run(()=>UpdateProcesses());
         }
         
         ProcessDisposable = this.WhenAnyValue(x => x.Processes)
              .Subscribe(_ => StartTimers());
     }
 
-    private void StartTimers()
+    protected void StartTimers()
     {
+        StopTimers();
+        
         UpdateTimer.UpdateDelaySeconds = AppSettingStore.CurrentValue.ProcessUpdateTimeOut;
         RefreshTimer.UpdateDelaySeconds = AppSettingStore.CurrentValue.ProcessReCalcTimeOut;
-        
-        UpdateTimer.Start();
-        RefreshTimer.Start();
+
+        if (!AppSettingStore.CurrentValue.ManualMode)
+        {
+            UpdateTimer.Start();
+            RefreshTimer.Start();
+        }
+    }
+
+    protected void StopTimers()
+    {
+        UpdateTimer.Stop();
+        RefreshTimer.Stop();
     }
     
     /// <summary>
@@ -143,7 +168,7 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         this.Log().StructLogInfo($"Process {CurrentProcess.ProcessName} was killed");
     }
     
-    public void UpdateProcesses()
+    public void UpdateProcesses(bool alsoRefresh = true, bool setSubscriptions = true)
     {
         CurrentProcess = default!;
         
@@ -158,10 +183,17 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
         
         CanReCalc = true;
 
-        RefreshProcess();
+        if (alsoRefresh)
+        {
+            RefreshProcess(); 
+        }
+
+        if (setSubscriptions)
+        {
+            // Обновление подписок
+            SetUpdateSubscribes();
+        }
         
-        // Обновление подписок
-        SetUpdateSubscribes();
         InvokeProcessSubscriptions();
     }
 

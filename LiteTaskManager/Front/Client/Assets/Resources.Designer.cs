@@ -88,6 +88,15 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Manual mode.
+        /// </summary>
+        public static string AppSettingsManualMode {
+            get {
+                return ResourceManager.GetString("AppSettingsManualMode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Process.
         /// </summary>
         public static string AppSettingsProcess {
@@ -291,6 +300,15 @@ namespace Client.Assets {
         public static string WarningNoAdminRights {
             get {
                 return ResourceManager.GetString("WarningNoAdminRights", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на Updating processes manually via buttons.
+        /// </summary>
+        public static string WarningProcessManualMode {
+            get {
+                return ResourceManager.GetString("WarningProcessManualMode", resourceCulture);
             }
         }
     }

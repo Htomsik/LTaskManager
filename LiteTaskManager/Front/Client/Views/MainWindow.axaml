@@ -39,7 +39,7 @@
         <!--  Навигационное меню  -->
         <Grid
             ClipToBounds="True"
-            RowDefinitions="*, 40"
+            RowDefinitions="*, 50"
             RowSpan="2">
 
             <ListBox Grid.Column="0" ItemsSource="{Binding MenuList}" />
@@ -52,7 +52,7 @@
                     HorizontalAlignment="Left"
                     Margin="5,5,0,5"
                     VerticalAlignment="Stretch">
-                    <avalonia:MaterialIcon Classes="Default" Kind="Settings" />
+                    <avalonia:MaterialIcon Kind="Settings" />
                 </Button>
 
                 <!--  Переход в информации о приложении  -->
@@ -61,7 +61,7 @@
                     HorizontalAlignment="Right"
                     Margin="0,5,5,5"
                     VerticalAlignment="Stretch">
-                    <avalonia:MaterialIcon Classes="Default" Kind="Information" />
+                    <avalonia:MaterialIcon Kind="Information" />
                 </Button>
             </Grid>
         </Grid>
@@ -84,12 +84,26 @@
                 VerticalContentAlignment="Stretch" />
         </Border>
 
-        <!--  Statusbar  -->
-        <ContentControl
-            Content="{Binding StatusBarViewModel}"
+
+        <Grid
+            ColumnDefinitions="*,*"
             Grid.Column="1"
-            Grid.Row="1"
-            Margin="5,0" />
+            Grid.Row="1">
+
+            <!--  Управление процессами  -->
+            <ContentControl
+                Content="{Binding ProcessStatusViewModel}"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Stretch"
+                Margin="5,0" />
+
+            <!--  Значки уведомлений  -->
+            <ContentControl
+                Content="{Binding NotificationBarViewModel}"
+                Grid.Column="1"
+                HorizontalAlignment="Right" />
+        </Grid>
+
 
     </Grid>
 

@@ -126,13 +126,30 @@
                         Width="100" />
 
                 </StackPanel>
+
+                <!--  Ручной режим  -->
+                <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">
+
+                    <avalonia:MaterialIcon
+                        Classes="Default"
+                        HorizontalAlignment="Stretch"
+                        Kind="Hand"
+                        Margin="2"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Classes="FontBold"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        Text="{x:Static assets:Resources.AppSettingsManualMode}"
+                        VerticalAlignment="Center" />
+
+                    <CheckBox IsChecked="{Binding Settings.ManualMode, Mode=TwoWay}" />
+
+                </StackPanel>
             </StackPanel>
         </controls:Card>
 
-
-
-
     </UniformGrid>
-
 
 </UserControl>

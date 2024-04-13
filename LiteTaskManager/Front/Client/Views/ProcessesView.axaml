@@ -15,8 +15,6 @@
     xmlns:controlsMaterail="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:models="clr-namespace:Client.Models"
-    xmlns:taskProcess="clr-namespace:Client.Models.TaskProcess"
     xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
@@ -64,7 +62,6 @@
                 <Grid Margin="5" Row="2">
                     <CheckBox Content="{x:Static assets:Resources.ProcessShowExtendedInfo}" Name="ProcessExtendedInfoCheckBox" />
                 </Grid>
-
             </Grid>
 
             <Grid Grid.Row="1" Margin="0,20,0,0">

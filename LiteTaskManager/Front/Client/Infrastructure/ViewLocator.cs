@@ -19,9 +19,10 @@ internal sealed class ViewLocator : IDataTemplate, IEnableLogger
     {
         {typeof(ProcessesViewModel),typeof(ProcessesView)},
         {typeof(AppSettingsViewModel), typeof(AppSettingsView)},
-        {typeof(StatusBarViewModel), typeof(StatusbarView)},
         {typeof(AppInfoViewModel), typeof(AppInfoView)},
-        {typeof(AgreementViewModel), typeof(AgreementView)}
+        {typeof(AgreementViewModel), typeof(AgreementView)},
+        {typeof(ProcessStatusViewModel), typeof(ProcessStatusView)},
+        {typeof(NotificationBarViewModel), typeof(NotificationBarView)}
     };
     
     

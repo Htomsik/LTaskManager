@@ -1,0 +1,33 @@
+﻿<UserControl
+    d:DesignHeight="50"
+    d:DesignWidth="100"
+    mc:Ignorable="d"
+    x:Class="Client.Views.NotificationBarView"
+    x:DataType="viewModels:NotificationBarViewModel"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:assets="clr-namespace:Client.Assets"
+    xmlns:avalonia="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Grid Margin="0,0,10,0">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+
+            <!--  Находится ли приложение в ручном режиме  -->
+            <avalonia:MaterialIcon
+                IsVisible="{Binding IsManualMode}"
+                Kind="Hand"
+                ToolTip.Tip="{x:Static assets:Resources.WarningProcessManualMode}" />
+
+            <!--  Запущено ли приложение в админ моде  -->
+            <avalonia:MaterialIcon
+                Foreground="{DynamicResource MaterialPrimaryMidBrush}"
+                IsVisible="{Binding IsNotAdminMode}"
+                Kind="Warning"
+                ToolTip.Tip="{x:Static assets:Resources.WarningNoAdminRights}" />
+        </StackPanel>
+    </Grid>
+
+</UserControl>

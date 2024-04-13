@@ -84,6 +84,8 @@ public class ReactiveTimer : ReactiveObject, IReactiveTimer
     {
         _disposable?.Dispose();
 
+        TimerChangedNotifier?.Invoke(0);
+        
         Executing = false;
     }
     

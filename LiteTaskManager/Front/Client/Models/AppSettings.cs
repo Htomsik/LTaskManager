@@ -10,6 +10,15 @@ namespace Client.Models;
 /// </summary>
 internal sealed class AppSettings : ReactiveValidationObject
 {
+    /// <summary>
+    ///     Ручной режим обновления и перерасчте
+    /// </summary>
+    [Reactive]
+    public bool ManualMode { get; set; }
+    
+    /// <summary>
+    ///     Принятие соглашения (отказа от ответственности)
+    /// </summary>
     [Reactive]
     public bool Agreement { get; set; }
     

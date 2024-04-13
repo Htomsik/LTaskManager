@@ -195,4 +195,10 @@
   <data name="Info" xml:space="preserve">
     <value>Информация</value>
   </data>
+  <data name="WarningProcessManualMode" xml:space="preserve">
+    <value>Обновление процессов работает в ручном режиме через кнопки</value>
+  </data>
+  <data name="AppSettingsManualMode" xml:space="preserve">
+    <value>Ручное обновление</value>
+  </data>
 </root>
