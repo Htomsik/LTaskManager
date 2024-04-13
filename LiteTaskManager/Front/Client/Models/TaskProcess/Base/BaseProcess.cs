@@ -151,7 +151,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     ///     Процессы запущенные процессом
     /// </summary>
     public ICollection<IProcess> Childs { get; } = new List<IProcess>();
-    
+
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
