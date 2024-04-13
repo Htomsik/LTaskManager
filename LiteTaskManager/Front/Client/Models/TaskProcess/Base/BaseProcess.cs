@@ -23,7 +23,9 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Id процесса
     /// </summary>
-    public int ProcessId => Process.Id;
+    public int ProcessId => _processId ??= Process.Id;
+
+    private int? _processId;
 
     /// <summary>
     ///     Id процесса
@@ -108,7 +110,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         {
             try
             {
-                return Process.Modules;
+                return _modules ??= Process.Modules;
             }
             catch (Exception e)
             {
@@ -118,6 +120,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
             }
         }
     }
+
+    protected ProcessModuleCollection? _modules;
 
 
     /// <summary>
@@ -138,9 +142,15 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     [Reactive]
     public bool HasExited { get; set; }
 
+    /// <summary>
+    ///     Фейковый ли процесс
+    /// </summary>
+    public bool FakeProcess { get; } = false;
 
+    /// <summary>
+    ///     Процессы запущенные процессом
+    /// </summary>
     public ICollection<IProcess> Childs { get; } = new List<IProcess>();
-
 
     /// <summary>
     ///     Используемые ядра процесса
@@ -161,7 +171,28 @@ public abstract class BaseProcess : ReactiveObject, IProcess
 
     #region Constructors
 
-    public BaseProcess(Process process)
+    /// <summary>
+    ///     Для ненастоящего процесса
+    /// <remarks> Бывают случаи когда процесс запустил другие процессы и сам завершился </remarks>
+    /// </summary>
+    protected BaseProcess(IProcess process, int processId)
+    {
+        ProcessName = process.ProcessName;
+        ModuleName = process.ModuleName;
+        ProductName = process.ProductName;
+        CompanyName = process.CompanyName;
+        ProductVersion = process.ProductVersion;
+        FileName = process.FileName;
+        _modules = process.Modules;
+        _processId = processId;
+        
+        FakeProcess = true;
+    }
+
+    /// <summary>
+    ///     Для настоящий процессов
+    /// </summary>
+    protected BaseProcess(Process process)
     {
         try
         {
@@ -257,8 +288,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
             }
         }
         
-        // Если процесс завершен нет смысла его считать
-        if (HasExited)
+        // Если процесс завершен или ненастоящий нет смысла его считать
+        if (HasExited || FakeProcess)
         {
             return false;
         }
