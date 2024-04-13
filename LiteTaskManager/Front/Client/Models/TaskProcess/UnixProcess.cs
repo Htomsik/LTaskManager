@@ -13,9 +13,17 @@ namespace Client.Models.TaskProcess;
 [SuppressMessage("Interoperability", "CA1416:Проверка совместимости платформы")]
 public class UnixProcess : BaseProcess
 {
+    #region Constructors
+
     public UnixProcess(Process process) : base(process)
     {
     }
+    
+    public UnixProcess(IProcess process, int processId) : base(process, processId)
+    {
+        
+    }
+    #endregion
 
     protected override int GetParentId()
     {

@@ -36,6 +36,12 @@ public sealed class WindowsProcess : BaseProcess
 
     #endregion
     
+    #region Constructors
+    
+    public WindowsProcess(IProcess process, int processId) : base(process, processId)
+    {
+        
+    }
     public WindowsProcess(Process process) : base(process)
     {
         try
@@ -49,7 +55,9 @@ public sealed class WindowsProcess : BaseProcess
         }
         
     }
-
+    
+    #endregion
+    
     #region Methods
 
     #region Operations

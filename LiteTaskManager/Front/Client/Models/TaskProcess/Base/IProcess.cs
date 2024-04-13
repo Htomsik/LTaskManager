@@ -84,6 +84,11 @@ public interface IProcess : IReactiveObject
     /// </summary>
     [Reactive]
     public bool HasExited { get; set; }
+
+    /// <summary>
+    ///     Настоящий ли процесс
+    /// </summary>
+    public bool FakeProcess { get;  }
     
     /// <summary>
     ///     Запущенные процессом процессы

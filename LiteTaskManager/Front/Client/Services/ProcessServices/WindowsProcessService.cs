@@ -53,7 +53,8 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
                 catch
                 {
                     this.Log().StructLogDebug("Can't get parent process");
-                    return;
+                    parentTaskProcess = new WindowsProcess(taskProcess, taskProcess.ParentId);
+                    buffer.TryAdd(parentTaskProcess.ProcessId, parentTaskProcess);
                 }
             }
             
