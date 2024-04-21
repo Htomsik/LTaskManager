@@ -167,10 +167,8 @@ public abstract class BaseProcess : ReactiveObject, IProcess
                 .AsObservableChangeSet()
                 .WhenValueChanged(x => x.Used)
                 .Throttle(TimeSpan.FromMilliseconds(250))
-                .Subscribe(_=>ChangeAffinity())
-                .Dispose();
-
-
+                .Subscribe(_ => ChangeAffinity());
+            
             return ProcessorAffinityBackground;
         }
     }
