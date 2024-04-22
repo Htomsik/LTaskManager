@@ -52,6 +52,27 @@
                         Theme="{StaticResource MaterialOutlineComboBox}"
                         Width="100" />
                 </StackPanel>
+
+                <!--  Сворачивать приложение в трей  -->
+                <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">
+
+                    <avalonia:MaterialIcon
+                        Classes="Default"
+                        HorizontalAlignment="Stretch"
+                        Kind="Shutdown"
+                        Margin="2"
+                        VerticalAlignment="Center" />
+
+                    <TextBlock
+                        Classes="FontBold"
+                        HorizontalAlignment="Stretch"
+                        Margin="2"
+                        Text="{x:Static assets:Resources.AppSettingsProcessShutdownToTray}"
+                        VerticalAlignment="Center" />
+
+                    <CheckBox IsChecked="{Binding Settings.ShutdownToTray, Mode=TwoWay}" />
+
+                </StackPanel>
             </StackPanel>
         </controls:Card>
 
@@ -96,7 +117,6 @@
                         Width="100" />
 
                 </StackPanel>
-
 
                 <!--  Задержка обновления данных процессов  -->
                 <StackPanel Classes="Horizontal" HorizontalAlignment="Stretch">

@@ -8,6 +8,7 @@ using Client.Services;
 using Client.Services.AppCultureService;
 using Client.Services.AppInfoService;
 using Client.Services.AppInfoService.Base;
+using Client.Services.AppTrayService;
 using Client.Services.Base;
 using Client.Services.ComputerInfoService;
 using Client.Services.ComputerInfoService.Base;
@@ -32,6 +33,7 @@ internal static partial class SplatContainerRegistration
         SplatRegistrations.Register<IParserService, FastJsonParserService>();
         SplatRegistrations.Register<IStoreFileService<IStore<AppSettings>, AppSettings>,AppSettingsStoreFileService>();
         SplatRegistrations.Register<IAppCultureService, AppCultureService>();
+        SplatRegistrations.Register<IAppTrayService, AppTrayService>();
         
         ServiceRegistrationWindows();
     }

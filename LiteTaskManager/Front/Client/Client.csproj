@@ -52,8 +52,8 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0-dev-00923" />
         <PackageReference Include="Serilog.Sinks.File" Version="5.0.1-dev-00968" />
         <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Splat.Serilog" Version="14.8.6" />
         <PackageReference Include="System.Diagnostics.PerformanceCounter" Version="8.0.0" />
@@ -61,54 +61,57 @@
     </ItemGroup>
 
     <ItemGroup>
-      <UpToDateCheckInput Remove="Infrastructure\DataTemplates\MenuParamCommandItemDataTemplate.axaml" />
+        <UpToDateCheckInput Remove="Infrastructure\DataTemplates\MenuParamCommandItemDataTemplate.axaml" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="obj\Debug\net7.0\Avalonia\" />
+        <Folder Include="obj\Debug\net7.0\Avalonia\" />
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaXaml Remove="obj\**" />
+        <AvaloniaXaml Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Remove="obj\**" />
-      <Compile Update="Assets\Resources.ru-RU.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.ru-RU.resx</DependentUpon>
-      </Compile>
+        <Compile Remove="obj\**" />
+        <Compile Update="Assets\Resources.ru-RU.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.ru-RU.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="obj\**" />
-      <EmbeddedResource Update="Assets\Resources.ru-RU.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.ru-RU.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Remove="obj\**" />
+        <EmbeddedResource Update="Assets\Resources.ru-RU.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.ru-RU.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Remove="obj\**" />
+        <AdditionalFiles Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="obj\**" />
+        <None Remove="obj\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <AvaloniaResource Update="Assets\Resources.resx">
-        <Generator>PublicResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Resources.resx">
+            <Generator>PublicResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </AvaloniaResource>
+        <AvaloniaResource Update="Assets\Resources.ru-RU.resx">
+          <Generator>PublicResXFileCodeGenerator</Generator>
+        </AvaloniaResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Assets\Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
+        <Compile Update="Assets\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
     </ItemGroup>
 </Project>

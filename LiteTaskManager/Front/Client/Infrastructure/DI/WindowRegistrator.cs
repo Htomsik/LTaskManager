@@ -10,6 +10,6 @@ internal static partial class SplatContainerRegistration
 {
     public static void WindowRegistration()
     {
-        SplatRegistrations.RegisterLazySingleton<MainWindow>();
+        SplatRegistrations.Register<MainWindow>();
     }
 }

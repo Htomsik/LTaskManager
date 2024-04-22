@@ -1,4 +1,5 @@
-﻿using ReactiveUI;
+﻿using Avalonia.Controls;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
@@ -21,6 +22,18 @@ internal sealed class AppSettings : ReactiveValidationObject
     /// </summary>
     [Reactive]
     public bool Agreement { get; set; }
+    
+    /// <summary>
+    ///     Текущая выбранная локализация
+    /// </summary>
+    [Reactive]
+    public AppCulture Culture { get; set; }
+    
+    /// <summary>
+    ///     Сворачивать ли приложение в трей при закрытии
+    /// </summary>
+    [Reactive]
+    public bool ShutdownToTray { get; set; }
     
     #region ProcessUpdateTimeOut
 
@@ -79,12 +92,6 @@ internal sealed class AppSettings : ReactiveValidationObject
     private int _processReCalcTimeOut = 1;
 
     #endregion
-    
-    /// <summary>
-    ///     Текущая выбранная локализация
-    /// </summary>
-    [Reactive]
-    public AppCulture Culture { get; set; }
     
     public AppSettings()
     {

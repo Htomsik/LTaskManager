@@ -201,4 +201,10 @@
   <data name="AppSettingsManualMode" xml:space="preserve">
     <value>Manual mode</value>
   </data>
+  <data name="WarningAppShutdownTray" xml:space="preserve">
+    <value>App will be in tray when shutdown</value>
+  </data>
+  <data name="AppSettingsProcessShutdownToTray" xml:space="preserve">
+    <value>Shutdown to tray</value>
+  </data>
 </root>
