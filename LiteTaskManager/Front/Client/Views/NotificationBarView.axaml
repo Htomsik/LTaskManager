@@ -16,17 +16,29 @@
         <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
 
             <!--  Находится ли приложение в ручном режиме  -->
-            <avalonia:MaterialIcon
+            <Grid
+                Classes="NotificationIconGrid"
                 IsVisible="{Binding IsManualMode}"
-                Kind="Hand"
-                ToolTip.Tip="{x:Static assets:Resources.WarningProcessManualMode}" />
+                ToolTip.Tip="{x:Static assets:Resources.WarningProcessManualMode}">
+                <avalonia:MaterialIcon Kind="Hand" />
+            </Grid>
+
+            <!--  Отправляется ли приложение в трей при закрытии  -->
+            <Grid
+                Classes="NotificationIconGrid"
+                IsVisible="{Binding IsTrayShutdownMode}"
+                ToolTip.Tip="{x:Static assets:Resources.WarningAppShutdownTray}">
+                <avalonia:MaterialIcon Kind="Shutdown" />
+            </Grid>
 
             <!--  Запущено ли приложение в админ моде  -->
-            <avalonia:MaterialIcon
-                Foreground="{DynamicResource MaterialPrimaryMidBrush}"
+            <Grid
+                Classes="NotificationIconGrid"
                 IsVisible="{Binding IsNotAdminMode}"
-                Kind="Warning"
-                ToolTip.Tip="{x:Static assets:Resources.WarningNoAdminRights}" />
+                ToolTip.Tip="{x:Static assets:Resources.WarningNoAdminRights}">
+                <avalonia:MaterialIcon Foreground="{DynamicResource MaterialPrimaryMidBrush}" Kind="Warning" />
+            </Grid>
+
         </StackPanel>
     </Grid>
 

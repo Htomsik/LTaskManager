@@ -1,5 +1,6 @@
 <Application
     x:Class="Client.App"
+    x:DataType="viewModels:AppViewModel"
     xmlns="https://github.com/avaloniaui"
     xmlns:controls="clr-namespace:Material.Styles.Controls;assembly=Material.Styles"
     xmlns:converters="clr-namespace:Client.Infrastructure.Converters"
@@ -8,7 +9,21 @@
     xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
     xmlns:models="clr-namespace:Client.Models"
     xmlns:themes="clr-namespace:Material.Styles.Themes;assembly=Material.Styles"
+    xmlns:viewModels="clr-namespace:Client.ViewModels"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <TrayIcon.Icons>
+        <TrayIcons>
+            <TrayIcon Icon="/Assets/Pictures/AppIcon.ico" ToolTipText="LiteTaskManager">
+                <TrayIcon.Menu>
+                    <NativeMenu>
+                        <NativeMenuItem Command="{Binding Show}" Header="Show" />
+                        <NativeMenuItem Command="{Binding Close}" Header="Close" />
+                    </NativeMenu>
+                </TrayIcon.Menu>
+            </TrayIcon>
+        </TrayIcons>
+    </TrayIcon.Icons>
 
     <Application.Styles>
         <FluentTheme />
@@ -45,10 +60,6 @@
             <Setter Property="VerticalAlignment" Value="Center" />
         </Style>
 
-
-
-
-
         <!--  Стандартное конекст меню  -->
         <Style Selector="ContextMenu">
             <Setter Property="Background" Value="{DynamicResource MainWindowBackground}" />
@@ -62,7 +73,6 @@
             <Setter Property="CornerRadius" Value="10" />
             <Setter Property="VerticalAlignment" Value="Bottom" />
         </Style>
-
 
         <!--  Хэдэр деревовидного датагрида  -->
         <Style Selector="TreeDataGridColumnHeader">
@@ -85,6 +95,13 @@
         <!--  Базовый скроллвьювер  -->
         <Style Selector="ScrollViewer">
             <Setter Property="Theme" Value="{StaticResource MaterialModernScrollViewer}" />
+        </Style>
+
+        <!--  Иконка уведомления  -->
+        <Style Selector="Grid.NotificationIconGrid">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Margin" Value="2" />
         </Style>
 
     </Application.Styles>

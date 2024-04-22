@@ -1,6 +1,7 @@
 ﻿
 using System;
 using AppInfrastructure.Stores.DefaultStore;
+using Avalonia.Controls;
 using Client.Models;
 using Client.Services.AppInfoService.Base;
 using ReactiveUI;
@@ -25,6 +26,12 @@ internal sealed class NotificationBarViewModel : ViewModelBase
     [Reactive]
     public bool IsManualMode { get; set; }
     
+    /// <summary>
+    ///     Сворачивать ли приложение в трей при закрытии
+    /// </summary>
+    [Reactive]
+    public bool IsTrayShutdownMode { get; set; }
+    
     private AppSettings _appSettings;
     
     public NotificationBarViewModel(IAppInfoService appInfoService, IStore<AppSettings> appSettings)
@@ -38,6 +45,8 @@ internal sealed class NotificationBarViewModel : ViewModelBase
             _appSettings = appSettings.CurrentValue;
             
             this.WhenAnyValue(x => x._appSettings.ManualMode).Subscribe(manual =>  IsManualMode = manual);
+
+            this.WhenAnyValue(x => x._appSettings.ShutdownToTray).Subscribe(mode => IsTrayShutdownMode = mode);
         };
 
     }

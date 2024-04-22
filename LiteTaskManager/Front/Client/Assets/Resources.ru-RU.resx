@@ -201,4 +201,10 @@
   <data name="AppSettingsManualMode" xml:space="preserve">
     <value>Ручное обновление</value>
   </data>
+  <data name="WarningAppShutdownTray" xml:space="preserve">
+    <value>Приложение будет убрано в трей при закрытии</value>
+  </data>
+  <data name="AppSettingsProcessShutdownToTray" xml:space="preserve">
+    <value>Оставлять в трее</value>
+  </data>
 </root>

@@ -115,6 +115,15 @@ namespace Client.Assets {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на Shutdown to tray.
+        /// </summary>
+        public static string AppSettingsProcessShutdownToTray {
+            get {
+                return ResourceManager.GetString("AppSettingsProcessShutdownToTray", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на Process update delay.
         /// </summary>
         public static string AppSettingsProcessUpdateDelay {
@@ -291,6 +300,15 @@ namespace Client.Assets {
         public static string Search {
             get {
                 return ResourceManager.GetString("Search", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на App will be in tray when shutdown.
+        /// </summary>
+        public static string WarningAppShutdownTray {
+            get {
+                return ResourceManager.GetString("WarningAppShutdownTray", resourceCulture);
             }
         }
         
