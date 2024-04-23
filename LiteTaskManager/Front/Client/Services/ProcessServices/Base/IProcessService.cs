@@ -1,7 +1,5 @@
 using System;
 using System.Collections.ObjectModel;
-using System.Threading;
-using System.Threading.Tasks;
 using Client.Models.TaskProcess.Base;
 using Client.Timers.Base;
 

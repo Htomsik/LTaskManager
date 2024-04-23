@@ -2,13 +2,10 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using AppInfrastructure.Stores.DefaultStore;
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
 using Client.Models;
 using Client.Services.AppCultureService;
 using Client.Services.AppTrayService;
-using Microsoft.Extensions.Hosting.Internal;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
