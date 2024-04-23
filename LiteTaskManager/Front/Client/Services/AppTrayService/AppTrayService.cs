@@ -70,7 +70,9 @@ internal sealed class AppTrayService : IAppTrayService, IEnableLogger
             this.Log().StructLogFatal("Can't get application instance");
             return;
         }
-
+        
         _application.ShutdownMode = mode;
+        
+        this.Log().StructLogInfo("Shutdown politic changed");
     }
 }

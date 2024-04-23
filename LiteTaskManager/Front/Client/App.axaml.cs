@@ -1,12 +1,9 @@
 using System;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Client.Infrastructure.DI;
-using Client.Infrastructure.Logging;
 using Client.ViewModels;
-using Client.Views;
 using ReactiveUI;
 using Splat;
 

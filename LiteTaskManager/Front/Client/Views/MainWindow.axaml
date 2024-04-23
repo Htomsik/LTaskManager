@@ -111,10 +111,6 @@
         <EventTriggerBehavior EventName="Closing" SourceObject="{Binding #ThisWindow}">
             <InvokeCommandAction Command="{Binding SaveAppSettings}" />
         </EventTriggerBehavior>
-
-        <EventTriggerBehavior EventName="Opened" SourceObject="{Binding #ThisWindow}">
-            <InvokeCommandAction Command="{Binding GetAppSettings}" />
-        </EventTriggerBehavior>
     </Interaction.Behaviors>
 
 </Window>

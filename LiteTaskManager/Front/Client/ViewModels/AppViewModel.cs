@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Reactive;
+using AppInfrastructure.Services.FileService;
+using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
+using Client.Models;
 using Client.Services.AppTrayService;
 using ReactiveUI;
 using Splat;
@@ -13,8 +16,11 @@ namespace Client.ViewModels;
 /// </summary>
 internal sealed class AppViewModel : ViewModelBase
 {
-    public AppViewModel(IAppTrayService appTrayService)
+    public AppViewModel(IAppTrayService appTrayService, 
+        IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService)
     {
+        appSettingsFileService.GetAsync();
+        
         Show = ReactiveCommand.Create(appTrayService.ShowWindow);
         Close = ReactiveCommand.Create(appTrayService.CloseApp);
 

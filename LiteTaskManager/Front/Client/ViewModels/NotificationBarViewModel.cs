@@ -1,7 +1,6 @@
 ﻿
 using System;
 using AppInfrastructure.Stores.DefaultStore;
-using Avalonia.Controls;
 using Client.Models;
 using Client.Services.AppInfoService.Base;
 using ReactiveUI;

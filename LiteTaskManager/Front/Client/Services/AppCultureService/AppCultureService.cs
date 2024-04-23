@@ -38,7 +38,11 @@ internal sealed class AppCultureService : IAppCultureService, IEnableLogger
         }
         
         this.Log().StructLogInfo($"Localization changed to {value}");
+        
+        CurrentCultureChangedNotifier?.Invoke();
 
         return true;
     }
+
+    public event Action? CurrentCultureChangedNotifier;
 } 

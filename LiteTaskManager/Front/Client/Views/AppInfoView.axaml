@@ -17,7 +17,7 @@
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
             <StackPanel>
                 <StackPanel Margin="20" Orientation="Horizontal">
-                    <Image Source="../Resources/Pictures/AppIcon.png" />
+                    <Image Source="../Assets/Pictures/AppIcon.png" />
                 </StackPanel>
 
                 <!--  Name  -->

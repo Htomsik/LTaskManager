@@ -32,7 +32,7 @@ internal static partial class SplatContainerRegistration
         Locator.CurrentMutable.RegisterLazySingleton(() => new ViewLocator(), typeof(IViewLocator));
         SplatRegistrations.Register<IParserService, FastJsonParserService>();
         SplatRegistrations.Register<IStoreFileService<IStore<AppSettings>, AppSettings>,AppSettingsStoreFileService>();
-        SplatRegistrations.Register<IAppCultureService, AppCultureService>();
+        SplatRegistrations.RegisterLazySingleton<IAppCultureService, AppCultureService>();
         SplatRegistrations.Register<IAppTrayService, AppTrayService>();
         
         ServiceRegistrationWindows();

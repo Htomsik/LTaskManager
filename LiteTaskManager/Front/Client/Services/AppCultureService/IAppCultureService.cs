@@ -1,4 +1,5 @@
-﻿using Client.Models;
+﻿using System;
+using Client.Models;
 
 namespace Client.Services.AppCultureService;
 
@@ -11,4 +12,9 @@ internal interface IAppCultureService
     ///     Установка локализации в приложении
     /// </summary>
     public bool SetCulture(AppCulture appCulture);
+    
+    /// <summary>
+    ///     Уведомитель об изменении языка
+    /// </summary>
+    public event Action? CurrentCultureChangedNotifier;
 }
