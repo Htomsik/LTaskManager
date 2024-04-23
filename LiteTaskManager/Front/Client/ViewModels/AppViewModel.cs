@@ -19,7 +19,10 @@ internal sealed class AppViewModel : ViewModelBase
     public AppViewModel(IAppTrayService appTrayService, 
         IStoreFileService<IStore<AppSettings>, AppSettings> appSettingsFileService)
     {
-        appSettingsFileService.GetAsync();
+        new Action(() =>
+        { 
+            appSettingsFileService.GetAsync();
+        }).TimeLog(this.Log(), $"{nameof(appSettingsFileService)}:{nameof(appSettingsFileService.GetAsync)}");
         
         Show = ReactiveCommand.Create(appTrayService.ShowWindow);
         Close = ReactiveCommand.Create(appTrayService.CloseApp);

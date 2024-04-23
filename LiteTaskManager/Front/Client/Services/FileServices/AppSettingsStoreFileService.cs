@@ -30,10 +30,17 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
     
     public override async Task<bool> GetAsync()
     {
-        var result = await base.GetAsync();
+        var result = false;
         
-        new Action(async () => { result = await base.GetAsync(); }).TimeLog(this.Log());
-
+        try
+        {
+             result = await base.GetAsync(); 
+        }
+        catch (Exception e)
+        {
+            this.Log().StructLogError("Can't get file settings", e.Message);
+        }
+        
         if (result)
         {
             AfterGet();
@@ -42,14 +49,17 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
         
         this.Log().StructLogWarn($"Recreating {FileName}");
         
-        result = await SetAsync();
+        result = await SetAsync(); 
+        
+        if (result)
+        { 
+            result = await base.GetAsync(); 
+        }
 
         if (result)
         {
-            new Action(async () => { result = await base.GetAsync(); }).TimeLog(this.Log());
+            AfterGet();
         }
-
-        AfterGet();
         
         return result;
     }
@@ -60,11 +70,9 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
         _appTrayService.ChangeShutdownPolitic(Store.CurrentValue.ShutdownToTray ? ShutdownMode.OnExplicitShutdown : ShutdownMode.OnMainWindowClose);
     }
 
-    public async override Task<bool> SetAsync()
+    public override async Task<bool> SetAsync()
     {
-        var result = false;
-        
-        new Action(async () => {result = await base.SetAsync(); }).TimeLog(this.Log());
+        var result = await base.SetAsync(); 
         
         return result;
     }

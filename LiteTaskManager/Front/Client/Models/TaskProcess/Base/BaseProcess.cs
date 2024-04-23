@@ -153,7 +153,12 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     ///     Процессы запущенные процессом
     /// </summary>
     public ICollection<IProcess> Childs { get; } = new List<IProcess>();
-
+    
+    /// <summary>
+    ///     Развернутое дерево процессов детей
+    /// </summary>
+    public ICollection<IProcess> ChiLdFlat => GetFlatChild();
+    
     /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
@@ -254,6 +259,23 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     ///     Установка приоритета ядер процесса
     /// </summary>
     protected abstract bool ChangeAffinity();
+
+    /// <summary>
+    ///     Получение развернутого дереав процессов детей
+    /// </summary>
+    protected virtual ICollection<IProcess> GetFlatChild()
+    {
+        var childFlat = new List<IProcess>();
+
+        foreach (var child in Childs)
+        {
+            childFlat.Add(child);
+            
+            childFlat.AddRange(child.ChiLdFlat);
+        }
+
+        return childFlat;
+    }
 
     public virtual bool Kill()
     {
