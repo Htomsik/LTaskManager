@@ -97,6 +97,11 @@ public interface IProcess : IReactiveObject
     public ICollection<IProcess> Childs { get; } 
     
     /// <summary>
+    ///     Развернутое дерево процессов детей
+    /// </summary>
+    public ICollection<IProcess> ChiLdFlat { get; }
+    
+    /// <summary>
     ///     Используемые ядра процесса
     /// </summary>
     public ObservableCollection<ProcessAffinityCore> ProcessorAffinity { get; }

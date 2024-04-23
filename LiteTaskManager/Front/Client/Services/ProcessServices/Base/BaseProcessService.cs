@@ -169,6 +169,11 @@ internal abstract class BaseProcessService<TProcess> : ReactiveObject, IProcessS
     
     public void UpdateProcesses(bool alsoRefresh = true, bool setSubscriptions = true)
     {
+        if (!CanReCalc)
+        {
+            return;
+        }
+        
         CurrentProcess = default!;
         
         if (!AppSettingStore.CurrentValue.Agreement)

@@ -236,5 +236,34 @@ internal sealed class ProcessesViewModel : BaseCollectionViewModel<IProcess>
       return _ => true;
    }
 
+   protected override Func<IProcess, bool> SearchFilterBuilder(string? text)
+   {
+      text = text?.Trim().ToLower();
+
+      if (string.IsNullOrEmpty(text)) return _ => true;
+
+      return entity =>
+      {
+         var res = entity.ToString()!.Contains(text, StringComparison.OrdinalIgnoreCase);
+
+         if (res)
+         {
+            return res;
+         }
+
+         foreach (var processChild in entity.ChiLdFlat)
+         {
+            res = processChild.ToString()!.Contains(text, StringComparison.OrdinalIgnoreCase);
+
+            if (res)
+            {
+               break;
+            }
+         }
+
+         return res;
+      };
+   }
+
    #endregion
 }
