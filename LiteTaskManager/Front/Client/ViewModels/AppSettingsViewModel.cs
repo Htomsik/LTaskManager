@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using AppInfrastructure.Stores.DefaultStore;
 using Avalonia;
 using Avalonia.Controls;
@@ -22,16 +24,6 @@ internal sealed class AppSettingsViewModel : ViewModelBase
     /// </summary>
     [Reactive]
     public AppSettings Settings { get; set; }
-
-    /// <summary>
-    ///     Подписка на изменение культуры в хранилише настроек
-    /// </summary>
-    private IDisposable? _cultureSubscribe;
-
-    /// <summary>
-    ///     Подписка на смену закрытия в трей
-    /// </summary>
-    private IDisposable? _shutDownSubscribe;
     
     /// <summary>
     ///     Сервис смены локализации
@@ -46,38 +38,42 @@ internal sealed class AppSettingsViewModel : ViewModelBase
     /// <param name="appSettingsStore"> Хранилище настроек приложения </param>
     /// <param name="appCultureService"> Сервси смены языка </param>
     /// <param name="appTrayService"> Управление треем прилоения </param>
-    public AppSettingsViewModel(IStore<AppSettings> appSettingsStore, 
+    public AppSettingsViewModel(IStore<AppSettings> appSettingsStore,
         IAppCultureService appCultureService,
-        IAppTrayService appTrayService)    
+        IAppTrayService appTrayService)
     {
         _appCultureService = appCultureService;
         _appTrayService = appTrayService;
-        
+
         Settings = appSettingsStore.CurrentValue;
-        
-        appSettingsStore.CurrentValueChangedNotifier += ()=>
+
+        appSettingsStore.CurrentValueChangedNotifier += () =>
         {
             Settings = appSettingsStore.CurrentValue;
             SetSubscribes();
         };
-        
+
         SetSubscribes();
     }
 
     private void SetSubscribes()
     {
-        _cultureSubscribe?.Dispose();
-        _shutDownSubscribe?.Dispose();
+        CompositeDisposable.Dispose();
         
         // Подписка на смену культуры в настройках. Как только меняется, применятся метод смены языка в приложении
-        _cultureSubscribe = this.WhenAnyValue(x => x.Settings.Culture)
-            .Subscribe(culture => _appCultureService.SetCulture(culture));
+        this.WhenAnyValue(x => x.Settings.Culture).Skip(1)
+            .Subscribe(culture => _appCultureService.SetCulture(culture))
+            .DisposeWith(CompositeDisposable);
 
         // Подписка на смену закрытия в трей
-        _shutDownSubscribe = this.WhenAnyValue(x => x.Settings.ShutdownToTray)
+        this.WhenAnyValue(x => x.Settings.ShutdownToTray)
+            .Skip(1)
             .Subscribe(mode =>
             {
-                _appTrayService.ChangeShutdownPolitic(mode ? ShutdownMode.OnExplicitShutdown : ShutdownMode.OnMainWindowClose);
-            });
+                _appTrayService.ChangeShutdownPolitic(mode
+                    ? ShutdownMode.OnExplicitShutdown
+                    : ShutdownMode.OnMainWindowClose);
+            })
+            .DisposeWith(CompositeDisposable);
     }
 }

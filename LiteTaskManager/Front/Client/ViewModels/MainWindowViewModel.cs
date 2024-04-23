@@ -6,6 +6,7 @@ using AppInfrastructure.Services.FileService;
 using AppInfrastructure.Stores.DefaultStore;
 using Client.Infrastructure.Logging;
 using Client.Models;
+using Client.Services.AppCultureService;
 using Material.Icons;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -59,7 +60,8 @@ internal sealed class MainWindowViewModel : ViewModelBase
         ProcessesViewModel processesViewModel,
         ProcessStatusViewModel  processStatusViewModel,
         NotificationBarViewModel notificationBarViewModel,
-        IStore<AppSettings> appSettingsStore)
+        IStore<AppSettings> appSettingsStore,
+        IAppCultureService appCultureService)
     {
         AppSettings = appSettingsStore.CurrentValue;
         NotificationBarViewModel = notificationBarViewModel;
@@ -67,21 +69,18 @@ internal sealed class MainWindowViewModel : ViewModelBase
         
         #region Commands Initialzie
 
-        Navigate = ReactiveCommand.Create<Type>(
-            type =>  CurrentViewModel = (Locator.Current.GetService(type) as ViewModelBase)!);
+        Navigate = ReactiveCommand.Create<Type>(ChangeCurrentViewModel);
         
         SaveAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.SetAsync);
         
-        GetAppSettings = ReactiveCommand.CreateFromTask(appSettingsFileService.GetAsync);
-        
         OpenAppSettings = ReactiveCommand.Create(() =>
         {
-            CurrentViewModel = Locator.Current.GetService<AppSettingsViewModel>();
+            ChangeCurrentViewModel(typeof(AppSettingsViewModel));
         });
         
         OpenAboutInfo = ReactiveCommand.Create(() =>
         { 
-            CurrentViewModel = Locator.Current.GetService<AppInfoViewModel>();
+            ChangeCurrentViewModel(typeof(AppInfoViewModel));
         });
 
         #endregion
@@ -90,7 +89,6 @@ internal sealed class MainWindowViewModel : ViewModelBase
         
         Navigate.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(Navigate)));
         SaveAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(SaveAppSettings)));
-        GetAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(GetAppSettings)));
         OpenAppSettings.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(OpenAppSettings)));
         OpenAboutInfo.Subscribe(_ => this.Log().StructLogInfo($"Processing", nameof(OpenAboutInfo)));
         
@@ -99,9 +97,6 @@ internal sealed class MainWindowViewModel : ViewModelBase
         
         SaveAppSettings.ThrownExceptions.Subscribe(e =>
             this.Log().StructLogError($"Processing", e.Message, nameof(SaveAppSettings)));
-        
-        GetAppSettings.ThrownExceptions.Subscribe(e =>
-            this.Log().StructLogError($"Processing", e.Message, nameof(GetAppSettings)));
         
         OpenAppSettings.ThrownExceptions.Subscribe(e =>
             this.Log().StructLogError($"Processing", e.Message, nameof(OpenAppSettings)));
@@ -126,6 +121,20 @@ internal sealed class MainWindowViewModel : ViewModelBase
         appSettingsStore.CurrentValueChangedNotifier += ()=>
         {
             AppSettings = appSettingsStore.CurrentValue;
+        };
+
+        appCultureService.CurrentCultureChangedNotifier += () =>
+        {
+            var oldVmd = CurrentViewModel;
+
+            CurrentViewModel = null;
+            CurrentViewModel = oldVmd;
+            
+            NotificationBarViewModel = null;
+            NotificationBarViewModel = notificationBarViewModel;
+                
+            ProcessStatusViewModel = null;
+            ProcessStatusViewModel = processStatusViewModel;
         };
     }
 
@@ -154,11 +163,25 @@ internal sealed class MainWindowViewModel : ViewModelBase
     ///     Сохранение настроек приложения в файл
     /// </summary>
     public ReactiveCommand<Unit, bool> SaveAppSettings { get; set; }
-    
+
+    #endregion
+
+    #region Methods
+
     /// <summary>
-    ///     Получение настроек приложения в файл
+    ///     Смена текущей вьюмодели
     /// </summary>
-    public ReactiveCommand<Unit, bool> GetAppSettings { get; set; }
+    /// <param name="type"> Тип вьюмодели </param>
+    private void ChangeCurrentViewModel(Type type)
+    {
+        if (CurrentViewModel?.GetType() == type)
+        {
+            return;
+        }
+        
+        CurrentViewModel?.Dispose();
+        CurrentViewModel = (Locator.Current.GetService(type) as ViewModelBase)!;
+    }
 
     #endregion
 }

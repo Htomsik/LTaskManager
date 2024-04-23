@@ -28,22 +28,29 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
         _appTrayService = appTrayService;
     }
     
-    public override Task<bool> GetAsync()
+    public override async Task<bool> GetAsync()
     {
-        var result = new Task<bool>(() => false);
+        var result = await base.GetAsync();
         
-        new Action(() => { result = base.GetAsync(); }).TimeLog(this.Log());
+        new Action(async () => { result = await base.GetAsync(); }).TimeLog(this.Log());
 
-        if (result.Exception is null)
+        if (result)
         {
             AfterGet();
             return result;
         }
         
         this.Log().StructLogWarn($"Recreating {FileName}");
-        SetAsync();
-        new Action(() => { result = base.GetAsync(); }).TimeLog(this.Log());
+        
+        result = await SetAsync();
 
+        if (result)
+        {
+            new Action(async () => { result = await base.GetAsync(); }).TimeLog(this.Log());
+        }
+
+        AfterGet();
+        
         return result;
     }
 
@@ -53,11 +60,11 @@ internal sealed class AppSettingsStoreFileService : BaseStoreFileService<IStore<
         _appTrayService.ChangeShutdownPolitic(Store.CurrentValue.ShutdownToTray ? ShutdownMode.OnExplicitShutdown : ShutdownMode.OnMainWindowClose);
     }
 
-    public override Task<bool> SetAsync()
+    public async override Task<bool> SetAsync()
     {
-        var result = new Task<bool>(() => false);
+        var result = false;
         
-        new Action(() => {result = base.SetAsync(); }).TimeLog(this.Log());
+        new Action(async () => {result = await base.SetAsync(); }).TimeLog(this.Log());
         
         return result;
     }
