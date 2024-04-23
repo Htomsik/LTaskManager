@@ -55,8 +55,6 @@ internal sealed class AppSettingsViewModel : ViewModelBase
 
     private void SetSubscribes()
     {
-        CompositeDisposable.Dispose();
-        
         // Подписка на смену культуры в настройках. Как только меняется, применятся метод смены языка в приложении
         this.WhenAnyValue(x => x.Settings.Culture).Skip(1)
             .Subscribe(culture => _appCultureService.SetCulture(culture))
