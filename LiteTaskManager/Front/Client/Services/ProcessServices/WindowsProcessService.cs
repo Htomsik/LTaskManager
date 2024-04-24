@@ -29,7 +29,7 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
         // 1 итерация, собираем все процессы в один список
         var buffer = new ConcurrentDictionary<int, IProcess>();
 
-        Parallel.ForEach(Processes, process =>
+        foreach (var process in Processes)
         {
             if (process is { HasExited: false, FakeProcess: false })
             {
@@ -45,7 +45,8 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
 
                 childProcess.ClearChild();
             }
-        });
+            
+        }
         
         Parallel.ForEach(Process.GetProcesses() ,process =>
         {
