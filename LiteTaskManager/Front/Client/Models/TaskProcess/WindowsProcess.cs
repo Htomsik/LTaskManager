@@ -150,14 +150,14 @@ public sealed class WindowsProcess : BaseProcess
             return;
         }
         
-        if (!_perfRefreshed)
-        {
-            _perfRefreshed = true;
-            _performanceCounterCpuUsage.NextValue();
-        }
-        
         try
         {
+            if (!_perfRefreshed)
+            {
+                _perfRefreshed = true;
+                _performanceCounterCpuUsage.NextValue();
+            }
+            
             double cpuUsage; 
             
             // TODO не спраишивайте меня почему так, я сам не знаю
