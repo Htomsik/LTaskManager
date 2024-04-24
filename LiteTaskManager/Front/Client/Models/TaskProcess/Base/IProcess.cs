@@ -117,4 +117,10 @@ public interface IProcess : IReactiveObject
     ///     Остановка процесса
     /// </summary>
     public bool Kill();
+
+    /// <summary>
+    ///     Очистка зависимых процессов (Визуально)
+    /// </summary>
+    public void ClearChild();
+    
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
@@ -26,10 +27,33 @@ internal sealed class WindowsProcessService : BaseProcessService<WindowsProcess>
     protected override void UpdateProcessesCore()
     {
         // 1 итерация, собираем все процессы в один список
-        var buffer = new ConcurrentDictionary<int, WindowsProcess>();
-            
+        var buffer = new ConcurrentDictionary<int, IProcess>();
+
+        Parallel.ForEach(Processes, process =>
+        {
+            if (process is { HasExited: false, FakeProcess: false })
+            {
+                buffer.TryAdd(process.ProcessId, process);
+            }
+
+            foreach (var childProcess in process.ChiLdFlat)
+            {
+                if (childProcess is { HasExited: false, FakeProcess: false })
+                {
+                    buffer.TryAdd(childProcess.ProcessId, childProcess);
+                }
+
+                childProcess.ClearChild();
+            }
+        });
+        
         Parallel.ForEach(Process.GetProcesses() ,process =>
         {
+            if (buffer.ContainsKey(process.Id))
+            {
+                return;
+            }
+            
             var taskProcess = new WindowsProcess(process);
             
             buffer.TryAdd(taskProcess.ProcessId, taskProcess);

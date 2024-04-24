@@ -152,7 +152,7 @@ public abstract class BaseProcess : ReactiveObject, IProcess
     /// <summary>
     ///     Процессы запущенные процессом
     /// </summary>
-    public ICollection<IProcess> Childs { get; } = new List<IProcess>();
+    public ICollection<IProcess> Childs { get; protected set; } = new List<IProcess>();
     
     /// <summary>
     ///     Развернутое дерево процессов детей
@@ -298,7 +298,17 @@ public abstract class BaseProcess : ReactiveObject, IProcess
 
         return true;
     }
-    
+
+    public void ClearChild()
+    {
+        foreach (var elem in Childs)
+        {
+            elem.ClearChild();
+        }
+
+        Childs = new List<IProcess>();
+    }
+
     /// <summary>
     ///     Изменяет приоритет процесса
     /// </summary>
@@ -337,6 +347,11 @@ public abstract class BaseProcess : ReactiveObject, IProcess
         {
             foreach (var elem in Childs.ToArray())
             {
+                if (elem == null)
+                {
+                    continue;
+                }
+                
                 elem.Refresh(computerInfoService, includeChilds);
             }
         }
